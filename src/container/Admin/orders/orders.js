@@ -28,7 +28,7 @@ import {
     Col,
     Button
 } from "reactstrap";
-
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 // core components
 import PanelHeader from "components/PanelHeader/PanelHeader";
 
@@ -36,6 +36,7 @@ import { thead, tbody, dataBootstrapTable } from "../../../variables/general";
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+const { SearchBar } = Search;
 
 function Orders() {
     const remote = {
@@ -97,20 +98,35 @@ function Orders() {
                                 <CardTitle tag="h4">Simple Table</CardTitle>
                             </CardHeader>
                             <CardBody>
-                                <BootstrapTable
-                                    remote={remote}
-                                    wrapperClasses={"table-responsive"}
-                                    classes=""
-                                    headerWrapperClasses="text-primary text-left"
-                                    bordered={false}
-                                    headerClasses=""
-                                    bodyClasses="text-left"
-                                    bootstrap4
+                                <ToolkitProvider
                                     keyField='name'
                                     data={products}
                                     columns={columns}
-                                    pagination={ paginationFactory() }
-                                />
+                                    bootstrap4
+                                    search
+                                >{
+                                        props => (
+                                            <div>
+                                                <SearchBar className={"  col-md-4 p-2"} {...props.searchProps} />
+                                                <BootstrapTable
+                                                    remote={remote}
+                                                    wrapperClasses={"table-responsive"}
+                                                    classes=""
+                                                    headerWrapperClasses="text-primary text-left"
+                                                    bordered={false}
+                                                    headerClasses=""
+                                                    bodyClasses="text-left"
+                                                    {...props.baseProps}
+                                                    // keyField='name'
+                                                    // data={products}
+                                                    // columns={columns}
+                                                    pagination={paginationFactory()}
+                                                />
+                                            </div>
+                                        )
+
+                                    }
+                                </ToolkitProvider>
                                 {/* <Table responsive>
                                     <thead className="text-primary">
                                         <tr>

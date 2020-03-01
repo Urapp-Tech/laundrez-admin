@@ -25,6 +25,7 @@ import "assets/scss/now-ui-dashboard.scss?v1.2.0";
 import "assets/css/demo.css";
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
+import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css';
 
 import AdminLayout from "./container/Admin/index";
 import AuthContainer from "./container/Auth";
