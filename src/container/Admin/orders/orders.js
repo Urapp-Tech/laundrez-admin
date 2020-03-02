@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useEffect } from "react";
 
 // reactstrap components
 import {
@@ -34,11 +34,21 @@ import PanelHeader from "components/PanelHeader/PanelHeader";
 
 import { thead, tbody, dataBootstrapTable } from "../../../variables/general";
 
+import { useDispatch, useSelector } from 'react-redux';
+
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import { SampleActions } from "../../../store/actions/SampleActions";
 const { SearchBar } = Search;
 
 function Orders() {
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(SampleActions.sampleReq());
+    }, [dispatch])
+
+
     const remote = {
         filter: false,
         pagination: false,
