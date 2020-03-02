@@ -29,6 +29,7 @@ import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.c
 
 import AdminLayout from "./container/Admin/index";
 import AuthContainer from "./container/Auth";
+import PrivateRoute from "./components/Routes/PrivateRoute";
 
 const hist = createBrowserHistory();
 
@@ -36,7 +37,7 @@ ReactDOM.render(
   <Router history={hist}>
     <Switch>
       <Route path="/auth" render={props => <AuthContainer {...props} />} />
-      <Route path="/admin" render={props => <AdminLayout {...props} />} />
+      <Route path="/admin" render={props => <PrivateRoute {...props} component={AdminLayout} />} />
       <Redirect to="/auth/login" />
     </Switch>
   </Router>,

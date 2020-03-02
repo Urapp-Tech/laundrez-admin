@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 // reactstrap components
 import {
   Button,
@@ -13,7 +13,16 @@ import {
 } from "reactstrap";
 import PanelHeader from "../../components/PanelHeader/PanelHeader";
 
-function Login() {
+function Login({ history }) {
+
+
+  const onLoginClick = useCallback((e) => {
+    e.preventDefault();
+    localStorage.setItem('token', 'asdfasdfads');
+    history.replace('/admin/orders');
+  }, [history]);
+
+
   return (
     <>
       <PanelHeader size="sm" />
@@ -54,7 +63,7 @@ function Login() {
                         className="btn-primary btn-round btn-block"
                         color="default"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        onClick={onLoginClick}
                         size="lg"
                       >
                         Login
