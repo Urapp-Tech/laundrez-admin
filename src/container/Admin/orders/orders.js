@@ -179,7 +179,11 @@ function Orders() {
                                                     // keyField='name'
                                                     // data={products}
                                                     // columns={columns}
-                                                    pagination={paginationFactory()}
+                                                    pagination={paginationFactory({
+                                                        page: 1,
+                                                        sizePerPage: 10,
+                                                        hideSizePerPage: true
+                                                    })}
                                                 />
                                             </div>
                                         )
