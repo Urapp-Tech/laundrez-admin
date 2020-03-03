@@ -34,6 +34,13 @@ var dashRoutes = [
     layout: "/admin"
   },
   {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: "design_app",
+    component: Dashboard,
+    layout: "/admin"
+  },
+  {
     path: "/icons",
     name: "Icons",
     icon: "design_image",

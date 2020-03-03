@@ -30,7 +30,8 @@ import {
     InputGroup,
     InputGroupAddon,
     InputGroupText,
-    Input
+    Input,
+    UncontrolledTooltip
 } from "reactstrap";
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 // core components
@@ -95,15 +96,36 @@ function Orders() {
             text: 'Action',
             formatter: () => {
                 return (
-                    <Button
-                        className="btn-primary btn-round"
-                        color="default"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="lg"
-                    >
-                        Login
-            </Button>
+                    <div>
+                        <Button
+                            className="btn-round btn-icon btn-icon-mini btn-neutral"
+                            color="info"
+                            id="tooltip731609871"
+                            type="button"
+                        >
+                            <i className="now-ui-icons ui-2_settings-90" />
+                        </Button>
+                        <UncontrolledTooltip
+                            delay={0}
+                            target="tooltip731609871"
+                        >
+                            Edit Task
+                  </UncontrolledTooltip>
+                        <Button
+                            className="btn-round btn-icon btn-icon-mini btn-neutral"
+                            color="danger"
+                            id="tooltip923217206"
+                            type="button"
+                        >
+                            <i className="now-ui-icons ui-1_simple-remove" />
+                        </Button>
+                        <UncontrolledTooltip
+                            delay={0}
+                            target="tooltip923217206"
+                        >
+                            Remove
+                  </UncontrolledTooltip>
+                    </div>
                 )
             }
         }
