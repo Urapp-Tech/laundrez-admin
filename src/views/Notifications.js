@@ -32,7 +32,7 @@ import {
 } from "reactstrap";
 
 // core components
-import PanelHeader from "components/PanelHeader/PanelHeader";
+import PanelHeader from "../components/PanelHeader/PanelHeader";
 
 class Notifications extends React.Component {
   constructor(props) {

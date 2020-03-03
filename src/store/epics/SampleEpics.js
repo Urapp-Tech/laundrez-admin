@@ -7,7 +7,7 @@ import { SampleTypes } from "../action-types/SampleTypes";
 export class SampleEpics {
     static sampleReq(action$, state$, { ajaxGet }) {
         return action$.pipe(ofType(SampleTypes.SAMPLE_REQ_PROG), switchMap(({ payload }) => {
-            return ajaxGet(`https://jsonplaceholder.typicode.com/posts/`).pipe(pluck("response"), map(obj => {
+            return ajaxGet(`https://jsonplaceholder.typicode.com/todos/`).pipe(pluck("response"), map(obj => {
                 return {
                     type: SampleTypes.SAMPLE_REQ_SUCC,
                     payload: obj

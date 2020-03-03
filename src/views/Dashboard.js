@@ -41,14 +41,14 @@ import {
 } from "reactstrap";
 
 // core components
-import PanelHeader from "components/PanelHeader/PanelHeader";
+import PanelHeader from "../components/PanelHeader/PanelHeader";
 
 import {
   dashboardPanelChart,
   dashboardShippedProductsChart,
   dashboardAllProductsChart,
   dashboard24HoursPerformanceChart
-} from "variables/charts";
+} from "../variables/charts";
 
 class Dashboard extends React.Component {
   render() {

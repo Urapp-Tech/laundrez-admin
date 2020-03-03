@@ -30,7 +30,7 @@ import {
 } from "reactstrap";
 
 // core components
-import PanelHeader from "components/PanelHeader/PanelHeader";
+import PanelHeader from "../components/PanelHeader/PanelHeader";
 
 class Upgrade extends Component {
   render() {

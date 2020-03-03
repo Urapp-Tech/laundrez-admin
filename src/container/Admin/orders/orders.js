@@ -26,11 +26,15 @@ import {
     Table,
     Row,
     Col,
-    Button
+    Button,
+    InputGroup,
+    InputGroupAddon,
+    InputGroupText,
+    Input
 } from "reactstrap";
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 // core components
-import PanelHeader from "components/PanelHeader/PanelHeader";
+import PanelHeader from "../../../components/PanelHeader/PanelHeader";
 
 import { thead, tbody, dataBootstrapTable } from "../../../variables/general";
 
@@ -44,6 +48,9 @@ const { SearchBar } = Search;
 function Orders() {
 
     const dispatch = useDispatch();
+    const users = useSelector(store => store?.sampleReducer.posts)
+    console.log(users)
+    // const products = [...dataBootstrapTable];
     useEffect(() => {
         dispatch(SampleActions.sampleReq());
     }, [dispatch])
@@ -55,48 +62,52 @@ function Orders() {
         sort: false,
         cellEdit: false
     }
-    const columns = [{
-        dataField: 'name',
-        text: 'Name'
-    },
-    {
-        dataField: 'country',
-        text: 'Country'
-    },
-    {
-        dataField: 'city',
-        text: 'City'
-    },
-    {
-        dataField: 'salary',
-        text: 'Salary',
-        sort: true,
-        sortValue: (cell, row) => {
-            return cell
+    const columns = [
+        {
+            dataField: 'id',
+            text: 'Id'
         },
-        formatter: (cell, row) => {
-            return cell
+        {
+            dataField: 'userId',
+            text: 'User Id'
         },
-    },
-    {
-        dataField: 'action',
-        text: 'Action',
-        formatter: () => {
-            return (
-                <Button
-                    className="btn-primary btn-round"
-                    color="default"
-                    href="#pablo"
-                    onClick={e => e.preventDefault()}
-                    size="lg"
-                >
-                    Login
+        {
+            dataField: 'title',
+            text: 'Title'
+        },
+        // {
+        //     dataField: 'email',
+        //     text: 'Email'
+        // },
+        // {
+        //     dataField: 'website',
+        //     text: 'Website',
+        // sort: true,
+        // sortValue: (cell, row) => {
+        //     return cell
+        // },
+        // formatter: (cell, row) => {
+        //     return cell
+        // },
+        // },
+        {
+            dataField: 'action',
+            text: 'Action',
+            formatter: () => {
+                return (
+                    <Button
+                        className="btn-primary btn-round"
+                        color="default"
+                        href="#pablo"
+                        onClick={e => e.preventDefault()}
+                        size="lg"
+                    >
+                        Login
             </Button>
-            )
+                )
+            }
         }
-    }
     ];
-    const products = [...dataBootstrapTable];
     return (
         <>
             <PanelHeader size="sm" />
@@ -104,20 +115,36 @@ function Orders() {
                 <Row>
                     <Col xs={12}>
                         <Card>
-                            <CardHeader>
-                                <CardTitle tag="h4">Simple Table</CardTitle>
+                            <CardHeader className="d-flex justify-content-between" >
+                                <CardTitle tag="h4">Simple Table
+                                <Button
+                                        className="btn-primary btn-add ml-2"
+                                        onClick={e => e.preventDefault()} >
+                                        <i className="fas fa-plus"></i>
+                                    </Button>
+                                </CardTitle>
+                                <form className="col-md-8 align-self-center " >
+                                    <InputGroup className=" no-border">
+                                        <Input className="" placeholder="Search..." />
+                                        <InputGroupAddon addonType="append">
+                                            <InputGroupText>
+                                                <i className="now-ui-icons ui-1_zoom-bold" />
+                                            </InputGroupText>
+                                        </InputGroupAddon>
+                                    </InputGroup>
+                                </form>
                             </CardHeader>
                             <CardBody>
                                 <ToolkitProvider
-                                    keyField='name'
-                                    data={products}
+                                    keyField='id'
+                                    data={users}
                                     columns={columns}
                                     bootstrap4
-                                    search
+
                                 >{
                                         props => (
                                             <div>
-                                                <SearchBar className={"  col-md-4 p-2"} {...props.searchProps} />
+                                                {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
                                                 <BootstrapTable
                                                     remote={remote}
                                                     wrapperClasses={"table-responsive"}

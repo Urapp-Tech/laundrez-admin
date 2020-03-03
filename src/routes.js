@@ -15,15 +15,15 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "views/Dashboard";
-import Notifications from "views/Notifications";
-import Icons from "views/Icons";
-import Typography from "views/Typography";
-import TableList from "views/TableList";
-import Maps from "views/Maps";
-import Upgrade from "views/Upgrade";
-import UserPage from "views/UserPage";
-import Orders from "container/Admin/orders/orders";
+import Dashboard from "./views/Dashboard";
+import Notifications from "./views/Notifications";
+import Icons from "./views/Icons";
+import Typography from "./views/Typography";
+import TableList from "./views/TableList";
+import Maps from "./views/Maps";
+import Upgrade from "./views/Upgrade";
+import UserPage from "./views/UserPage";
+import Orders from "./container/Admin/orders/orders";
 
 var dashRoutes = [
   {

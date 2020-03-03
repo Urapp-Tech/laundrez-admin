@@ -29,9 +29,9 @@ import {
 } from "reactstrap";
 
 // core components
-import PanelHeader from "components/PanelHeader/PanelHeader";
+import PanelHeader from "../components/PanelHeader/PanelHeader";
 
-import { thead, tbody } from "variables/general";
+import { thead, tbody } from "../variables/general";
 
 class RegularTables extends React.Component {
   render() {

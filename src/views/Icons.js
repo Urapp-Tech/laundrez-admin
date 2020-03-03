@@ -21,9 +21,9 @@ import React from "react";
 import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 
 // core components
-import PanelHeader from "components/PanelHeader/PanelHeader";
+import PanelHeader from "../components/PanelHeader/PanelHeader";
 
-import icons from "variables/icons";
+import icons from "../variables/icons";
 
 class Icons extends React.Component {
   render() {
