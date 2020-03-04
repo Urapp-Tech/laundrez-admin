@@ -37,7 +37,7 @@ import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 // core components
 import PanelHeader from "../../../components/PanelHeader/PanelHeader";
 
-import { thead, tbody, dataBootstrapTable } from "../../../variables/general";
+// import { thead, tbody, dataBootstrapTable } from "../../../variables/general";
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -50,10 +50,8 @@ function Orders() {
 
     const dispatch = useDispatch();
     const users = useSelector(store => store?.sampleReducer.posts)
-    console.log(users)
-    // const products = [...dataBootstrapTable];
     useEffect(() => {
-        dispatch(SampleActions.sampleReq());
+        // dispatch(SampleActions.sampleReq());
     }, [dispatch])
 
 
@@ -94,20 +92,20 @@ function Orders() {
         {
             dataField: 'action',
             text: 'Action',
-            formatter: () => {
+            formatter: (cell,row,rowIndex) => {
                 return (
                     <div>
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
                             color="info"
-                            id="tooltip731609871"
+                            id={`edit-order-${rowIndex}`}
                             type="button"
                         >
                             <i className="now-ui-icons ui-2_settings-90" />
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
-                            target="tooltip731609871"
+                            target={`edit-order-${rowIndex}`}
                         >
                             Edit Task
                   </UncontrolledTooltip>

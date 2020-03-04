@@ -66,7 +66,7 @@ class Sidebar extends React.Component {
             className="simple-text logo-normal"
             target="_blank"
           >
-            Creative Tim
+            <span className="text-lowercase" > launder</span><span className="text-uppercase" >EZ</span>
           </a>
         </div>
         <div className="sidebar-wrapper" ref="sidebar">
@@ -86,7 +86,7 @@ class Sidebar extends React.Component {
                     className="nav-link"
                     activeClassName="active"
                   >
-                    <i className={"now-ui-icons " + prop.icon} />
+                    <i className={prop.icon} />
                     <p>{prop.name}</p>
                   </NavLink>
                 </li>

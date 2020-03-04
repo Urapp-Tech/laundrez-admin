@@ -15,79 +15,77 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "./views/Dashboard";
-import Notifications from "./views/Notifications";
-import Icons from "./views/Icons";
-import Typography from "./views/Typography";
-import TableList from "./views/TableList";
-import Maps from "./views/Maps";
-import Upgrade from "./views/Upgrade";
-import UserPage from "./views/UserPage";
 import Orders from "./container/Admin/orders/orders";
 
 var dashRoutes = [
   {
     path: "/orders",
     name: "Orders",
-    icon: "design_app",
+    icon: "fas fa-shopping-basket",
     component: Orders,
     layout: "/admin"
   },
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    icon: "design_app",
-    component: Dashboard,
+    path: "/drivers",
+    name: "Drivers",
+    icon: "fa fa-truck",
+    component: Orders,
     layout: "/admin"
   },
   {
-    path: "/icons",
-    name: "Icons",
-    icon: "design_image",
-    component: Icons,
+    path: "/services",
+    name: "Services",
+    icon: "fas fa-university",
+    component: Orders,
     layout: "/admin"
   },
   {
-    path: "/maps",
-    name: "Maps",
-    icon: "location_map-big",
-    component: Maps,
+    path: "/categories",
+    name: "Categories",
+    icon: "fas fa-th-list",
+    component: Orders,
     layout: "/admin"
   },
   {
-    path: "/notifications",
-    name: "Notifications",
-    icon: "ui-1_bell-53",
-    component: Notifications,
+    path: "/locations",
+    name: "Locations",
+    icon: "fas fa-map-marker-alt",
+    component: Orders,
     layout: "/admin"
   },
   {
-    path: "/user-page",
-    name: "User Profile",
-    icon: "users_single-02",
-    component: UserPage,
+    path: "/customers",
+    name: "Customers",
+    icon: "fas fa-users",
+    component: Orders,
     layout: "/admin"
   },
   {
-    path: "/extended-tables",
-    name: "Table List",
-    icon: "files_paper",
-    component: TableList,
+    path: "/vouchers",
+    name: "Vouchers",
+    icon: "fas fa-tags",
+    component: Orders,
     layout: "/admin"
   },
   {
-    path: "/typography",
-    name: "Typography",
-    icon: "design-2_ruler-pencil",
-    component: Typography,
+    path: "/app-faq-topics",
+    name: "App FAQs Topics",
+    icon: "fas fa-question-circle",
+    component: Orders,
     layout: "/admin"
   },
   {
-    pro: true,
-    path: "/upgrade",
-    name: "Upgrade to PRO",
-    icon: "objects_spaceship",
-    component: Upgrade,
+    path: "/app-faq",
+    name: "App FAQs",
+    icon: "fas fa-question",
+    component: Orders,
+    layout: "/admin"
+  },
+  {
+    path: "/user-inquiries",
+    name: "User Inquiries",
+    icon: "fas fa-life-ring",
+    component: Orders,
     layout: "/admin"
   }
 ];
