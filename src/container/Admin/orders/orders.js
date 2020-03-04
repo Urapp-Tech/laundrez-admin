@@ -30,7 +30,10 @@ import {
     InputGroupAddon,
     InputGroupText,
     Input,
-    UncontrolledTooltip
+    UncontrolledTooltip,
+    FormGroup,
+    Label,
+    Badge
 } from "reactstrap";
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 // core components
@@ -41,6 +44,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { SampleActions } from "../../../store/actions/SampleActions";
+
+import { dataBootstrapTable } from "../../../variables/general";
 const { SearchBar } = Search;
 
 function Orders() {
@@ -61,37 +66,59 @@ function Orders() {
     const columns = [
         {
             dataField: 'id',
-            text: 'Id'
+            text: '#'
         },
         {
             dataField: 'userId',
-            text: 'User Id'
+            text: 'Ref'
         },
         {
             dataField: 'title',
-            text: 'Title'
+            text: 'Pickup Time'
         },
-        // {
-        //     dataField: 'email',
-        //     text: 'Email'
-        // },
-        // {
-        //     dataField: 'website',
-        //     text: 'Website',
-        // sort: true,
-        // sortValue: (cell, row) => {
-        //     return cell
-        // },
-        // formatter: (cell, row) => {
-        //     return cell
-        // },
-        // },
+        {
+            dataField: 'title',
+            text: 'Drop off Time'
+        },
+        {
+            dataField: 'title',
+            text: 'Customer'
+        },
+        {
+            dataField: 'title',
+            text: 'Rating'
+        },
+        {
+            dataField: 'title',
+            text: 'Rating Message'
+        },
+        {
+            dataField: 'title',
+            text: 'Phone'
+        },
+        {
+            dataField: 'title',
+            text: 'Amount'
+        },
+        {
+            dataField: 'title',
+            text: 'Status',
+            formatter: (cell, row, rowIndex) => {
+                return (
+                    <div className="text-center" >
+                        <Badge className="bg-primary" >Pickup</Badge>
+                        <Button size="sm" className="btn-outline-info btn-round mt-1 " > Assign </Button>
+                    </div>
+
+                )
+            }
+        },
         {
             dataField: 'action',
             text: 'Action',
             formatter: (cell, row, rowIndex) => {
                 return (
-                    <div>
+                    <div className="d-flex" >
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
                             color="info"
@@ -108,17 +135,18 @@ function Orders() {
                   </UncontrolledTooltip>
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="danger"
-                            id="tooltip923217206"
+                            color="default"
+                            id={`print-order-${rowIndex}`}
                             type="button"
                         >
-                            <i className="now-ui-icons ui-1_simple-remove" />
+                            {/* <i className="now-ui-icons ui-1_simple-remove" /> */}
+                            <i class=" fas fa-print"></i>
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
-                            target="tooltip923217206"
+                            target={`print-order-${rowIndex}`}
                         >
-                            Remove
+                            Print
                   </UncontrolledTooltip>
                     </div>
                 )
@@ -131,32 +159,62 @@ function Orders() {
             <div className="content">
                 <Row>
                     <Col xs={12}>
-                        <Card>
-                            <CardHeader className="d-flex justify-content-between" >
-                                <CardTitle tag="h4">Orders
-                                <Button
-                                        className="btn-primary btn-add ml-2"
-                                        onClick={e => e.preventDefault()} >
-                                        <i className="fas fa-plus"></i>
-                                    </Button>
-                                </CardTitle>
-                                <form className="col-md-8 align-self-center " >
-                                    <InputGroup className=" no-border">
-                                        <Input className="" placeholder="Search..." />
-                                        <InputGroupAddon addonType="append">
-                                            <InputGroupText>
-                                                <i className="now-ui-icons ui-1_zoom-bold" />
-                                            </InputGroupText>
-                                        </InputGroupAddon>
-                                    </InputGroup>
-                                </form>
+                        <Card className="" >
+                            <CardHeader className="" >
+                                <Row>
+                                    <Col lg="2" >
+                                        <CardTitle tag="h4">Orders</CardTitle>
+                                    </Col>
+                                    <Col lg="2" >
+                                        <FormGroup className="col-md-12" >
+                                            <Label for="exampleSelect">Status</Label>
+                                            <Input type="select" name="select" id="exampleSelect">
+                                                <option>All</option>
+                                                <option>Ordered</option>
+                                                <option>Pickedup</option>
+                                                <option>InProgress</option>
+                                                <option>DropOffs</option>
+                                                <option>Delivered</option>
+                                                <option>Cancelled</option>
+                                            </Input>
+                                        </FormGroup>
+                                    </Col>
+                                    <Col lg="2" >
+                                        <FormGroup className="col-md-12" >
+                                            <Label for="exampleSelect">Time</Label>
+                                            <Input type="select" name="select" id="exampleSelect">
+                                                <option>All</option>
+                                                <option>Today</option>
+                                                <option>Tomorrow</option>
+                                                <option>This Week</option>
+                                            </Input>
+                                        </FormGroup>
+                                    </Col>
+                                    <Col lg="2" className="d-flex justify-content-center align-items-end" >
+                                        <Button size={"md"} className=" btn-primary btn-round" >Export to CSV</Button>
+                                    </Col>
+
+                                    <Col lg="4" className="d-flex justify-content-end align-items-end"  >
+                                        <FormGroup className=" col-md-12" >
+                                            <InputGroup className=" no-border">
+                                                <Input className="" placeholder="Search..." />
+                                                <InputGroupAddon addonType="append">
+                                                    <InputGroupText>
+                                                        <i className="now-ui-icons ui-1_zoom-bold" />
+                                                    </InputGroupText>
+                                                </InputGroupAddon>
+                                            </InputGroup>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
                             </CardHeader>
                             <CardBody>
                                 <ToolkitProvider
                                     keyField='id'
-                                    data={users}
+                                    data={dataBootstrapTable}
                                     columns={columns}
-                                    bootstrap4
+                                    bootstrap4={true}
+                                    responsive
 
                                 >{
                                         props => (
