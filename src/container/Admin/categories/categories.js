@@ -43,7 +43,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import { SampleActions } from "../../../store/actions/SampleActions";
 const { SearchBar } = Search;
 
-function Orders() {
+function Categories() {
 
     const dispatch = useDispatch();
     const users = useSelector(store => store?.sampleReducer.posts)
@@ -133,7 +133,7 @@ function Orders() {
                     <Col xs={12}>
                         <Card>
                             <CardHeader className="d-flex justify-content-between" >
-                                <CardTitle tag="h4">Orders
+                                <CardTitle tag="h4">Categories
                                 <Button
                                         className="btn-primary btn-add ml-2"
                                         onClick={e => e.preventDefault()} >
@@ -195,4 +195,4 @@ function Orders() {
 }
 
 
-export default Orders;
+export default Categories;

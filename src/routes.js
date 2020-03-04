@@ -16,6 +16,15 @@
 
 */
 import Orders from "./container/Admin/orders/orders";
+import Drivers from "./container/Admin/drivers/drivers";
+import Categories from "./container/Admin/categories/categories";
+import Services from "./container/Admin/services/services";
+import Locations from "./container/Admin/locations/locations";
+import Customers from "./container/Admin/customers/customers";
+import Vouchers from "./container/Admin/vouchers/vouchers";
+import AppFaqTopics from "./container/Admin/app-faq-topics/app-faq-topics";
+import AppFaq from "./container/Admin/app-faq/app-faq";
+import UserInquiries from "./container/Admin/user-inquiries/user-inquiries";
 
 var dashRoutes = [
   {
@@ -29,63 +38,63 @@ var dashRoutes = [
     path: "/drivers",
     name: "Drivers",
     icon: "fa fa-truck",
-    component: Orders,
+    component: Drivers,
     layout: "/admin"
   },
   {
     path: "/services",
     name: "Services",
     icon: "fas fa-university",
-    component: Orders,
+    component: Services,
     layout: "/admin"
   },
   {
     path: "/categories",
     name: "Categories",
     icon: "fas fa-th-list",
-    component: Orders,
+    component: Categories,
     layout: "/admin"
   },
   {
     path: "/locations",
     name: "Locations",
     icon: "fas fa-map-marker-alt",
-    component: Orders,
+    component: Locations,
     layout: "/admin"
   },
   {
     path: "/customers",
     name: "Customers",
     icon: "fas fa-users",
-    component: Orders,
+    component: Customers,
     layout: "/admin"
   },
   {
     path: "/vouchers",
     name: "Vouchers",
     icon: "fas fa-tags",
-    component: Orders,
+    component: Vouchers,
     layout: "/admin"
   },
   {
-    path: "/app-faq-topics",
+    path: "/topics-app-faq",
     name: "App FAQs Topics",
     icon: "fas fa-question-circle",
-    component: Orders,
+    component: AppFaqTopics,
     layout: "/admin"
   },
   {
     path: "/app-faq",
     name: "App FAQs",
     icon: "fas fa-question",
-    component: Orders,
+    component: AppFaq,
     layout: "/admin"
   },
   {
     path: "/user-inquiries",
     name: "User Inquiries",
     icon: "fas fa-life-ring",
-    component: Orders,
+    component: UserInquiries,
     layout: "/admin"
   }
 ];
