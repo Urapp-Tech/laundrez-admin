@@ -158,26 +158,24 @@ class Header extends React.Component {
             className="justify-content-end"
           >
             <Nav navbar>
-              <NavItem>
-                <Dropdown
-                  nav
-                  isOpen={this.state.dropdownOpen}
-                  toggle={e => this.dropdownToggle(e)}
-                >
-                  <DropdownToggle caret nav>
-                    <i className="now-ui-icons users_single-02" />
-                    <p>
-                      <span className="d-lg-none d-md-block">Account</span>
-                    </p>
-                  </DropdownToggle>
-                  <DropdownMenu right>
-                    <DropdownItem tag="a">@User</DropdownItem>
-                    <DropdownItem tag="a" className="font-weight-bold" >
-                      <i className="fas fa-sign-out-alt font-weight-bold"></i>
-                      Logout</DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
-              </NavItem>
+              <Dropdown
+                nav
+                isOpen={this.state.dropdownOpen}
+                toggle={e => this.dropdownToggle(e)}
+              >
+                <DropdownToggle caret nav>
+                  <i className="now-ui-icons users_single-02" />
+                  <p>
+                    <span className="d-lg-none d-md-block">Account</span>
+                  </p>
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem tag="a">@User</DropdownItem>
+                  <DropdownItem tag="a" className="font-weight-bold" >
+                    <i className="fas fa-sign-out-alt font-weight-bold"></i>
+                    Logout</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
             </Nav>
           </Collapse>
         </Container>
