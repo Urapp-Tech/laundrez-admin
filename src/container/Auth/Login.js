@@ -12,6 +12,7 @@ import {
   Col
 } from "reactstrap";
 import PanelHeader from "../../components/PanelHeader/PanelHeader";
+import logo from "../../assets/img/Logo.svg";
 
 function Login({ history }) {
 
@@ -25,18 +26,27 @@ function Login({ history }) {
 
   return (
     <>
-      <PanelHeader size="sm" />
-      <div className="content">
-        <Row className="justify-content-center" >
-          <Col md="6">
-            <Card>
-              <CardHeader>
-                <h5 className="title">LaundrEZ</h5>
-              </CardHeader>
+
+      <div className="content ">
+
+        <Row className="height-100 justify-content-center" >
+          <Col sm="12" md="9" lg="5"  >
+            <Card className="card-user vertical-center " >
               <CardBody>
+                <div className="author">
+                  <a href="#pablo" onClick={e => e.preventDefault()}>
+                    <img
+                      alt="..."
+                      className="avatar "
+                      src={logo}
+                    />
+                    {/* <h5 className="title">Mike Andrew</h5> */}
+                  </a>
+                  {/* <p className="description">michael24</p> */}
+                </div>
                 <Form>
                   <Row className="justify-content-center" >
-                    <Col className="pl-1" md="8">
+                    <Col  sm="8">
                       <FormGroup>
                         <label htmlFor="exampleInputEmail1">
                           Email address
@@ -46,7 +56,7 @@ function Login({ history }) {
                     </Col>
                   </Row>
                   <Row className="justify-content-center" >
-                    <Col className="pl-1" md="8">
+                    <Col sm="8">
                       <FormGroup>
                         <label>Password</label>
                         <Input
@@ -58,7 +68,7 @@ function Login({ history }) {
                     </Col>
                   </Row>
                   <Row className="justify-content-center" >
-                    <Col className="pl-1" md="8">
+                    <Col sm="8">
                       <Button
                         className="btn-primary btn-round btn-block"
                         color="default"
