@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 // reactstrap components
 import {
@@ -46,17 +46,21 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import { SampleActions } from "../../../store/actions/SampleActions";
 
 import { dataBootstrapTable } from "../../../variables/general";
+import AssignModal from "../../../components/Modals/AssignModal";
 const { SearchBar } = Search;
 
 function Orders() {
 
+    const [openModal, setOpenModal] = useState(false);
     const dispatch = useDispatch();
     const users = useSelector(store => store?.sampleReducer.posts)
     useEffect(() => {
         // dispatch(SampleActions.sampleReq());
     }, [dispatch])
 
-
+    const toggleAssignModal = useCallback(() => {
+        setOpenModal(!openModal);
+    }, [openModal]);
     const remote = {
         filter: false,
         pagination: false,
@@ -106,8 +110,8 @@ function Orders() {
             formatter: (cell, row, rowIndex) => {
                 return (
                     <div className="text-center" >
-                        <Badge className="bg-primary" >Pickup</Badge>
-                        <Button size="sm" className="btn-outline-info btn-round mt-1 " > Assign </Button>
+                        <Badge className="bg-primary " >Pickup</Badge>
+                        <Button size="sm" className="btn-outline-info btn-round mt-1 " onClick={toggleAssignModal} > Assign </Button>
                     </div>
 
                 )
@@ -247,6 +251,7 @@ function Orders() {
                         </Card>
                     </Col>
                 </Row>
+                <AssignModal isOpen={openModal} toggle={toggleAssignModal} />
             </div>
         </>
     );
