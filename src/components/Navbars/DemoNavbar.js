@@ -28,14 +28,11 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Container,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon,
-  Input
+  Container
 } from "reactstrap";
 
 import routes from "../../routes.js";
+import PropTypes from 'prop-types';
 
 class Header extends React.Component {
   state = {
@@ -188,5 +185,7 @@ class Header extends React.Component {
     );
   }
 }
-
+Header.propTypes = {
+  pathname: PropTypes.string
+}
 export default Header;

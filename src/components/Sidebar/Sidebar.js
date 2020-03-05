@@ -23,7 +23,7 @@ import { Nav } from "reactstrap";
 import PerfectScrollbar from "perfect-scrollbar";
 
 import logo from "../../logo-white.svg";
-
+import PropTypes from 'prop-types';
 var ps;
 
 class Sidebar extends React.Component {
@@ -98,5 +98,12 @@ class Sidebar extends React.Component {
     );
   }
 }
-
+Sidebar.propTypes = {
+  routes: PropTypes.array,
+  icon: PropTypes.string,
+  layout: PropTypes.string,
+  path: PropTypes.string,
+  backgroundColor: PropTypes.string,
+  pathname: PropTypes.string
+}
 export default Sidebar;

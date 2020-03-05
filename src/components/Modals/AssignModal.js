@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import PropTypes from 'prop-types';
 
-
-function AssignModal({ isOpen, toggle }) {
+const AssignModal = memo(({ isOpen, toggle }) => {
     return (
         <Modal isOpen={isOpen} toggle={toggle} >
             <ModalHeader >Assign Driver</ModalHeader>
@@ -16,5 +16,9 @@ function AssignModal({ isOpen, toggle }) {
         </Modal>
     )
 
+});
+AssignModal.propTypes = {
+    isOpen: PropTypes.bool,
+    toggle: PropTypes.func
 }
 export default AssignModal;
