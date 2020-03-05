@@ -17,6 +17,7 @@ const AssignModal = memo(({ isOpen, toggle }) => {
     )
 
 });
+AssignModal.displayName = 'AssignModal';
 AssignModal.propTypes = {
     isOpen: PropTypes.bool,
     toggle: PropTypes.func

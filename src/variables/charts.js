@@ -422,7 +422,7 @@ const dashboard24HoursPerformanceChart = {
   }
 };
 
-module.exports = {
+export  {
   dashboardPanelChart, // Chart for Dashboard view - Will be rendered in panel
   dashboardShippedProductsChart, // Chart for Dashboard view - Shipped Products Card
   dashboardAllProductsChart, // Chart for Dashboard view - All products Card

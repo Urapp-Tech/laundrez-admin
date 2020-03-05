@@ -53,7 +53,7 @@ function Orders() {
 
     const [openModal, setOpenModal] = useState(false);
     const dispatch = useDispatch();
-    const users = useSelector(store => store?.sampleReducer.posts)
+    const users = useSelector(store => store?.sampleReducer.posts); 
     useEffect(() => {
         // dispatch(SampleActions.sampleReq());
     }, [dispatch])

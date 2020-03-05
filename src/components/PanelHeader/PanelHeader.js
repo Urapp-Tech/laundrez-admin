@@ -16,6 +16,7 @@ const PanelHeader = memo(({ size, content }) => {
 
 }
 )
+PanelHeader.displayName = 'PanelHeader';
 PanelHeader.propTypes = {
   size: PropTypes.string
 }

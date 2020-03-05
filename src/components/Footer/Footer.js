@@ -5,7 +5,6 @@ import { Container } from "reactstrap";
 import PropTypes from "prop-types";
 
 const Footer = memo(({ defaultValue, fluid }) => {
-
   return (
     <footer
       className={"footer" + (defaultValue ? " footer-default" : "")
@@ -48,7 +47,7 @@ const Footer = memo(({ defaultValue, fluid }) => {
     </footer >
   );
 })
-
+Footer.displayName = 'Footer';
 Footer.propTypes = {
   defaultValue: PropTypes.bool,
   fluid: PropTypes.bool
