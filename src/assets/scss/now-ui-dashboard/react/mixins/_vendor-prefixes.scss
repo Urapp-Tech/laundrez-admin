@@ -307,6 +307,6 @@
 
 @mixin panel-gradient($color) {
   background: $color; /* fallback for old browsers */
-  background: linear-gradient(160deg, $color 0%, darken($black-color, 5) 100%);
+  background: linear-gradient(160deg, $color 0%, darken($orange-color, 5) 100%);
   background-size: 105%;
 }

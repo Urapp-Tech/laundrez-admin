@@ -144,7 +144,7 @@ function Orders() {
                             type="button"
                         >
                             {/* <i className="now-ui-icons ui-1_simple-remove" /> */}
-                            <i class=" fas fa-print"></i>
+                            <i className=" fas fa-print"></i>
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
