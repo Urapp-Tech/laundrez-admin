@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { SampleActions } from "../../../store/actions/SampleActions";
-import print from "../../../assets/img/print.svg";
+import pdf from "../../../assets/img/pdf.svg";
 
 import { dataBootstrapTable } from "../../../variables/general";
 import AssignModal from "../../../components/Modals/AssignModal";
@@ -84,9 +84,9 @@ function Orders() {
                 console.log(cell)
                 return (
                     <div>
-                        {cell==="placed"&&<Button size="sm" className={"btn-outline-order-placed btn-round mt-1"}>Placed</Button>}
+                        {cell==="placed"&&<span  className={"text-order-placed-color mt-1"}>Placed</span>}
                         {cell==="picked"&&<Button size="sm" className={"btn-outline-order-picked btn-round mt-1 "} onClick={toggleAssignModal} >Picked</Button>}
-                        {cell==="out"&&<Button size="sm" className={"btn-outline-order-out-for-delivery btn-round mt-1 "}>Out For Delivery</Button>}
+                        {cell==="out"&&<span  className={"text-order-out-for-delivery-color mt-1 "}>Out For Delivery</span>}
 
                     </div>
 
@@ -116,14 +116,14 @@ function Orders() {
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
                             color="info"
-                            id={`print-order-${rowIndex}`}
+                            id={`pdf-order-${rowIndex}`}
                             type="button"
                         >
-                            <img className="now-ui-icons print-icons" src={print} />
+                            <img className="now-ui-icons pdf-icon" src={pdf} />
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
-                            target={`print-order-${rowIndex}`}
+                            target={`pdf-order-${rowIndex}`}
                         >
                             Download PDF
                   </UncontrolledTooltip>
