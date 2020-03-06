@@ -1,23 +1,4 @@
-/*!
-
-=========================================================
-* Now UI Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/now-ui-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/now-ui-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { useEffect, useState, useCallback } from "react";
-
-// reactstrap components
 import {
     Card,
     CardBody,
@@ -36,7 +17,6 @@ import {
     Badge
 } from "reactstrap";
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-// core components
 import PanelHeader from "../../../components/PanelHeader/PanelHeader";
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import { SampleActions } from "../../../store/actions/SampleActions";
+import print from "../../../assets/img/print.svg";
 
 import { dataBootstrapTable } from "../../../variables/general";
 import AssignModal from "../../../components/Modals/AssignModal";
@@ -53,7 +34,7 @@ function Orders() {
 
     const [openModal, setOpenModal] = useState(false);
     const dispatch = useDispatch();
-    const users = useSelector(store => store?.sampleReducer.posts); 
+    const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
         // dispatch(SampleActions.sampleReq());
     }, [dispatch])
@@ -77,41 +58,36 @@ function Orders() {
             text: 'Ref'
         },
         {
-            dataField: 'title',
+            dataField: 'orderPickupTime',
             text: 'Pickup Time'
         },
         {
-            dataField: 'title',
+            dataField: 'OrderDropoffTime',
             text: 'Drop off Time'
         },
         {
-            dataField: 'title',
+            dataField: 'customer',
             text: 'Customer'
         },
         {
-            dataField: 'title',
-            text: 'Rating'
-        },
-        {
-            dataField: 'title',
-            text: 'Rating Message'
-        },
-        {
-            dataField: 'title',
+            dataField: 'phone',
             text: 'Phone'
         },
         {
-            dataField: 'title',
+            dataField: 'amount',
             text: 'Amount'
         },
         {
-            dataField: 'title',
+            dataField: 'status',
             text: 'Status',
             formatter: (cell, row, rowIndex) => {
+                console.log(cell)
                 return (
-                    <div className="text-center" >
-                        <Badge className="bg-primary " >Pickup</Badge>
-                        <Button size="sm" className="btn-outline-info btn-round mt-1 " onClick={toggleAssignModal} > Assign </Button>
+                    <div>
+                        {cell==="placed"&&<Button size="sm" className={"btn-outline-order-placed btn-round mt-1"}>Placed</Button>}
+                        {cell==="picked"&&<Button size="sm" className={"btn-outline-order-picked btn-round mt-1 "} onClick={toggleAssignModal} >Picked</Button>}
+                        {cell==="out"&&<Button size="sm" className={"btn-outline-order-out-for-delivery btn-round mt-1 "}>Out For Delivery</Button>}
+
                     </div>
 
                 )
@@ -129,7 +105,7 @@ function Orders() {
                             id={`edit-order-${rowIndex}`}
                             type="button"
                         >
-                            <i className="now-ui-icons ui-2_settings-90" />
+                            <i className=" far fa-edit"></i>
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
@@ -139,18 +115,17 @@ function Orders() {
                   </UncontrolledTooltip>
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="default"
+                            color="info"
                             id={`print-order-${rowIndex}`}
                             type="button"
                         >
-                            {/* <i className="now-ui-icons ui-1_simple-remove" /> */}
-                            <i className=" fas fa-print"></i>
+                            <img className="now-ui-icons print-icons" src={print} />
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
                             target={`print-order-${rowIndex}`}
                         >
-                            Print
+                            Download PDF
                   </UncontrolledTooltip>
                     </div>
                 )
@@ -194,11 +169,8 @@ function Orders() {
                                             </Input>
                                         </FormGroup>
                                     </Col>
-                                    <Col lg="2" className="d-flex justify-content-center align-items-end" >
-                                        <Button size={"md"} className=" btn-primary btn-round" >Export to CSV</Button>
-                                    </Col>
 
-                                    <Col lg="4" className="d-flex justify-content-end align-items-end"  >
+                                    <Col lg="4" className="mt-auto"  >
                                         <FormGroup className=" col-md-12" >
                                             <InputGroup className=" no-border">
                                                 <Input className="" placeholder="Search..." />
@@ -209,6 +181,9 @@ function Orders() {
                                                 </InputGroupAddon>
                                             </InputGroup>
                                         </FormGroup>
+                                    </Col>
+                                    <Col lg="2" className="d-flex justify-content-center align-items-end" >
+                                        <Button size={"md"} className=" btn-primary btn-round" >Export to CSV</Button>
                                     </Col>
                                 </Row>
                             </CardHeader>

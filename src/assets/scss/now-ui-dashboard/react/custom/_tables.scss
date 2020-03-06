@@ -47,8 +47,9 @@
 
   > thead > tr > th {
     border-bottom-width: 1px;
-    font-size: 1.45em;
+    font-size: 1em;
     font-weight: $font-weight-light;
+    color:$secondary-color;
     border: 0;
   }
 
@@ -165,6 +166,10 @@
 
 #tables .table-responsive {
   margin-bottom: 30px;
+}
+.print-icon{
+  padding:0.2rem;
+  width:27px;
 }
 // .react-bootstrap-table table {
 //   table-layout:auto !important; }
