@@ -26,7 +26,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 // import { SampleActions } from "../../../store/actions/SampleActions";
 import pdf from '../../../assets/img/pdf.svg';
 
-import { dataBootstrapTable } from '../../../variables/general';
+import { ordersData } from '../../../variables/general';
 import AssignModal from '../../../components/Modals/AssignModal';
 // const { SearchBar } = Search;
 
@@ -120,7 +120,7 @@ function Orders() {
                             id={`pdf-order-${rowIndex}`}
                             type="button"
                         >
-                            <img className="now-ui-icons pdf-icon" src={pdf} />
+                            <img className="now-ui-icons pdf-icon" alt={'pdf-icon'} src={pdf} />
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
@@ -191,7 +191,7 @@ function Orders() {
                             <CardBody>
                                 <ToolkitProvider
                                     keyField='id'
-                                    data={dataBootstrapTable}
+                                    data={ordersData}
                                     columns={columns}
                                     bootstrap4={true}
                                     responsive

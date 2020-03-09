@@ -37,7 +37,8 @@ import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
 import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { driversData } from '../../../variables/general';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
@@ -46,7 +47,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 function Drivers() {
 
     const dispatch = useDispatch();
-    const users = useSelector(store => store?.sampleReducer.posts);
+    // const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
         // dispatch(SampleActions.sampleReq());
     }, [dispatch]);
@@ -61,16 +62,21 @@ function Drivers() {
     const columns = [
         {
             dataField: 'id',
-            text: 'Id'
+            text: '#'
         },
         {
-            dataField: 'userId',
-            text: 'User Id'
+            dataField: 'image',
+            text: 'Image'
         },
         {
-            dataField: 'title',
-            text: 'Title'
+            dataField: 'name',
+            text: 'Name'
         },
+        {
+            dataField: 'salesmanId',
+            text: 'SalesMan ID'
+        },
+
         // {
         //     dataField: 'email',
         //     text: 'Email'
@@ -87,40 +93,79 @@ function Drivers() {
         // },
         // },
         {
+            dataField: 'contactNum',
+            text: 'Contact#',
+        },
+        {
+            dataField: 'orders',
+            text: 'Orders For Today'
+        },
+        {
             dataField: 'action',
             text: 'Action',
             // eslint-disable-next-line react/display-name
             formatter: (cell, row, rowIndex) => {
                 return (
-                    <div>
+                    <div className="d-flex" >
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
                             color="info"
                             id={`edit-order-${rowIndex}`}
                             type="button"
                         >
-                            <i className="now-ui-icons ui-2_settings-90" />
+                            <i className=" fas fa-edit"></i>
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
                             target={`edit-order-${rowIndex}`}
                         >
                             Edit Task
-                  </UncontrolledTooltip>
+                         </UncontrolledTooltip>
+
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="danger"
-                            id="tooltip923217206"
+                            color="info"
+                            id={`pdf-order-${rowIndex}`}
                             type="button"
                         >
-                            <i className="now-ui-icons ui-1_simple-remove" />
+                            <i className="fas fa-map-marker-alt"></i>
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
-                            target="tooltip923217206"
+                            target={`pdf-order-${rowIndex}`}
                         >
-                            Remove
-                  </UncontrolledTooltip>
+                            Download PDF
+                        </UncontrolledTooltip>
+
+                        <Button
+                            className="btn-round btn-icon btn-icon-mini btn-neutral"
+                            color="info"
+                            id={`pdf-order-${rowIndex}`}
+                            type="button"
+                        >
+                            <i className="fas fa-eye"></i>
+                        </Button>
+                        <UncontrolledTooltip
+                            delay={0}
+                            target={`pdf-order-${rowIndex}`}
+                        >
+                            Download PDF
+                        </UncontrolledTooltip>
+
+                        <Button
+                            className="btn-round btn-icon btn-icon-mini btn-neutral"
+                            color="info"
+                            id={`pdf-order-${rowIndex}`}
+                            type="button"
+                        >
+                            <i className="fas fa-trash-alt" aria-hidden="true"></i>
+                        </Button>
+                        <UncontrolledTooltip
+                            delay={0}
+                            target={`pdf-order-${rowIndex}`}
+                        >
+                            Download PDF
+                        </UncontrolledTooltip>
                     </div>
                 );
             }
@@ -155,7 +200,7 @@ function Drivers() {
                             <CardBody>
                                 <ToolkitProvider
                                     keyField='id'
-                                    data={users}
+                                    data={driversData}
                                     columns={columns}
                                     bootstrap4
 

@@ -67,7 +67,7 @@ const tbody = [
     data: ['Jon Porter', 'Portugal', 'Gloucester', '$98,615']
   }
 ];
-const dataBootstrapTable = [
+const ordersData = [
 
   {
     'userId': 'EZ-568581',
@@ -683,8 +683,18 @@ const dataBootstrapTable = [
 
 
 ];
+const driversData = [
+  {
+    'id': 100,
+    'image': '',
+    'name': 'Damian Graves',
+    'salesmanId': '39001',
+    'contactNum': '+14164021704',
+    'orders': 5
+  }
+];
 
 // tasks list for Tasks card in Dashboard view
 // data for <thead> of table in TableList view
 // data for <tbody> of table in TableList view
-export { tasks, thead, tbody, dataBootstrapTable };
+export { tasks, thead, tbody, ordersData, driversData };
