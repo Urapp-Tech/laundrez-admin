@@ -13,28 +13,27 @@ import {
     Input,
     UncontrolledTooltip,
     FormGroup,
-    Label,
-    Badge
+    Label
 } from "reactstrap";
-import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import ToolkitProvider, { /* Search  */} from 'react-bootstrap-table2-toolkit';
 import PanelHeader from "../../../components/PanelHeader/PanelHeader";
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, /* useSelector  */} from 'react-redux';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import { SampleActions } from "../../../store/actions/SampleActions";
+// import { SampleActions } from "../../../store/actions/SampleActions";
 import pdf from "../../../assets/img/pdf.svg";
 
 import { dataBootstrapTable } from "../../../variables/general";
 import AssignModal from "../../../components/Modals/AssignModal";
-const { SearchBar } = Search;
+// const { SearchBar } = Search;
 
 function Orders() {
 
     const [openModal, setOpenModal] = useState(false);
     const dispatch = useDispatch();
-    const users = useSelector(store => store?.sampleReducer.posts);
+    // const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
         // dispatch(SampleActions.sampleReq());
     }, [dispatch])
@@ -80,13 +79,12 @@ function Orders() {
         {
             dataField: 'status',
             text: 'Status',
-            formatter: (cell, row, rowIndex) => {
-                console.log(cell)
+            formatter: (cell) => {
                 return (
                     <div>
-                        {cell==="placed"&&<span  className={"text-order-placed-color mt-1"}>Placed</span>}
-                        {cell==="picked"&&<Button size="sm" className={"btn-outline-order-picked btn-round mt-1 "} onClick={toggleAssignModal} >Picked</Button>}
-                        {cell==="out"&&<span  className={"text-order-out-for-delivery-color mt-1 "}>Out For Delivery</span>}
+                        {cell === "placed" && <span className={"text-order-placed-color mt-1"}>Placed</span>}
+                        {cell === "picked" && <Button size="sm" className={"btn-outline-order-picked btn-round mt-1 "} onClick={toggleAssignModal} >Picked</Button>}
+                        {cell === "out" && <span className={"text-order-out-for-delivery-color mt-1 "}>Out For Delivery</span>}
 
                     </div>
 
