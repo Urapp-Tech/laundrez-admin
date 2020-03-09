@@ -3,7 +3,6 @@ import React, { useCallback } from 'react';
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
   FormGroup,
   Form,
@@ -11,8 +10,8 @@ import {
   Row,
   Col
 } from "reactstrap";
-import PanelHeader from "../../components/PanelHeader/PanelHeader";
 import logo from "../../assets/img/Logo.svg";
+import PropTypes from 'prop-types';
 
 function Login({ history }) {
 
@@ -46,7 +45,7 @@ function Login({ history }) {
                 </div>
                 <Form>
                   <Row className="justify-content-center" >
-                    <Col  sm="8">
+                    <Col sm="8">
                       <FormGroup>
                         <label htmlFor="exampleInputEmail1">
                           Email address
@@ -87,6 +86,9 @@ function Login({ history }) {
         </Row>
       </div>
     </>
-  )
+  );
 }
+Login.propTypes = {
+  history: PropTypes.object
+};
 export default Login;

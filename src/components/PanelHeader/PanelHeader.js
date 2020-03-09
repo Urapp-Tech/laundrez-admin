@@ -15,9 +15,10 @@ const PanelHeader = memo(({ size, content }) => {
   );
 
 }
-)
+);
 PanelHeader.displayName = 'PanelHeader';
 PanelHeader.propTypes = {
-  size: PropTypes.string
-}
+  size: PropTypes.string,
+  content: PropTypes.func
+};
 export default PanelHeader;

@@ -16,14 +16,12 @@
 
 */
 import React from "react";
-import { Link } from "react-router-dom";
 import {
   Collapse,
   Navbar,
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
   Dropdown,
   DropdownToggle,
   DropdownMenu,
@@ -55,16 +53,16 @@ class Header extends React.Component {
       isOpen: !this.state.isOpen
     });
   };
-  dropdownToggle = e => {
+  dropdownToggle = () => {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
     });
   };
   getBrand = () => {
     var name;
-    routes.map((prop, key) => {
+    routes.map((prop) => {
       if (prop.collapse) {
-        prop.views.map((prop, key) => {
+        prop.views.map((prop) => {
           if (prop.path === this.props.location.pathname) {
             name = prop.name;
           }
@@ -184,6 +182,7 @@ class Header extends React.Component {
   }
 }
 Header.propTypes = {
-  pathname: PropTypes.string
-}
+  pathname: PropTypes.string,
+  location: PropTypes.object
+};
 export default Header;

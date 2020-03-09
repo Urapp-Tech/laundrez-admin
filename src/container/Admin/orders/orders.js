@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import PropTypes from 'prop-types';
 import {
     Card,
     CardBody,
@@ -15,10 +16,10 @@ import {
     FormGroup,
     Label
 } from "reactstrap";
-import ToolkitProvider, { /* Search  */} from 'react-bootstrap-table2-toolkit';
+import ToolkitProvider, { /* Search  */ } from 'react-bootstrap-table2-toolkit';
 import PanelHeader from "../../../components/PanelHeader/PanelHeader";
 
-import { useDispatch, /* useSelector  */} from 'react-redux';
+import { useDispatch, /* useSelector  */ } from 'react-redux';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
@@ -36,7 +37,7 @@ function Orders() {
     // const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
         // dispatch(SampleActions.sampleReq());
-    }, [dispatch])
+    }, [dispatch]);
 
     const toggleAssignModal = useCallback(() => {
         setOpenModal(!openModal);
@@ -46,7 +47,7 @@ function Orders() {
         pagination: false,
         sort: false,
         cellEdit: false
-    }
+    };
     const columns = [
         {
             dataField: 'id',
@@ -79,6 +80,7 @@ function Orders() {
         {
             dataField: 'status',
             text: 'Status',
+            // eslint-disable-next-line react/display-name
             formatter: (cell) => {
                 return (
                     <div>
@@ -88,12 +90,13 @@ function Orders() {
 
                     </div>
 
-                )
+                );
             }
         },
         {
             dataField: 'action',
             text: 'Action',
+            // eslint-disable-next-line react/display-name
             formatter: (cell, row, rowIndex) => {
                 return (
                     <div className="d-flex" >
@@ -126,7 +129,7 @@ function Orders() {
                             Download PDF
                   </UncontrolledTooltip>
                     </div>
-                )
+                );
             }
         }
     ];
@@ -229,6 +232,8 @@ function Orders() {
         </>
     );
 }
-
+Orders.propTypes = {
+    baseProps: PropTypes.object
+};
 
 export default Orders;

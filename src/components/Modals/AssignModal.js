@@ -14,12 +14,12 @@ const AssignModal = memo(({ isOpen, toggle }) => {
                 <Button color="secondary" onClick={toggle}>Cancel</Button>
             </ModalFooter>
         </Modal>
-    )
+    );
 
 });
 AssignModal.displayName = 'AssignModal';
 AssignModal.propTypes = {
     isOpen: PropTypes.bool,
     toggle: PropTypes.func
-}
+};
 export default AssignModal;

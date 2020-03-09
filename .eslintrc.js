@@ -23,6 +23,8 @@ module.exports = {
         "react"
     ],
     "rules": {
-        "no-console": ["error", { allow: ["warn", "error"] }]
+        "no-console": ["error", { allow: ["warn", "error"] }],
+        "semi": "error",
+        "quotes": ["error", "single"]
     }
 };

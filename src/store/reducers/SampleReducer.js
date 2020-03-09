@@ -7,7 +7,7 @@ let INITIAL_STATE = {
     errorText: "",
     errorStatus: 0,
     posts: []
-}
+};
 
 export function sampleReducer(state = INITIAL_STATE, action) {
     switch (action.type) {

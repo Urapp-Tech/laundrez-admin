@@ -14,13 +14,13 @@ const Footer = memo(({ defaultValue, fluid }) => {
         <nav>
           <ul>
             <li>
-              <a href="https://www.creative-tim.com?ref=nudr-footer" target="_blank">Creative Tim</a>
+              <a href="https://www.creative-tim.com?ref=nudr-footer" target="_blank" rel="noopener noreferrer" >Creative Tim</a>
             </li>
             <li>
-              <a href="https://presentation.creative-tim.com?ref=nudr-footer" target="_blank">About Us</a>
+              <a href="https://presentation.creative-tim.com?ref=nudr-footer" target="_blank" rel="noopener noreferrer" >About Us</a>
             </li>
             <li>
-              <a href="https://blog.creative-tim.com?ref=nudr-footer" target="_blank">Blog</a>
+              <a href="https://blog.creative-tim.com?ref=nudr-footer" target="_blank" rel="noopener noreferrer" >Blog</a>
             </li>
           </ul>
         </nav>
@@ -46,7 +46,7 @@ const Footer = memo(({ defaultValue, fluid }) => {
       </Container>
     </footer >
   );
-})
+});
 Footer.displayName = 'Footer';
 Footer.propTypes = {
   defaultValue: PropTypes.bool,

@@ -16,7 +16,7 @@
 
 */
 import React, { useEffect } from "react";
-
+import PropTypes from 'prop-types';
 // reactstrap components
 import {
     Card,
@@ -32,7 +32,7 @@ import {
     Input,
     UncontrolledTooltip
 } from "reactstrap";
-import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
 import PanelHeader from "../../../components/PanelHeader/PanelHeader";
 
@@ -40,16 +40,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import { SampleActions } from "../../../store/actions/SampleActions";
-const { SearchBar } = Search;
 
 function AppFaq() {
 
     const dispatch = useDispatch();
-    const users = useSelector(store => store?.sampleReducer.posts)
+    const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
         // dispatch(SampleActions.sampleReq());
-    }, [dispatch])
+    }, [dispatch]);
 
 
     const remote = {
@@ -57,7 +55,7 @@ function AppFaq() {
         pagination: false,
         sort: false,
         cellEdit: false
-    }
+    };
     const columns = [
         {
             dataField: 'id',
@@ -89,7 +87,8 @@ function AppFaq() {
         {
             dataField: 'action',
             text: 'Action',
-            formatter: (cell, row, rowIndex) => {
+            // eslint-disable-next-line react/display-name
+            formatter: (_cell, _row, rowIndex) => {
                 return (
                     <div>
                         <Button
@@ -121,7 +120,7 @@ function AppFaq() {
                             Remove
                   </UncontrolledTooltip>
                     </div>
-                )
+                );
             }
         }
     ];
@@ -194,5 +193,7 @@ function AppFaq() {
     );
 }
 
-
+AppFaq.propTypes = {
+    baseProps: PropTypes.object
+};
 export default AppFaq;

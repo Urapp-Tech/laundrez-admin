@@ -16,6 +16,7 @@
 
 */
 import React, { useEffect } from "react";
+import PropTypes from 'prop-types';
 
 // reactstrap components
 import {
@@ -32,7 +33,7 @@ import {
     Input,
     UncontrolledTooltip
 } from "reactstrap";
-import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
 import PanelHeader from "../../../components/PanelHeader/PanelHeader";
 
@@ -40,16 +41,15 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import { SampleActions } from "../../../store/actions/SampleActions";
-const { SearchBar } = Search;
+
 
 function Categories() {
 
     const dispatch = useDispatch();
-    const users = useSelector(store => store?.sampleReducer.posts)
+    const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
         // dispatch(SampleActions.sampleReq());
-    }, [dispatch])
+    }, [dispatch]);
 
 
     const remote = {
@@ -57,7 +57,7 @@ function Categories() {
         pagination: false,
         sort: false,
         cellEdit: false
-    }
+    };
     const columns = [
         {
             dataField: 'id',
@@ -89,6 +89,7 @@ function Categories() {
         {
             dataField: 'action',
             text: 'Action',
+            // eslint-disable-next-line react/display-name
             formatter: (cell, row, rowIndex) => {
                 return (
                     <div>
@@ -121,7 +122,7 @@ function Categories() {
                             Remove
                   </UncontrolledTooltip>
                     </div>
-                )
+                );
             }
         }
     ];
@@ -193,6 +194,8 @@ function Categories() {
         </>
     );
 }
-
+Categories.propTypes = {
+    baseProps: PropTypes.object
+};
 
 export default Categories;
