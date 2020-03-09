@@ -9,8 +9,8 @@ import {
   Input,
   Row,
   Col
-} from "reactstrap";
-import logo from "../../assets/img/Logo.svg";
+} from 'reactstrap';
+import logo from '../../assets/img/Logo.svg';
 import PropTypes from 'prop-types';
 
 function Login({ history }) {

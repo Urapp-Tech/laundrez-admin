@@ -1,13 +1,13 @@
-import { combineReducers, createStore, applyMiddleware } from "redux";
-import { combineEpics, createEpicMiddleware } from "redux-observable";
-import { createLogger } from "redux-logger";
+import { combineReducers, createStore, applyMiddleware } from 'redux';
+import { combineEpics, createEpicMiddleware } from 'redux-observable';
+import { createLogger } from 'redux-logger';
 // reducers
 
 import { sampleReducer } from './reducers/SampleReducer';
-import { HttpService } from "./services/HttpService";
+import { HttpService } from './services/HttpService';
 
 // epics
-import { SampleEpics } from "./epics/SampleEpics";
+import { SampleEpics } from './epics/SampleEpics';
 
 const loggerMiddleware = createLogger();
 // Application Reducers

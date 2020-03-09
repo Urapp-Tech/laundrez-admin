@@ -1,6 +1,6 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
-import Login from "./Login";
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Login from './Login';
 
 function AuthContainer() {
     return (

@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 // reactstrap components
 import {
@@ -31,10 +31,10 @@ import {
     InputGroupText,
     Input,
     UncontrolledTooltip
-} from "reactstrap";
+} from 'reactstrap';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
-import PanelHeader from "../../../components/PanelHeader/PanelHeader";
+import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -164,7 +164,7 @@ function AppFaqTopics() {
                                                 {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
                                                 <BootstrapTable
                                                     remote={remote}
-                                                    wrapperClasses={"table-responsive"}
+                                                    wrapperClasses={'table-responsive'}
                                                     classes=""
                                                     headerWrapperClasses="text-primary text-left"
                                                     bordered={false}

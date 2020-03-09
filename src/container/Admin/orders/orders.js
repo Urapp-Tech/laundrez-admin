@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import {
     Card,
@@ -15,19 +15,19 @@ import {
     UncontrolledTooltip,
     FormGroup,
     Label
-} from "reactstrap";
+} from 'reactstrap';
 import ToolkitProvider, { /* Search  */ } from 'react-bootstrap-table2-toolkit';
-import PanelHeader from "../../../components/PanelHeader/PanelHeader";
+import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
 import { useDispatch, /* useSelector  */ } from 'react-redux';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 // import { SampleActions } from "../../../store/actions/SampleActions";
-import pdf from "../../../assets/img/pdf.svg";
+import pdf from '../../../assets/img/pdf.svg';
 
-import { dataBootstrapTable } from "../../../variables/general";
-import AssignModal from "../../../components/Modals/AssignModal";
+import { dataBootstrapTable } from '../../../variables/general';
+import AssignModal from '../../../components/Modals/AssignModal';
 // const { SearchBar } = Search;
 
 function Orders() {
@@ -84,9 +84,9 @@ function Orders() {
             formatter: (cell) => {
                 return (
                     <div>
-                        {cell === "placed" && <span className={"text-order-placed-color mt-1"}>Placed</span>}
-                        {cell === "picked" && <Button size="sm" className={"btn-outline-order-picked btn-round mt-1 "} onClick={toggleAssignModal} >Picked</Button>}
-                        {cell === "out" && <span className={"text-order-out-for-delivery-color mt-1 "}>Out For Delivery</span>}
+                        {cell === 'placed' && <span className={'text-order-placed-color mt-1'}>Placed</span>}
+                        {cell === 'picked' && <Button size="sm" className={'btn-outline-order-picked btn-round mt-1 '} onClick={toggleAssignModal} >Picked</Button>}
+                        {cell === 'out' && <span className={'text-order-out-for-delivery-color mt-1 '}>Out For Delivery</span>}
 
                     </div>
 
@@ -184,7 +184,7 @@ function Orders() {
                                         </FormGroup>
                                     </Col>
                                     <Col lg="2" className="d-flex justify-content-center align-items-end" >
-                                        <Button size={"md"} className=" btn-primary btn-round" >Export to CSV</Button>
+                                        <Button size={'md'} className=" btn-primary btn-round" >Export to CSV</Button>
                                     </Col>
                                 </Row>
                             </CardHeader>
@@ -202,7 +202,7 @@ function Orders() {
                                                 {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
                                                 <BootstrapTable
                                                     remote={remote}
-                                                    wrapperClasses={"table-responsive"}
+                                                    wrapperClasses={'table-responsive'}
                                                     classes=""
                                                     headerWrapperClasses="text-primary text-left"
                                                     bordered={false}

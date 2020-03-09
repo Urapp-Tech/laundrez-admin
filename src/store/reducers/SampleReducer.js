@@ -4,7 +4,7 @@ import { SampleTypes } from '../action-types/SampleTypes';
 let INITIAL_STATE = {
     isProgress: false,
     isError: false,
-    errorText: "",
+    errorText: '',
     errorStatus: 0,
     posts: []
 };

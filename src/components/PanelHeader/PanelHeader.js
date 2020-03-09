@@ -1,13 +1,13 @@
-import React, { memo } from "react";
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 const PanelHeader = memo(({ size, content }) => {
   return (
     <div
       className={
-        "panel-header " +
+        'panel-header ' +
         (size !== undefined
-          ? "panel-header-" + size
-          : "")
+          ? 'panel-header-' + size
+          : '')
       }
     >
       {content}

@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React from 'react';
 import {
   Collapse,
   Navbar,
@@ -27,26 +27,26 @@ import {
   DropdownMenu,
   DropdownItem,
   Container
-} from "reactstrap";
+} from 'reactstrap';
 
-import routes from "../../routes.js";
+import routes from '../../routes.js';
 import PropTypes from 'prop-types';
 
 class Header extends React.Component {
   state = {
     isOpen: false,
     dropdownOpen: false,
-    color: "transparent"
+    color: 'transparent'
   };
   sidebarToggle = React.createRef();
   toggle = () => {
     if (this.state.isOpen) {
       this.setState({
-        color: "transparent"
+        color: 'transparent'
       });
     } else {
       this.setState({
-        color: "white"
+        color: 'white'
       });
     }
     this.setState({
@@ -84,32 +84,32 @@ class Header extends React.Component {
     return name;
   };
   openSidebar = () => {
-    document.documentElement.classList.toggle("nav-open");
-    this.sidebarToggle.current.classList.toggle("toggled");
+    document.documentElement.classList.toggle('nav-open');
+    this.sidebarToggle.current.classList.toggle('toggled');
   };
   // function that adds color white/transparent to the navbar on resize (this is for the collapse)
   updateColor = () => {
     if (window.innerWidth < 993 && this.state.isOpen) {
       this.setState({
-        color: "white"
+        color: 'white'
       });
     } else {
       this.setState({
-        color: "transparent"
+        color: 'transparent'
       });
     }
   };
   componentDidMount() {
-    window.addEventListener("resize", this.updateColor.bind(this));
+    window.addEventListener('resize', this.updateColor.bind(this));
   }
   componentDidUpdate(e) {
     if (
       window.innerWidth < 993 &&
       e.history.location.pathname !== e.location.pathname &&
-      document.documentElement.className.indexOf("nav-open") !== -1
+      document.documentElement.className.indexOf('nav-open') !== -1
     ) {
-      document.documentElement.classList.toggle("nav-open");
-      this.sidebarToggle.current.classList.toggle("toggled");
+      document.documentElement.classList.toggle('nav-open');
+      this.sidebarToggle.current.classList.toggle('toggled');
     }
   }
   render() {
@@ -117,16 +117,16 @@ class Header extends React.Component {
       // add or remove classes depending if we are on full-screen-maps page or not
       <Navbar
         color={
-          this.props.location.pathname.indexOf("full-screen-maps") !== -1
-            ? "white"
+          this.props.location.pathname.indexOf('full-screen-maps') !== -1
+            ? 'white'
             : this.state.color
         }
         expand="lg"
         className={
-          this.props.location.pathname.indexOf("full-screen-maps") !== -1
-            ? "navbar-absolute fixed-top"
-            : "navbar-absolute fixed-top " +
-            (this.state.color === "transparent" ? "navbar-transparent " : "")
+          this.props.location.pathname.indexOf('full-screen-maps') !== -1
+            ? 'navbar-absolute fixed-top'
+            : 'navbar-absolute fixed-top ' +
+            (this.state.color === 'transparent' ? 'navbar-transparent ' : '')
         }
       >
         <Container fluid>

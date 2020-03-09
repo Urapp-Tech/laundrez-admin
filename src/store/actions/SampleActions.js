@@ -1,4 +1,4 @@
-import { SampleTypes } from "../action-types/SampleTypes";
+import { SampleTypes } from '../action-types/SampleTypes';
 
 
 export class SampleActions {

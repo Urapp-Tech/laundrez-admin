@@ -24,9 +24,9 @@ function hexToRGB(hex, alpha) {
     b = parseInt(hex.slice(5, 7), 16);
 
   if (alpha) {
-    return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+    return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
   } else {
-    return "rgb(" + r + ", " + g + ", " + b + ")";
+    return 'rgb(' + r + ', ' + g + ', ' + b + ')';
   }
 }
 
@@ -34,7 +34,7 @@ function hexToRGB(hex, alpha) {
 // // // general variables for charts
 // #############################
 
-const chartColor = "#FFFFFF";
+const chartColor = '#FFFFFF';
 
 // General configuration for the charts with Line gradientStroke
 const gradientChartOptionsConfiguration = {
@@ -44,9 +44,9 @@ const gradientChartOptionsConfiguration = {
   },
   tooltips: {
     bodySpacing: 4,
-    mode: "nearest",
+    mode: 'nearest',
     intersect: 0,
-    position: "nearest",
+    position: 'nearest',
     xPadding: 10,
     yPadding: 10,
     caretPadding: 10
@@ -61,7 +61,7 @@ const gradientChartOptionsConfiguration = {
           maxTicksLimit: 7
         },
         gridLines: {
-          zeroLineColor: "transparent",
+          zeroLineColor: 'transparent',
           drawTicks: false,
           display: false,
           drawBorder: false
@@ -75,7 +75,7 @@ const gradientChartOptionsConfiguration = {
           display: false
         },
         gridLines: {
-          zeroLineColor: "transparent",
+          zeroLineColor: 'transparent',
           drawTicks: false,
           display: false,
           drawBorder: false
@@ -95,9 +95,9 @@ var gradientChartOptionsConfigurationWithNumbersAndGrid = {
   },
   tooltips: {
     bodySpacing: 4,
-    mode: "nearest",
+    mode: 'nearest',
     intersect: 0,
-    position: "nearest",
+    position: 'nearest',
     xPadding: 10,
     yPadding: 10,
     caretPadding: 10
@@ -107,7 +107,7 @@ var gradientChartOptionsConfigurationWithNumbersAndGrid = {
     yAxes: [
       {
         gridLines: {
-          zeroLineColor: "transparent",
+          zeroLineColor: 'transparent',
           drawBorder: false
         },
         ticks: {
@@ -122,7 +122,7 @@ var gradientChartOptionsConfigurationWithNumbersAndGrid = {
           display: false
         },
         gridLines: {
-          zeroLineColor: "transparent",
+          zeroLineColor: 'transparent',
           drawTicks: false,
           display: false,
           drawBorder: false
@@ -141,37 +141,37 @@ var gradientChartOptionsConfigurationWithNumbersAndGrid = {
 
 const dashboardPanelChart = {
   data: canvas => {
-    const ctx = canvas.getContext("2d");
-    var chartColor = "#FFFFFF";
+    const ctx = canvas.getContext('2d');
+    var chartColor = '#FFFFFF';
     var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-    gradientStroke.addColorStop(0, "#80b6f4");
+    gradientStroke.addColorStop(0, '#80b6f4');
     gradientStroke.addColorStop(1, chartColor);
     var gradientFill = ctx.createLinearGradient(0, 200, 0, 50);
-    gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-    gradientFill.addColorStop(1, "rgba(255, 255, 255, 0.14)");
+    gradientFill.addColorStop(0, 'rgba(128, 182, 244, 0)');
+    gradientFill.addColorStop(1, 'rgba(255, 255, 255, 0.14)');
 
     return {
       labels: [
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AUG",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DEC"
+        'JAN',
+        'FEB',
+        'MAR',
+        'APR',
+        'MAY',
+        'JUN',
+        'JUL',
+        'AUG',
+        'SEP',
+        'OCT',
+        'NOV',
+        'DEC'
       ],
       datasets: [
         {
-          label: "Data",
+          label: 'Data',
           borderColor: chartColor,
           pointBorderColor: chartColor,
-          pointBackgroundColor: "#2c2c2c",
-          pointHoverBackgroundColor: "#2c2c2c",
+          pointBackgroundColor: '#2c2c2c',
+          pointHoverBackgroundColor: '#2c2c2c',
           pointHoverBorderColor: chartColor,
           pointBorderWidth: 1,
           pointHoverRadius: 7,
@@ -196,26 +196,26 @@ const dashboardPanelChart = {
     },
     maintainAspectRatio: false,
     tooltips: {
-      backgroundColor: "#fff",
-      titleFontColor: "#333",
-      bodyFontColor: "#666",
+      backgroundColor: '#fff',
+      titleFontColor: '#333',
+      bodyFontColor: '#666',
       bodySpacing: 4,
       xPadding: 12,
-      mode: "nearest",
+      mode: 'nearest',
       intersect: 0,
-      position: "nearest"
+      position: 'nearest'
     },
     legend: {
-      position: "bottom",
-      fillStyle: "#FFF",
+      position: 'bottom',
+      fillStyle: '#FFF',
       display: false
     },
     scales: {
       yAxes: [
         {
           ticks: {
-            fontColor: "rgba(255,255,255,0.4)",
-            fontStyle: "bold",
+            fontColor: 'rgba(255,255,255,0.4)',
+            fontStyle: 'bold',
             beginAtZero: true,
             maxTicksLimit: 5,
             padding: 10
@@ -224,8 +224,8 @@ const dashboardPanelChart = {
             drawTicks: true,
             drawBorder: false,
             display: true,
-            color: "rgba(255,255,255,0.1)",
-            zeroLineColor: "transparent"
+            color: 'rgba(255,255,255,0.1)',
+            zeroLineColor: 'transparent'
           }
         }
       ],
@@ -233,12 +233,12 @@ const dashboardPanelChart = {
         {
           gridLines: {
             display: false,
-            color: "rgba(255,255,255,0.1)"
+            color: 'rgba(255,255,255,0.1)'
           },
           ticks: {
             padding: 10,
-            fontColor: "rgba(255,255,255,0.4)",
-            fontStyle: "bold"
+            fontColor: 'rgba(255,255,255,0.4)',
+            fontStyle: 'bold'
           }
         }
       ]
@@ -252,34 +252,34 @@ const dashboardPanelChart = {
 
 const dashboardShippedProductsChart = {
   data: canvas => {
-    var ctx = canvas.getContext("2d");
+    var ctx = canvas.getContext('2d');
     var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-    gradientStroke.addColorStop(0, "#80b6f4");
+    gradientStroke.addColorStop(0, '#80b6f4');
     gradientStroke.addColorStop(1, chartColor);
     var gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-    gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-    gradientFill.addColorStop(1, "rgba(249, 99, 59, 0.40)");
+    gradientFill.addColorStop(0, 'rgba(128, 182, 244, 0)');
+    gradientFill.addColorStop(1, 'rgba(249, 99, 59, 0.40)');
     return {
       labels: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec"
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
       ],
       datasets: [
         {
-          label: "Active Users",
-          borderColor: "#f96332",
-          pointBorderColor: "#FFF",
-          pointBackgroundColor: "#f96332",
+          label: 'Active Users',
+          borderColor: '#f96332',
+          pointBorderColor: '#FFF',
+          pointBackgroundColor: '#f96332',
           pointBorderWidth: 2,
           pointHoverRadius: 4,
           pointHoverBorderWidth: 1,
@@ -301,21 +301,21 @@ const dashboardShippedProductsChart = {
 
 const dashboardAllProductsChart = {
   data: canvas => {
-    var ctx = canvas.getContext("2d");
+    var ctx = canvas.getContext('2d');
     var gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
-    gradientStroke.addColorStop(0, "#18ce0f");
+    gradientStroke.addColorStop(0, '#18ce0f');
     gradientStroke.addColorStop(1, chartColor);
     var gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-    gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-    gradientFill.addColorStop(1, hexToRGB("#18ce0f", 0.4));
+    gradientFill.addColorStop(0, 'rgba(128, 182, 244, 0)');
+    gradientFill.addColorStop(1, hexToRGB('#18ce0f', 0.4));
     return {
-      labels: ["12pm,", "3pm", "6pm", "9pm", "12am", "3am", "6am", "9am"],
+      labels: ['12pm,', '3pm', '6pm', '9pm', '12am', '3am', '6am', '9am'],
       datasets: [
         {
-          label: "Email Stats",
-          borderColor: "#18ce0f",
-          pointBorderColor: "#FFF",
-          pointBackgroundColor: "#18ce0f",
+          label: 'Email Stats',
+          borderColor: '#18ce0f',
+          pointBorderColor: '#FFF',
+          pointBackgroundColor: '#18ce0f',
           pointBorderWidth: 2,
           pointHoverRadius: 4,
           pointHoverBorderWidth: 1,
@@ -337,32 +337,32 @@ const dashboardAllProductsChart = {
 
 const dashboard24HoursPerformanceChart = {
   data: canvas => {
-    var ctx = canvas.getContext("2d");
+    var ctx = canvas.getContext('2d');
     var gradientFill = ctx.createLinearGradient(0, 170, 0, 50);
-    gradientFill.addColorStop(0, "rgba(128, 182, 244, 0)");
-    gradientFill.addColorStop(1, hexToRGB("#2CA8FF", 0.6));
+    gradientFill.addColorStop(0, 'rgba(128, 182, 244, 0)');
+    gradientFill.addColorStop(1, hexToRGB('#2CA8FF', 0.6));
     return {
       labels: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
       ],
       datasets: [
         {
-          label: "Active Countries",
+          label: 'Active Countries',
           backgroundColor: gradientFill,
-          borderColor: "#2CA8FF",
-          pointBorderColor: "#FFF",
-          pointBackgroundColor: "#2CA8FF",
+          borderColor: '#2CA8FF',
+          pointBorderColor: '#FFF',
+          pointBackgroundColor: '#2CA8FF',
           pointBorderWidth: 2,
           pointHoverRadius: 4,
           pointHoverBorderWidth: 1,
@@ -381,9 +381,9 @@ const dashboard24HoursPerformanceChart = {
     },
     tooltips: {
       bodySpacing: 4,
-      mode: "nearest",
+      mode: 'nearest',
       intersect: 0,
-      position: "nearest",
+      position: 'nearest',
       xPadding: 10,
       yPadding: 10,
       caretPadding: 10
@@ -396,7 +396,7 @@ const dashboard24HoursPerformanceChart = {
             maxTicksLimit: 7
           },
           gridLines: {
-            zeroLineColor: "transparent",
+            zeroLineColor: 'transparent',
             drawBorder: false
           }
         }
@@ -408,7 +408,7 @@ const dashboard24HoursPerformanceChart = {
             display: false
           },
           gridLines: {
-            zeroLineColor: "transparent",
+            zeroLineColor: 'transparent',
             drawTicks: false,
             display: false,
             drawBorder: false
