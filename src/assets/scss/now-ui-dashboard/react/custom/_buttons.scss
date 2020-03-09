@@ -18,3 +18,9 @@
 .btn-outline-order-out-for-delivery {
   @include outline-buttons($order-out-for-delivery-color, $order-out-for-delivery-states-color);
 }
+.btn-add-modal {
+  width: 120px;
+}
+.btn-cancel-modal {
+  width: 120px;
+}

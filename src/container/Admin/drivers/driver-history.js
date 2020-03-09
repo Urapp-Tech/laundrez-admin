@@ -26,12 +26,10 @@ import {
     CardTitle,
     Row,
     Col,
-    Button,
     InputGroup,
     InputGroupAddon,
     InputGroupText,
-    Input,
-    UncontrolledTooltip
+    Input
 } from 'reactstrap';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
@@ -42,13 +40,12 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import AddDriverModal from '../../../components/Modals/AddDriverModal';
 import EditDriverModal from '../../../components/Modals/EditDriverModal';
-import DleteModal from '../../../components/Modals/DeleteModal';
 
 
-function Drivers({ history }) {
+function DriverHistory() {
     const [openAddDriverModal, toggleAddDriverModal] = useState(false);
     const [openEditDriverModal, toggleEditDriverModal] = useState(false);
-    const [openDeleteModal, toggleDeleteModal] = useState(false);
+
 
     const remote = {
         filter: false,
@@ -59,128 +56,41 @@ function Drivers({ history }) {
     const columns = [
         {
             dataField: 'id',
-            text: '#'
+            text: 'Order Number'
         },
         {
             dataField: 'name',
-            text: 'Name'
+            text: 'Pickup Date'
         },
         {
             dataField: 'salesmanId',
-            text: 'SalesMan ID'
+            text: 'Pickup Time'
         },
-
-        // {
-        //     dataField: 'email',
-        //     text: 'Email'
-        // },
-        // {
-        //     dataField: 'website',
-        //     text: 'Website',
-        // sort: true,
-        // sortValue: (cell, row) => {
-        //     return cell
-        // },
-        // formatter: (cell, row) => {
-        //     return cell
-        // },
-        // },
         {
             dataField: 'contactNum',
-            text: 'Contact#',
+            text: 'Dropoff Date',
         },
         {
             dataField: 'orders',
-            text: 'Orders For Today'
+            text: 'Dropoff Time'
         },
         {
-            dataField: 'action',
-            text: 'Action',
-            // eslint-disable-next-line react/display-name
-            formatter: (cell, row, rowIndex) => {
-                return (
-                    <div className="d-flex" >
-                        <Button
-                            className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="info"
-                            id={`edit-order-${rowIndex}`}
-                            type="button"
-                            onClick={() => toggleEditDriverModal(!openEditDriverModal)}
-                        >
-                            <i className=" fas fa-edit"></i>
-                        </Button>
-                        <UncontrolledTooltip
-                            delay={0}
-                            target={`edit-order-${rowIndex}`}
-                        >
-                            Edit
-                         </UncontrolledTooltip>
-
-                        <Button
-                            className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="info"
-                            id={`location-${rowIndex}`}
-                            type="button"
-                        >
-                            <i className="fas fa-map-marker-alt"></i>
-                        </Button>
-                        <UncontrolledTooltip
-                            delay={0}
-                            target={`location-${rowIndex}`}
-                        >
-                            Location
-                        </UncontrolledTooltip>
-
-                        <Button
-                            className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="info"
-                            id={`history-${rowIndex}`}
-                            type="button"
-                            onClick={() => history.push(`/admin/drivers/history/${13}`)}
-
-                        >
-                            <i className="fas fa-eye"></i>
-                        </Button>
-                        <UncontrolledTooltip
-                            delay={0}
-                            target={`history-${rowIndex}`}
-                        >
-                            View History
-                        </UncontrolledTooltip>
-
-                        <Button
-                            className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="info"
-                            id={`delete-${rowIndex}`}
-                            type="button"
-                            onClick={() => toggleDeleteModal(!openDeleteModal)}
-                        >
-                            <i className="fas fa-trash-alt" aria-hidden="true"></i>
-                        </Button>
-                        <UncontrolledTooltip
-                            delay={0}
-                            target={`delete-${rowIndex}`}
-                        >
-                            Delete
-                        </UncontrolledTooltip>
-                    </div>
-                );
-            }
+            dataField: 'orders',
+            text: 'Delivery Address'
+        },
+        {
+            dataField: '',
+            text: 'Total'
         }
     ];
     return (
         <>
+
             <Row>
                 <Col xs={12}>
                     <Card>
                         <CardHeader className="d-flex justify-content-between" >
-                            <CardTitle tag="h4">Drivers
-                                <Button
-                                    className="btn-primary btn-add ml-2"
-                                    onClick={(e) => { e.preventDefault(); toggleAddDriverModal(!openAddDriverModal); }} >
-                                    <i className="fas fa-plus"></i>
-                                </Button>
-                            </CardTitle>
+                            <CardTitle tag="h4">Driver History</CardTitle>
                             <form className="col-md-8 align-self-center " >
                                 <InputGroup className=" no-border">
                                     <Input className="" placeholder="Search..." />
@@ -232,14 +142,11 @@ function Drivers({ history }) {
             </Row>
             <AddDriverModal isOpen={openAddDriverModal} toggle={() => toggleAddDriverModal(!openAddDriverModal)} />
             <EditDriverModal isOpen={openEditDriverModal} toggle={() => toggleEditDriverModal(!openEditDriverModal)} />
-            <DleteModal isOpen={openDeleteModal} toggle={() => toggleDeleteModal(!openDeleteModal)} />
-
         </>
     );
 }
 
-Drivers.propTypes = {
-    baseProps: PropTypes.object,
-    history: PropTypes.object
+DriverHistory.propTypes = {
+    baseProps: PropTypes.object
 };
-export default Drivers;
+export default DriverHistory;

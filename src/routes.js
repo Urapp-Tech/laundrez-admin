@@ -16,7 +16,6 @@
 
 */
 import Orders from './container/Admin/orders/orders';
-import Drivers from './container/Admin/drivers/drivers';
 import Categories from './container/Admin/categories/categories';
 import Services from './container/Admin/services/services';
 import Locations from './container/Admin/locations/locations';
@@ -25,6 +24,7 @@ import Vouchers from './container/Admin/vouchers/vouchers';
 import AppFaqTopics from './container/Admin/app-faq-topics/app-faq-topics';
 import AppFaq from './container/Admin/app-faq/app-faq';
 import UserInquiries from './container/Admin/user-inquiries/user-inquiries';
+import DriverContainer from './container/Admin/drivers';
 
 var dashRoutes = [
   {
@@ -38,7 +38,7 @@ var dashRoutes = [
     path: '/drivers',
     name: 'Drivers',
     icon: 'fa fa-truck',
-    component: Drivers,
+    component: DriverContainer,
     layout: '/admin'
   },
   {
