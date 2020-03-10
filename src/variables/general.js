@@ -2,7 +2,21 @@
 // ##############################
 // // // tasks list for Tasks card in Dashboard view
 // #############################
-
+ // {
+        //     dataField: 'email',
+        //     text: 'Email'
+        // },
+        // {
+        //     dataField: 'website',
+        //     text: 'Website',
+        // sort: true,
+        // sortValue: (cell, row) => {
+        //     return cell
+        // },
+        // formatter: (cell, row) => {
+        //     return cell
+        // },
+        // },
 const tasks = [
   {
     checked: true,
@@ -691,8 +705,22 @@ const driversData = [
     'orders': 5
   }
 ];
+const couponsData = [
+  {
+
+    'id': 99,
+    'code': 'Laundrez10',
+    'from': '2020-02-06',
+    'till': '2020-02-07',
+    'amount': '10',
+    'products': '1',
+    'minAmount': '10',
+    'addedOn': '2020-02-26 12:07:34'
+  },
+
+];
 
 // tasks list for Tasks card in Dashboard view
 // data for <thead> of table in TableList view
 // data for <tbody> of table in TableList view
-export { tasks, thead, tbody, ordersData, driversData, categoryData };
+export { tasks, thead, tbody, ordersData, driversData, categoryData, couponsData };

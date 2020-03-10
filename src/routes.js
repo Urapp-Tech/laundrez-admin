@@ -3,12 +3,12 @@ import Orders from './container/Admin/orders/orders';
 import Categories from './container/Admin/categories/categories';
 import Locations from './container/Admin/locations/locations';
 import Customers from './container/Admin/customers/customers';
-import Vouchers from './container/Admin/vouchers/vouchers';
 import AppFaqTopics from './container/Admin/app-faq-topics/app-faq-topics';
 import AppFaq from './container/Admin/app-faq/app-faq';
 import UserInquiries from './container/Admin/user-inquiries/user-inquiries';
 import DriverContainer from './container/Admin/drivers';
 import ServicesContainer from './container/Admin/services';
+import VouchersContainer from './container/Admin/vouchers';
 
 var dashRoutes = [
   {
@@ -57,7 +57,7 @@ var dashRoutes = [
     path: '/vouchers',
     name: 'Vouchers',
     icon: 'fas fa-tags',
-    component: Vouchers,
+    component: VouchersContainer,
     layout: '/admin'
   },
   {
