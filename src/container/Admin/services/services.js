@@ -18,8 +18,6 @@ import {
     UncontrolledTooltip
 } from 'reactstrap';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
-// core components
-import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -27,7 +25,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
 
-function Services() {
+function Services({ history }) {
 
     const dispatch = useDispatch();
     const users = useSelector(store => store?.sampleReducer.posts);
@@ -45,31 +43,20 @@ function Services() {
     const columns = [
         {
             dataField: 'id',
-            text: 'Id'
+            text: '#'
         },
         {
             dataField: 'userId',
-            text: 'User Id'
+            text: 'Image'
         },
         {
             dataField: 'title',
-            text: 'Title'
+            text: 'Description'
         },
-        // {
-        //     dataField: 'email',
-        //     text: 'Email'
-        // },
-        // {
-        //     dataField: 'website',
-        //     text: 'Website',
-        // sort: true,
-        // sortValue: (cell, row) => {
-        //     return cell
-        // },
-        // formatter: (cell, row) => {
-        //     return cell
-        // },
-        // },
+        {
+            dataField: 'email',
+            text: 'Min QTY'
+        },
         {
             dataField: 'action',
             text: 'Action',
@@ -112,74 +99,73 @@ function Services() {
     ];
     return (
         <>
-            <PanelHeader size="sm" />
-            <div className="content">
-                <Row>
-                    <Col xs={12}>
-                        <Card>
-                            <CardHeader className="d-flex justify-content-between" >
-                                <CardTitle tag="h4">Services
+
+            <Row>
+                <Col xs={12}>
+                    <Card>
+                        <CardHeader className="d-flex justify-content-between" >
+                            <CardTitle tag="h4">Services
                                 <Button
-                                        className="btn-primary btn-add ml-2"
-                                        onClick={e => e.preventDefault()} >
-                                        <i className="fas fa-plus"></i>
-                                    </Button>
-                                </CardTitle>
-                                <form className="col-md-8 align-self-center " >
-                                    <InputGroup className=" no-border">
-                                        <Input className="" placeholder="Search..." />
-                                        <InputGroupAddon addonType="append">
-                                            <InputGroupText>
-                                                <i className="now-ui-icons ui-1_zoom-bold" />
-                                            </InputGroupText>
-                                        </InputGroupAddon>
-                                    </InputGroup>
-                                </form>
-                            </CardHeader>
-                            <CardBody>
-                                <ToolkitProvider
-                                    keyField='id'
-                                    data={users}
-                                    columns={columns}
-                                    bootstrap4
+                                    className="btn-primary btn-add ml-2"
+                                    onClick={() => { history.push('/admin/services/add'); }} >
+                                    <i className="fas fa-plus"></i>
+                                </Button>
+                            </CardTitle>
+                            <form className="col-md-8 align-self-center " >
+                                <InputGroup className=" no-border">
+                                    <Input className="" placeholder="Search..." />
+                                    <InputGroupAddon addonType="append">
+                                        <InputGroupText>
+                                            <i className="now-ui-icons ui-1_zoom-bold" />
+                                        </InputGroupText>
+                                    </InputGroupAddon>
+                                </InputGroup>
+                            </form>
+                        </CardHeader>
+                        <CardBody>
+                            <ToolkitProvider
+                                keyField='id'
+                                data={users}
+                                columns={columns}
+                                bootstrap4
 
-                                >{
-                                        props => (
-                                            <div>
-                                                {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
-                                                <BootstrapTable
-                                                    remote={remote}
-                                                    wrapperClasses={'table-responsive'}
-                                                    classes=""
-                                                    headerWrapperClasses="text-primary text-left"
-                                                    bordered={false}
-                                                    headerClasses=""
-                                                    bodyClasses="text-left"
-                                                    {...props.baseProps}
-                                                    // keyField='name'
-                                                    // data={products}
-                                                    // columns={columns}
-                                                    pagination={paginationFactory({
-                                                        page: 1,
-                                                        sizePerPage: 10,
-                                                        hideSizePerPage: true
-                                                    })}
-                                                />
-                                            </div>
-                                        )
+                            >{
+                                    props => (
+                                        <div>
+                                            {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
+                                            <BootstrapTable
+                                                remote={remote}
+                                                wrapperClasses={'table-responsive'}
+                                                classes=""
+                                                headerWrapperClasses="text-primary text-left"
+                                                bordered={false}
+                                                headerClasses=""
+                                                bodyClasses="text-left"
+                                                {...props.baseProps}
+                                                // keyField='name'
+                                                // data={products}
+                                                // columns={columns}
+                                                pagination={paginationFactory({
+                                                    page: 1,
+                                                    sizePerPage: 10,
+                                                    hideSizePerPage: true
+                                                })}
+                                            />
+                                        </div>
+                                    )
 
-                                    }
-                                </ToolkitProvider>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-            </div>
+                                }
+                            </ToolkitProvider>
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
         </>
     );
 }
 
 Services.propTypes = {
-    baseProps: PropTypes.object
+    baseProps: PropTypes.object,
+    history: PropTypes.object
 };
 export default Services;
