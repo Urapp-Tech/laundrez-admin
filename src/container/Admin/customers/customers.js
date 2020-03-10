@@ -14,8 +14,7 @@ import {
     InputGroup,
     InputGroupAddon,
     InputGroupText,
-    Input,
-    UncontrolledTooltip
+    Input
 } from 'reactstrap';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
@@ -45,16 +44,25 @@ function Customers() {
     const columns = [
         {
             dataField: 'id',
-            text: 'Id'
+            text: '#'
         },
         {
             dataField: 'userId',
-            text: 'User Id'
+            text: 'Image'
         },
         {
             dataField: 'title',
-            text: 'Title'
+            text: 'Username'
         },
+        {
+            dataField: 'title',
+            text: 'Contact'
+        },
+        {
+            dataField: 'title',
+            text: 'Email'
+        },
+
         // {
         //     dataField: 'email',
         //     text: 'Email'
@@ -70,45 +78,7 @@ function Customers() {
         //     return cell
         // },
         // },
-        {
-            dataField: 'action',
-            text: 'Action',
-            // eslint-disable-next-line react/display-name
-            formatter: (cell, row, rowIndex) => {
-                return (
-                    <div>
-                        <Button
-                            className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="info"
-                            id={`edit-order-${rowIndex}`}
-                            type="button"
-                        >
-                            <i className="now-ui-icons ui-2_settings-90" />
-                        </Button>
-                        <UncontrolledTooltip
-                            delay={0}
-                            target={`edit-order-${rowIndex}`}
-                        >
-                            Edit Task
-                  </UncontrolledTooltip>
-                        <Button
-                            className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="danger"
-                            id="tooltip923217206"
-                            type="button"
-                        >
-                            <i className="now-ui-icons ui-1_simple-remove" />
-                        </Button>
-                        <UncontrolledTooltip
-                            delay={0}
-                            target="tooltip923217206"
-                        >
-                            Remove
-                  </UncontrolledTooltip>
-                    </div>
-                );
-            }
-        }
+
     ];
     return (
         <>
