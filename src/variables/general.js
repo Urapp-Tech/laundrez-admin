@@ -667,6 +667,20 @@ const ordersData = [
 
 
 ];
+const categoryData = [
+  {
+    'userId': 10,
+    'id': 99,
+    'title': 'temporibus sit alias delectus eligendi possimus magni',
+    'body': 'quo deleniti praesentium dicta non quod\naut est molestias\nmolestias et officia quis nihil\nitaque dolorem quia'
+  },
+  {
+    'userId': 10,
+    'id': 100,
+    'title': 'at nam consequatur ea labore ea harum',
+    'body': 'cupiditate quo est a modi nesciunt soluta\nipsa voluptas error itaque dicta in\nautem qui minus magnam et distinctio eum\naccusamus ratione error aut'
+  }
+];
 const driversData = [
   {
     'id': 100,
@@ -681,4 +695,4 @@ const driversData = [
 // tasks list for Tasks card in Dashboard view
 // data for <thead> of table in TableList view
 // data for <tbody> of table in TableList view
-export { tasks, thead, tbody, ordersData, driversData };
+export { tasks, thead, tbody, ordersData, driversData, categoryData };

@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -20,20 +20,21 @@ import {
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
 import PanelHeader from '../../../components/PanelHeader/PanelHeader';
-
-import { useDispatch, useSelector } from 'react-redux';
+import { categoryData } from '../../../variables/general';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import AddCategoryModal from '../../../components/Modals/AddCategoryModal';
+import EditCategoryModal from '../../../components/Modals/EditCategoryModal';
+import DleteModal from '../../../components/Modals/DeleteModal';
 
 
 function Categories() {
 
-    const dispatch = useDispatch();
-    const users = useSelector(store => store?.sampleReducer.posts);
-    useEffect(() => {
-        // dispatch(SampleActions.sampleReq());
-    }, [dispatch]);
+    const [openAddCategoryModal, toggleAddCategoryModal] = useState(false);
+    const [openEditCategoryModal, toggleEditCategoryModal] = useState(false);
+    const [openDeleteModal, toggleDeleteModal] = useState(false);
+
 
 
     const remote = {
@@ -45,11 +46,11 @@ function Categories() {
     const columns = [
         {
             dataField: 'id',
-            text: 'Id'
+            text: '#'
         },
         {
             dataField: 'userId',
-            text: 'User Id'
+            text: 'Image'
         },
         {
             dataField: 'title',
@@ -82,22 +83,24 @@ function Categories() {
                             color="info"
                             id={`edit-order-${rowIndex}`}
                             type="button"
+                            onClick={() => toggleEditCategoryModal(!openEditCategoryModal)}
                         >
-                            <i className="now-ui-icons ui-2_settings-90" />
+                            <i className=" fas fa-edit"></i>
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
                             target={`edit-order-${rowIndex}`}
                         >
-                            Edit Task
+                            Edit Category
                   </UncontrolledTooltip>
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="danger"
+                            color="info"
                             id="tooltip923217206"
                             type="button"
+                            onClick={() => toggleDeleteModal(!openDeleteModal)}
                         >
-                            <i className="now-ui-icons ui-1_simple-remove" />
+                            <i className="fas fa-trash-alt" />
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
@@ -121,7 +124,7 @@ function Categories() {
                                 <CardTitle tag="h4">Categories
                                 <Button
                                         className="btn-primary btn-add ml-2"
-                                        onClick={e => e.preventDefault()} >
+                                        onClick={() => { toggleAddCategoryModal(!openAddCategoryModal); }} >
                                         <i className="fas fa-plus"></i>
                                     </Button>
                                 </CardTitle>
@@ -139,7 +142,7 @@ function Categories() {
                             <CardBody>
                                 <ToolkitProvider
                                     keyField='id'
-                                    data={users}
+                                    data={categoryData}
                                     columns={columns}
                                     bootstrap4
 
@@ -174,7 +177,11 @@ function Categories() {
                         </Card>
                     </Col>
                 </Row>
+                <AddCategoryModal isOpen={openAddCategoryModal} toggle={() => toggleAddCategoryModal(!openAddCategoryModal)} />
+                <EditCategoryModal isOpen={openEditCategoryModal} toggle={() => toggleEditCategoryModal(!openEditCategoryModal)} />
+                <DleteModal isOpen={openDeleteModal} toggle={() => toggleDeleteModal(!openDeleteModal)} />
             </div>
+
         </>
     );
 }
