@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -20,20 +20,14 @@ import {
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
 import PanelHeader from '../../../components/PanelHeader/PanelHeader';
-
-import { useDispatch, useSelector } from 'react-redux';
-
+import { userInquiryData } from '../../../variables/general';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
 
 function UserInquiries() {
 
-    const dispatch = useDispatch();
-    const users = useSelector(store => store?.sampleReducer.posts);
-    useEffect(() => {
-        // dispatch(SampleActions.sampleReq());
-    }, [dispatch]);
+
 
 
     const remote = {
@@ -45,31 +39,32 @@ function UserInquiries() {
     const columns = [
         {
             dataField: 'id',
-            text: 'Id'
+            text: '#'
         },
         {
-            dataField: 'userId',
-            text: 'User Id'
+            dataField: 'date',
+            text: 'Date'
         },
         {
-            dataField: 'title',
-            text: 'Title'
+            dataField: 'orderId',
+            text: 'Order ID'
         },
-        // {
-        //     dataField: 'email',
-        //     text: 'Email'
-        // },
-        // {
-        //     dataField: 'website',
-        //     text: 'Website',
-        // sort: true,
-        // sortValue: (cell, row) => {
-        //     return cell
-        // },
-        // formatter: (cell, row) => {
-        //     return cell
-        // },
-        // },
+        {
+            dataField: 'userName',
+            text: 'User Name'
+        },
+        {
+            dataField: 'email',
+            text: 'Email'
+        },
+        {
+            dataField: 'issue',
+            text: 'Issue Title'
+        },
+        {
+            dataField: 'message',
+            text: 'Message'
+        },
         {
             dataField: 'action',
             text: 'Action',
@@ -80,28 +75,14 @@ function UserInquiries() {
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
                             color="info"
-                            id={`edit-order-${rowIndex}`}
+                            id={`tooltip-${rowIndex}`}
                             type="button"
                         >
-                            <i className="now-ui-icons ui-2_settings-90" />
+                            <i className="fas fa-trash-alt" />
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
-                            target={`edit-order-${rowIndex}`}
-                        >
-                            Edit Task
-                  </UncontrolledTooltip>
-                        <Button
-                            className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="danger"
-                            id="tooltip923217206"
-                            type="button"
-                        >
-                            <i className="now-ui-icons ui-1_simple-remove" />
-                        </Button>
-                        <UncontrolledTooltip
-                            delay={0}
-                            target="tooltip923217206"
+                            target={`tooltip-${rowIndex}`}
                         >
                             Remove
                   </UncontrolledTooltip>
@@ -139,7 +120,7 @@ function UserInquiries() {
                             <CardBody>
                                 <ToolkitProvider
                                     keyField='id'
-                                    data={users}
+                                    data={userInquiryData}
                                     columns={columns}
                                     bootstrap4
 

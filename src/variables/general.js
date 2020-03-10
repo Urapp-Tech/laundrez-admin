@@ -2,21 +2,21 @@
 // ##############################
 // // // tasks list for Tasks card in Dashboard view
 // #############################
- // {
-        //     dataField: 'email',
-        //     text: 'Email'
-        // },
-        // {
-        //     dataField: 'website',
-        //     text: 'Website',
-        // sort: true,
-        // sortValue: (cell, row) => {
-        //     return cell
-        // },
-        // formatter: (cell, row) => {
-        //     return cell
-        // },
-        // },
+// {
+//     dataField: 'email',
+//     text: 'Email'
+// },
+// {
+//     dataField: 'website',
+//     text: 'Website',
+// sort: true,
+// sortValue: (cell, row) => {
+//     return cell
+// },
+// formatter: (cell, row) => {
+//     return cell
+// },
+// },
 const tasks = [
   {
     checked: true,
@@ -719,8 +719,21 @@ const couponsData = [
   },
 
 ];
+const userInquiryData = [
+  {
+
+    'id': 99,
+    'date': 'May 02, 2019',
+    'orderId': 'EZ-223168',
+    'userName': 'Ned Burgess',
+    'email': 'nedling92@gmail.com',
+    'issue': 'Drop Off',
+    'message': 'Hi, so it’s my first time using your service. I am planning on sending dress shirts and reg'
+  },
+
+];
 
 // tasks list for Tasks card in Dashboard view
 // data for <thead> of table in TableList view
 // data for <tbody> of table in TableList view
-export { tasks, thead, tbody, ordersData, driversData, categoryData, couponsData };
+export { tasks, thead, tbody, ordersData, driversData, categoryData, couponsData, userInquiryData };
