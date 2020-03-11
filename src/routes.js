@@ -2,7 +2,6 @@
 import Orders from './container/Admin/orders/orders';
 import Categories from './container/Admin/categories/categories';
 import Customers from './container/Admin/customers/customers';
-import AppFaqTopics from './container/Admin/app-faq-topics/app-faq-topics';
 import AppFaq from './container/Admin/app-faq/app-faq';
 import UserInquiries from './container/Admin/user-inquiries/user-inquiries';
 import DriverContainer from './container/Admin/drivers';
@@ -50,13 +49,6 @@ var dashRoutes = [
     name: 'Vouchers',
     icon: 'fas fa-tags',
     component: VouchersContainer,
-    layout: '/admin'
-  },
-  {
-    path: '/topics-app-faq',
-    name: 'App FAQs Topics',
-    icon: 'fas fa-question-circle',
-    component: AppFaqTopics,
     layout: '/admin'
   },
   {
