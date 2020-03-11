@@ -23,12 +23,10 @@ import { useDispatch, /* useSelector  */ } from 'react-redux';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-// import { SampleActions } from "../../../store/actions/SampleActions";
-import pdf from '../../../assets/img/pdf.svg';
+
 
 import { ordersData } from '../../../variables/general';
 import AssignModal from '../../../components/Modals/AssignModal';
-// const { SearchBar } = Search;
 
 function Orders() {
 
@@ -120,7 +118,8 @@ function Orders() {
                             id={`pdf-order-${rowIndex}`}
                             type="button"
                         >
-                            <img className="now-ui-icons pdf-icon" alt={'pdf-icon'} src={pdf} />
+                            {/* <img className="now-ui-icons pdf-icon" alt={'pdf-icon'} src={pdf} /> */}
+                            <i className=" fas fa-file-pdf"></i>
                         </Button>
                         <UncontrolledTooltip
                             delay={0}

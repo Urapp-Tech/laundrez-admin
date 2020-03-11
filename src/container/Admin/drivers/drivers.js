@@ -53,22 +53,6 @@ function Drivers({ history }) {
             dataField: 'salesmanId',
             text: 'SalesMan ID'
         },
-
-        // {
-        //     dataField: 'email',
-        //     text: 'Email'
-        // },
-        // {
-        //     dataField: 'website',
-        //     text: 'Website',
-        // sort: true,
-        // sortValue: (cell, row) => {
-        //     return cell
-        // },
-        // formatter: (cell, row) => {
-        //     return cell
-        // },
-        // },
         {
             dataField: 'contactNum',
             text: 'Contact#',
