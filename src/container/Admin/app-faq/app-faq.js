@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // reactstrap components
 import {
@@ -20,18 +20,20 @@ import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
 import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
-import { useDispatch, useSelector } from 'react-redux';
 
+import { appFaqData } from '../../../variables/general';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import DleteModal from '../../../components/Modals/DeleteModal';
+import AddFaqModal from '../../../components/Modals/AddFaqModal';
+import EditFaqModal from '../../../components/Modals/EditFaqModal';
 
 function AppFaq() {
 
-    const dispatch = useDispatch();
-    const users = useSelector(store => store?.sampleReducer.posts);
-    useEffect(() => {
-        // dispatch(SampleActions.sampleReq());
-    }, [dispatch]);
+    const [openAddFaqModal, toggleAddFaqModal] = useState(false);
+    const [openEditFaqModal, toggleEditFaqModal] = useState(false);
+    const [openDeleteModal, toggleDeleteModal] = useState(false);
+
 
 
     const remote = {
@@ -43,31 +45,16 @@ function AppFaq() {
     const columns = [
         {
             dataField: 'id',
-            text: 'Id'
-        },
-        {
-            dataField: 'userId',
-            text: 'User Id'
+            text: '#'
         },
         {
             dataField: 'title',
             text: 'Title'
         },
-        // {
-        //     dataField: 'email',
-        //     text: 'Email'
-        // },
-        // {
-        //     dataField: 'website',
-        //     text: 'Website',
-        // sort: true,
-        // sortValue: (cell, row) => {
-        //     return cell
-        // },
-        // formatter: (cell, row) => {
-        //     return cell
-        // },
-        // },
+        {
+            dataField: 'description',
+            text: 'Description'
+        },
         {
             dataField: 'action',
             text: 'Action',
@@ -80,8 +67,9 @@ function AppFaq() {
                             color="info"
                             id={`edit-order-${rowIndex}`}
                             type="button"
+                            onClick={() => toggleEditFaqModal(!openEditFaqModal)}
                         >
-                            <i className="now-ui-icons ui-2_settings-90" />
+                            <i className="fas fa-edit" />
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
@@ -91,15 +79,16 @@ function AppFaq() {
                   </UncontrolledTooltip>
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="danger"
-                            id="tooltip923217206"
+                            color="info"
+                            id={`tooltip-${rowIndex}`}
                             type="button"
+                            onClick={() => toggleDeleteModal(!openDeleteModal)}
                         >
-                            <i className="now-ui-icons ui-1_simple-remove" />
+                            <i className="fas fa-trash-alt" />
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
-                            target="tooltip923217206"
+                            target={`tooltip-${rowIndex}`}
                         >
                             Remove
                   </UncontrolledTooltip>
@@ -119,7 +108,7 @@ function AppFaq() {
                                 <CardTitle tag="h4">App Faqs
                                 <Button
                                         className="btn-primary btn-add ml-2"
-                                        onClick={e => e.preventDefault()} >
+                                        onClick={() => toggleAddFaqModal(!openAddFaqModal)} >
                                         <i className="fas fa-plus"></i>
                                     </Button>
                                 </CardTitle>
@@ -137,7 +126,7 @@ function AppFaq() {
                             <CardBody>
                                 <ToolkitProvider
                                     keyField='id'
-                                    data={users}
+                                    data={appFaqData}
                                     columns={columns}
                                     bootstrap4
 
@@ -172,6 +161,10 @@ function AppFaq() {
                         </Card>
                     </Col>
                 </Row>
+                <AddFaqModal isOpen={openAddFaqModal} toggle={() => toggleAddFaqModal(!openAddFaqModal)} />
+                <EditFaqModal isOpen={openEditFaqModal} toggle={() => toggleEditFaqModal(!openEditFaqModal)} />
+                <DleteModal isOpen={openDeleteModal} toggle={() => toggleDeleteModal(!openDeleteModal)} />
+
             </div>
         </>
     );

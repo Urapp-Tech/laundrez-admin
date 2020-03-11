@@ -1,7 +1,6 @@
 
 import Orders from './container/Admin/orders/orders';
 import Categories from './container/Admin/categories/categories';
-import Locations from './container/Admin/locations/locations';
 import Customers from './container/Admin/customers/customers';
 import AppFaqTopics from './container/Admin/app-faq-topics/app-faq-topics';
 import AppFaq from './container/Admin/app-faq/app-faq';
@@ -37,13 +36,6 @@ var dashRoutes = [
     name: 'Categories',
     icon: 'fas fa-th-list',
     component: Categories,
-    layout: '/admin'
-  },
-  {
-    path: '/locations',
-    name: 'Locations',
-    icon: 'fas fa-map-marker-alt',
-    component: Locations,
     layout: '/admin'
   },
   {

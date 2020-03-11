@@ -732,8 +732,18 @@ const userInquiryData = [
   },
 
 ];
+const appFaqData = [
+  {
+
+    'id':1,
+    'title':'Can I amend the items in my order?',
+    'description':'Absolutely! Just select your Orders tab and select “Change/Edit” order and let us know what you want to change. We want to make it as EZ and convenient for you as possible.',
+    
+  },
+
+];
 
 // tasks list for Tasks card in Dashboard view
 // data for <thead> of table in TableList view
 // data for <tbody> of table in TableList view
-export { tasks, thead, tbody, ordersData, driversData, categoryData, couponsData, userInquiryData };
+export { tasks, thead, tbody, ordersData, driversData, categoryData, couponsData, userInquiryData, appFaqData };

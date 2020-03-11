@@ -99,13 +99,7 @@ function UserInquiries() {
                     <Col xs={12}>
                         <Card>
                             <CardHeader className="d-flex justify-content-between" >
-                                <CardTitle tag="h4">User Inquiries
-                                <Button
-                                        className="btn-primary btn-add ml-2"
-                                        onClick={e => e.preventDefault()} >
-                                        <i className="fas fa-plus"></i>
-                                    </Button>
-                                </CardTitle>
+                                <CardTitle tag="h4">User Inquiries</CardTitle>
                                 <form className="col-md-8 align-self-center " >
                                     <InputGroup className=" no-border">
                                         <Input className="" placeholder="Search..." />

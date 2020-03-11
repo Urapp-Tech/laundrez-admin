@@ -307,17 +307,17 @@ textarea.form-control {
   max-height: 80px;
   padding: 10px 10px 0 0;
   resize: none;
-  border: none;
   border-bottom: 1px solid $light-gray;
-  border-radius: 0;
   line-height: 2;
+  // border: none;
+  // border-radius: 0;
 
-  &:focus,
-  &:active {
-    border-left: none;
-    border-top: none;
-    border-right: none;
-  }
+  // &:focus,
+  // &:active {
+  //   border-left: none;
+  //   border-top: none;
+  //   border-right: none;
+  // }
 }
 
 .has-success,
@@ -390,7 +390,7 @@ textarea.form-control {
 }
 select {
   background: url("../../img/caret.svg") no-repeat;
-  background-position: right 20px top 14.5px; 
+  background-position: right 20px top 14px;
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
