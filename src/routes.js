@@ -7,6 +7,7 @@ import UserInquiries from './container/Admin/user-inquiries/user-inquiries';
 import DriverContainer from './container/Admin/drivers';
 import ServicesContainer from './container/Admin/services';
 import VouchersContainer from './container/Admin/vouchers';
+import Locations from './container/Admin/locations/locations';
 
 var dashRoutes = [
   {
@@ -35,6 +36,13 @@ var dashRoutes = [
     name: 'Categories',
     icon: 'fas fa-th-list',
     component: Categories,
+    layout: '/admin'
+  },
+  {
+    path: '/locations',
+    name: 'Locations',
+    icon: 'fas fa-map-marker-alt',
+    component: Locations,
     layout: '/admin'
   },
   {
