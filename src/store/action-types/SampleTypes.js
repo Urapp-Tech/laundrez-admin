@@ -1,5 +1,0 @@
-export const SampleTypes = {
-    SAMPLE_REQ_PROG: 'SAMPLE_REQ_PROG',
-    SAMPLE_REQ_SUCC: 'SAMPLE_REQ_SUCC',
-    SAMPLE_REQ_FAIL: 'SAMPLE_REQ_FAIL'
-};

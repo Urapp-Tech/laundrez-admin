@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -20,13 +20,15 @@ import {
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
 import PanelHeader from '../../../components/PanelHeader/PanelHeader';
-import { categoryData } from '../../../variables/general';
+// import { categoryData } from '../../../variables/general';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import AddCategoryModal from '../../../components/Modals/AddCategoryModal';
 import EditCategoryModal from '../../../components/Modals/EditCategoryModal';
 import DleteModal from '../../../components/Modals/DeleteModal';
+import { useSelector, useDispatch } from 'react-redux';
+import { CategoryActions } from '../../../store/actions/CategoryActions';
 
 
 function Categories() {
@@ -34,14 +36,24 @@ function Categories() {
     const [openAddCategoryModal, toggleAddCategoryModal] = useState(false);
     const [openEditCategoryModal, toggleEditCategoryModal] = useState(false);
     const [openDeleteModal, toggleDeleteModal] = useState(false);
+    const categories = useSelector(store => store?.category?.categories);
+    const paging = useSelector(store => store?.category?.paging);
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(CategoryActions.getCategories());
+    }, [dispatch]);
 
 
     const remote = {
         filter: false,
-        pagination: false,
+        pagination: true,
         sort: false,
         cellEdit: false
+    };
+    const onTableChange = (type, newState) => {
+        if (type === 'pagination')
+            dispatch(CategoryActions.getCategories(newState?.page));
     };
     const columns = [
         {
@@ -56,21 +68,6 @@ function Categories() {
             dataField: 'title',
             text: 'Title'
         },
-        // {
-        //     dataField: 'email',
-        //     text: 'Email'
-        // },
-        // {
-        //     dataField: 'website',
-        //     text: 'Website',
-        // sort: true,
-        // sortValue: (cell, row) => {
-        //     return cell
-        // },
-        // formatter: (cell, row) => {
-        //     return cell
-        // },
-        // },
         {
             dataField: 'action',
             text: 'Action',
@@ -141,8 +138,8 @@ function Categories() {
                             </CardHeader>
                             <CardBody>
                                 <ToolkitProvider
-                                    keyField='id'
-                                    data={categoryData}
+                                    keyField={'id'}
+                                    data={categories}
                                     columns={columns}
                                     bootstrap4
 
@@ -159,13 +156,16 @@ function Categories() {
                                                     headerClasses=""
                                                     bodyClasses="text-left"
                                                     {...props.baseProps}
+                                                    onTableChange={onTableChange}
                                                     // keyField='name'
                                                     // data={products}
                                                     // columns={columns}
                                                     pagination={paginationFactory({
-                                                        page: 1,
+                                                        page: paging.pageNumber,
                                                         sizePerPage: 10,
-                                                        hideSizePerPage: true
+                                                        totalSize: paging.totalCount,
+                                                        hideSizePerPage: true,
+
                                                     })}
                                                 />
                                             </div>

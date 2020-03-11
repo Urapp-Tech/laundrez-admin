@@ -3,21 +3,22 @@ import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { createLogger } from 'redux-logger';
 // reducers
 
-import { sampleReducer } from './reducers/SampleReducer';
+import { categoryReducer } from './reducers/CategoryReducer';
 import { HttpService } from './services/HttpService';
 
 // epics
-import { SampleEpics } from './epics/SampleEpics';
+import { CategoryEpics } from './epics/CategoryEpics';
+import { API_URL } from './services/config';
 
 const loggerMiddleware = createLogger();
 // Application Reducers
 const rootReducer = combineReducers({
-    sampleReducer
+    category: categoryReducer
 });
 
 export const rootEpic = combineEpics(
     // more epics functions go here
-    SampleEpics.sampleReq
+    CategoryEpics.getCategories
 );
 
 const epicMiddleware = createEpicMiddleware({
@@ -25,7 +26,8 @@ const epicMiddleware = createEpicMiddleware({
         ajaxGet: HttpService.get,
         ajaxPost: HttpService.post,
         ajaxPut: HttpService.put,
-        ajaxDel: HttpService.delete
+        ajaxDel: HttpService.delete,
+        API_URL: API_URL
     }
 });
 
