@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -19,7 +19,6 @@ import {
 } from 'reactstrap';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 
-import { useDispatch, useSelector } from 'react-redux';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
@@ -27,11 +26,11 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 
 function Services({ history }) {
 
-    const dispatch = useDispatch();
-    const users = useSelector(store => store?.sampleReducer.posts);
-    useEffect(() => {
-        // dispatch(SampleActions.sampleReq());
-    }, [dispatch]);
+    // const dispatch = useDispatch();
+    // const users = useSelector(store => store?.sampleReducer.posts);
+    // useEffect(() => {
+    //     // dispatch(SampleActions.sampleReq());
+    // }, [dispatch]);
 
 
     const remote = {
@@ -48,6 +47,10 @@ function Services({ history }) {
         {
             dataField: 'userId',
             text: 'Image'
+        },
+        {
+            dataField: 'userId',
+            text: 'Name'
         },
         {
             dataField: 'title',
@@ -125,7 +128,7 @@ function Services({ history }) {
                         <CardBody>
                             <ToolkitProvider
                                 keyField='id'
-                                data={users}
+                                data={[]}
                                 columns={columns}
                                 bootstrap4
 

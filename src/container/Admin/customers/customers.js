@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -20,7 +20,6 @@ import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
 import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
-import { useDispatch, useSelector } from 'react-redux';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
@@ -28,11 +27,11 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 
 function Customers() {
 
-    const dispatch = useDispatch();
-    const users = useSelector(store => store?.sampleReducer.posts);
-    useEffect(() => {
-        // dispatch(SampleActions.sampleReq());
-    }, [dispatch]);
+    // const dispatch = useDispatch();
+    // const users = useSelector(store => store?.sampleReducer.posts);
+    // useEffect(() => {
+    //     // dispatch(SampleActions.sampleReq());
+    // }, [dispatch]);
 
 
     const remote = {
@@ -109,7 +108,7 @@ function Customers() {
                             <CardBody>
                                 <ToolkitProvider
                                     keyField='id'
-                                    data={users}
+                                    data={[]}
                                     columns={columns}
                                     bootstrap4
 

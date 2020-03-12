@@ -8,7 +8,7 @@ import { HttpService } from './services/HttpService';
 
 // epics
 import { CategoryEpics } from './epics/CategoryEpics';
-import { API_URL } from './services/config';
+import { API_URL } from './services/Config';
 
 const loggerMiddleware = createLogger();
 // Application Reducers
