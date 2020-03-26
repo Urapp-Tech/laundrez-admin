@@ -7,9 +7,20 @@ export class AuthActions {
             payload: { body }
         };
     }
+    static setUser(user) {
+        return {
+            type: AuthTypes.SET_USER,
+            payload: { user }
+        };
+    }
     static clearError() {
         return {
             type: AuthTypes.CLEAR_ERROR,
+        };
+    }
+    static signout() {
+        return {
+            type: AuthTypes.SIGNOUT_USER
         };
     }
 }

@@ -10,6 +10,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     )} />
 );
 PrivateRoute.propTypes = {
-    component: PropTypes.func
+    component: PropTypes.object
 };
 export default PrivateRoute;

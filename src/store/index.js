@@ -11,13 +11,20 @@ import { HttpService } from './services/HttpService';
 import { CategoryEpics } from './epics/CategoryEpics';
 import { API_URL } from './services/Config';
 import { AuthEpics } from './epics/AuthEpics';
+import { AuthTypes } from './action-types/AuthTypes';
 
 const loggerMiddleware = createLogger();
 // Application Reducers
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
     category: categoryReducer,
     auth: authReducer
 });
+const rootReducer = (state, action) => {
+    if (action.type === AuthTypes.SIGNOUT_USER) {
+        state = undefined;
+    }
+    return appReducer(state, action);
+};
 
 export const rootEpic = combineEpics(
     // more epics functions go here

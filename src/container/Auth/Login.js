@@ -24,7 +24,6 @@ function Login({ history }) {
   const errorMessage = useSelector(store => store.auth.errorText);
   // const isProgress = useSelector(store => store.auth.isProgress);
   const user = useSelector(store => store.auth.user);
-  const token = StorageService.getToken();
   const [formValues, setFormValues] = useState({ email: '', password: '' });
   const dispatch = useDispatch();
 
@@ -54,9 +53,16 @@ function Login({ history }) {
   }, [formValues, dispatch, valid, isError]);
 
   useEffect(() => {
-    if (token)
+    const token = StorageService.getToken();
+
+    if (token && Object.keys(user).length) {
       history.replace('/admin/orders');
-  }, [user]);
+    }
+    else if (token && Object.keys(user).length === 0) {
+      const userFromStorage = StorageService.getUser();
+      dispatch(AuthActions.setUser(userFromStorage));
+    }
+  }, [user, dispatch, history]);
 
 
   return (
@@ -80,7 +86,7 @@ function Login({ history }) {
                   </a>
                   {/* <p className="description">michael24</p> */}
                 </div>
-                <Form>
+                <Form onSubmit={onLoginClick} >
                   <Row className="justify-content-center" >
                     <Col sm="9">
                       <FormGroup className="pl-2 pr-2" >
@@ -113,10 +119,9 @@ function Login({ history }) {
                   <Row className="justify-content-center pl-2 pr-2" >
                     <Col sm="9">
                       <Button
-                        className="btn-primary btn-round btn-block"
-                        color="default"
-                        href="#pablo"
-                        onClick={onLoginClick}
+                        className="btn-round btn-block"
+                        color="primary"
+                        type="submit"
                         size="lg"
                       >
                         Login

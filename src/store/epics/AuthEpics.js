@@ -9,9 +9,12 @@ export class AuthEpics {
         return action$.pipe(ofType(AuthTypes.SIGNIN_PROG), switchMap(({ payload }) => {
             return ajaxPost(`${API_URL}/User/signin/`, payload.body).pipe(pluck('response'), map(obj => {
                 StorageService.setToken(obj?.token);
+                let { id, username, firstName, lastName } = obj;
+                let user = { id, username, firstName, lastName };
+                StorageService.setUser(user);
                 return {
                     type: AuthTypes.SIGNIN_SUCC,
-                    payload: obj
+                    payload: { user }
                 };
             })
                 , catchError((err) => {

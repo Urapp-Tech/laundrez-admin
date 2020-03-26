@@ -17,6 +17,7 @@ import routes from '../../routes.js';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { StorageService } from '../../store/services/StorageService.js';
+import { AuthActions } from '../../store/actions/AuthActions.js';
 
 class Header extends React.Component {
   state = {
@@ -86,7 +87,8 @@ class Header extends React.Component {
     }
   };
   onLogout = () => {
-    StorageService.clearToken();
+    StorageService.clearStorage();
+    this.props.signout();
     this.props.history.replace('/auth/login');
 
   }
@@ -159,7 +161,7 @@ class Header extends React.Component {
                   </p>
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem tag="a" className=" cursor-pointer" >@User</DropdownItem>
+                  <DropdownItem tag="a" className=" cursor-pointer" >{this.props?.user?.username}</DropdownItem>
                   <DropdownItem tag="a" className=" cursor-pointer font-weight-bold" onClick={this.onLogout} >
                     <i className="fas fa-sign-out-alt font-weight-bold"></i>
                     Logout</DropdownItem>
@@ -176,16 +178,18 @@ Header.propTypes = {
   pathname: PropTypes.string,
   location: PropTypes.object,
   history: PropTypes.object,
-  replace: PropTypes.func
+  replace: PropTypes.func,
+  signout: PropTypes.func,
+  user: PropTypes.object
 };
 const mapStateToProps = (store) => {
   return {
     user: store.auth.user
   };
 };
-const mapDispatchToProps = () => {
+const mapDispatchToProps = (dispatch) => {
   return {
-
+    signout: () => dispatch(AuthActions.signout())
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

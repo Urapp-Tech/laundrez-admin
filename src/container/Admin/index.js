@@ -5,12 +5,15 @@ import PerfectScrollbar from 'perfect-scrollbar';
 
 // reactstrap components
 import { Route, Switch, Redirect } from 'react-router-dom';
-
+import PropTypes from 'prop-types';
 // core components
 import DemoNavbar from '../../components/Navbars/DemoNavbar';
 import Footer from '../../components/Footer/Footer';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import routes from '../../routes';
+import { StorageService } from '../../store/services/StorageService';
+import { AuthActions } from '../../store/actions/AuthActions';
+import { connect } from 'react-redux';
 
 var ps;
 
@@ -20,9 +23,14 @@ class Dashboard extends React.Component {
   };
   mainPanel = React.createRef();
   componentDidMount() {
+    const token = StorageService.getToken();
     if (navigator.platform.indexOf('Win') > -1) {
       ps = new PerfectScrollbar(this.mainPanel.current);
       document.body.classList.toggle('perfect-scrollbar-on');
+    }
+    else if (token && Object.keys(this.props.user).length === 0) {
+      const userFromStorage = StorageService.getUser();
+      this.props.setUser(userFromStorage);
     }
   }
   componentWillUnmount() {
@@ -68,5 +76,18 @@ class Dashboard extends React.Component {
     );
   }
 }
-
-export default Dashboard;
+const mapStateToProps = (store) => {
+  return {
+    user: store.auth.user
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUser: (user) => dispatch(AuthActions.setUser(user))
+  };
+};
+Dashboard.propTypes = {
+  user: PropTypes.object,
+  setUser: PropTypes.func
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

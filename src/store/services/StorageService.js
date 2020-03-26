@@ -8,4 +8,16 @@ export class StorageService {
     static clearToken() {
         localStorage.removeItem('token');
     }
+    static setUser(user) {
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+    static getUser() {
+        return JSON.parse(localStorage.getItem('user'));
+    }
+    static clearUser() {
+        localStorage.removeItem('user');
+    }
+    static clearStorage() {
+        localStorage.clear();
+    }
 }
