@@ -1,11 +1,39 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, Row, Col, FormGroup, Input } from 'reactstrap';
 import PropTypes from 'prop-types';
+import { HttpService } from '../../store/services/HttpService';
+import { API_URL } from '../../store/services/Config';
+import { useDispatch } from 'react-redux';
+import { CategoryActions } from '../../store/actions/CategoryActions';
 
 const AddCategoryModal = memo(({ isOpen, toggle }) => {
+    const [title, setTitle] = useState('');
+    const [isProgress, setProgress] = useState(false);
+    const dispatch = useDispatch();
+    let _subscribe = null;
+    const addCategory = () => {
+        let body = {
+            title: title
+        };
+        setProgress(true);
+        _subscribe = HttpService.post(`${API_URL}/Category/`, body).subscribe(() => {
+            setProgress(false);
+            dispatch(CategoryActions.getCategories());
+            toggle();
+        }, () => {
+            setProgress(false);
+        }
+        );
+    };
+    useEffect(() => {
+        return () => {
+            if (_subscribe)
+                _subscribe.unsubscribe();
+        };
+    }, [_subscribe]);
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
-        <Modal autoFocus={false} isOpen={isOpen} toggle={toggle} >
+        <Modal backdrop={'static'} autoFocus={false} isOpen={isOpen} toggle={toggle} >
             <ModalHeader toggle={toggle} close={closeBtn}>Add Category</ModalHeader>
             <ModalBody>
                 <Form>
@@ -13,7 +41,7 @@ const AddCategoryModal = memo(({ isOpen, toggle }) => {
                         <Col sm="12">
                             <FormGroup>
                                 <label> Title </label>
-                                <Input autoFocus placeholder="Title" type="name" />
+                                <Input autoFocus placeholder="Title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
                             </FormGroup>
                         </Col>
                     </Row>
@@ -28,7 +56,14 @@ const AddCategoryModal = memo(({ isOpen, toggle }) => {
                 </Form>
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" className="btn-round btn-add-modal" onClick={toggle}>Add</Button>{' '}
+                <Button color="primary" disabled={isProgress} className="btn-round btn-add-modal" onClick={addCategory}>
+                    {
+                        isProgress ?
+                            <div className="loader" ></div>
+                            :
+                            <span> Add </span>
+                    }
+                </Button>
                 <Button color="secondary" className="btn-round btn-cancel-modal " onClick={toggle}>Cancel</Button>
             </ModalFooter>
         </Modal>

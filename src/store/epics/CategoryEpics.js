@@ -19,4 +19,19 @@ export class CategoryEpics {
 
         }));
     }
+
+    static addCateogry(action$, state$, { ajaxPost, API_URL }) {
+        return action$.pipe(ofType(CategoryTypes.ADD_CATEGORY_PROG), switchMap(({ payload }) => {
+            return ajaxPost(`${API_URL}/Category/`, payload.body).pipe(pluck('response'), map(obj => {
+                return {
+                    type: CategoryTypes.ADD_CATEGORY_SUCC,
+                    payload: obj
+                };
+            })
+                , catchError((err) => {
+                    return of({ type: CategoryTypes.ADD_CATEGORY_FAIL, payload: { message: err?.response?.message, status: err?.status } });
+                }));
+
+        }));
+    }
 }

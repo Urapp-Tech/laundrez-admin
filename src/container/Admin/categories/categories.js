@@ -177,7 +177,7 @@ function Categories() {
                         </Card>
                     </Col>
                 </Row>
-                <AddCategoryModal isOpen={openAddCategoryModal} toggle={() => toggleAddCategoryModal(!openAddCategoryModal)} />
+                {openAddCategoryModal && <AddCategoryModal isOpen={openAddCategoryModal} toggle={() => toggleAddCategoryModal(!openAddCategoryModal)} />}
                 <EditCategoryModal isOpen={openEditCategoryModal} toggle={() => toggleEditCategoryModal(!openEditCategoryModal)} />
                 <DleteModal isOpen={openDeleteModal} toggle={() => toggleDeleteModal(!openDeleteModal)} />
             </div>
