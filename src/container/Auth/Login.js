@@ -26,11 +26,11 @@ function Login({ history }) {
   return (
     <>
 
-      <div className="content ">
+      <div className="content content-padding ">
 
-        <Row className="height-100 justify-content-center" >
+        <Row className=" justify-content-center   " >
           <Col sm="12" md="9" lg="5"  >
-            <Card className="card-user vertical-center " >
+            <Card className="card-user   " >
               <CardBody>
                 <div className="author">
                   <a href="#pablo" onClick={e => e.preventDefault()}>
@@ -45,8 +45,8 @@ function Login({ history }) {
                 </div>
                 <Form>
                   <Row className="justify-content-center" >
-                    <Col sm="8">
-                      <FormGroup>
+                    <Col sm="9">
+                      <FormGroup className="pl-2 pr-2" >
                         <label htmlFor="exampleInputEmail1">
                           Email address
                           </label>
@@ -55,8 +55,8 @@ function Login({ history }) {
                     </Col>
                   </Row>
                   <Row className="justify-content-center" >
-                    <Col sm="8">
-                      <FormGroup>
+                    <Col sm="9">
+                      <FormGroup className="pl-2 pr-2" >
                         <label>Password</label>
                         <Input
                           defaultValue="Andrew"
@@ -66,8 +66,8 @@ function Login({ history }) {
                       </FormGroup>
                     </Col>
                   </Row>
-                  <Row className="justify-content-center" >
-                    <Col sm="8">
+                  <Row className="justify-content-center pl-2 pr-2" >
+                    <Col sm="9">
                       <Button
                         className="btn-primary btn-round btn-block"
                         color="default"
@@ -84,6 +84,7 @@ function Login({ history }) {
             </Card>
           </Col>
         </Row>
+
       </div>
     </>
   );

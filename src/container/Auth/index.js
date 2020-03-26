@@ -5,7 +5,7 @@ import Login from './Login';
 function AuthContainer() {
     return (
         <div className="wrapper">
-            <div className="main-panel height-100 w-100 m-0">
+            <div className="main-panel-login">
                 <Switch>
                     <Route path="/auth/login" component={Login} />
                 </Switch>
