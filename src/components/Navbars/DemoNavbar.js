@@ -15,6 +15,8 @@ import {
 
 import routes from '../../routes.js';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { StorageService } from '../../store/services/StorageService.js';
 
 class Header extends React.Component {
   state = {
@@ -83,6 +85,11 @@ class Header extends React.Component {
       });
     }
   };
+  onLogout = () => {
+    StorageService.clearToken();
+    this.props.history.replace('/auth/login');
+
+  }
   componentDidMount() {
     window.addEventListener('resize', this.updateColor.bind(this));
   }
@@ -152,8 +159,8 @@ class Header extends React.Component {
                   </p>
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem tag="a">@User</DropdownItem>
-                  <DropdownItem tag="a" className="font-weight-bold" >
+                  <DropdownItem tag="a" className=" cursor-pointer" >@User</DropdownItem>
+                  <DropdownItem tag="a" className=" cursor-pointer font-weight-bold" onClick={this.onLogout} >
                     <i className="fas fa-sign-out-alt font-weight-bold"></i>
                     Logout</DropdownItem>
                 </DropdownMenu>
@@ -167,6 +174,18 @@ class Header extends React.Component {
 }
 Header.propTypes = {
   pathname: PropTypes.string,
-  location: PropTypes.object
+  location: PropTypes.object,
+  history: PropTypes.object,
+  replace: PropTypes.func
 };
-export default Header;
+const mapStateToProps = (store) => {
+  return {
+    user: store.auth.user
+  };
+};
+const mapDispatchToProps = () => {
+  return {
+
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

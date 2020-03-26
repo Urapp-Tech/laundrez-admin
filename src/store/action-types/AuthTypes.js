@@ -1,0 +1,7 @@
+export const AuthTypes = {
+    SIGNIN_PROG: 'SIGNIN_PROG',
+    SIGNIN_SUCC: 'SIGNIN_SUCC',
+    SIGNIN_FAIL: 'SIGNIN_FAIL',
+
+    CLEAR_ERROR: 'CLEAR_ERROR'
+};

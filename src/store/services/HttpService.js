@@ -1,7 +1,8 @@
 import { ajax } from 'rxjs/ajax';
+import { StorageService } from './StorageService';
 export class HttpService {
 
-    static get(url, headers = { 'Content-Type': 'application/json' }) {
+    static get(url, headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${StorageService.getToken()}` }) {
         return ajax({
             url,
             headers,
@@ -13,7 +14,7 @@ export class HttpService {
         });
     } // get
 
-    static post(url, body, headers = { 'Content-Type': 'application/json' }) {
+    static post(url, body, headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${StorageService.getToken()}` }) {
         return ajax({
             url,
             method: 'POST',
@@ -25,7 +26,7 @@ export class HttpService {
             createXHR: () => new XMLHttpRequest()
         });
     } // post
-    static put(url, body, headers = { 'Content-Type': 'application/json' }) {
+    static put(url, body, headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${StorageService.getToken()}` }) {
         return ajax({
             url,
             method: 'PUT',
@@ -38,7 +39,7 @@ export class HttpService {
         });
     } // put
 
-    static delete(url, body, headers = { 'Content-Type': 'application/json' }) {
+    static delete(url, body, headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${StorageService.getToken()}` }) {
         return ajax({
             url,
             method: 'DELETE',

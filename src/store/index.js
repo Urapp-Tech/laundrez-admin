@@ -4,21 +4,25 @@ import { createLogger } from 'redux-logger';
 // reducers
 
 import { categoryReducer } from './reducers/CategoryReducer';
+import { authReducer } from './reducers/AuthReducer';
 import { HttpService } from './services/HttpService';
 
 // epics
 import { CategoryEpics } from './epics/CategoryEpics';
 import { API_URL } from './services/Config';
+import { AuthEpics } from './epics/AuthEpics';
 
 const loggerMiddleware = createLogger();
 // Application Reducers
 const rootReducer = combineReducers({
-    category: categoryReducer
+    category: categoryReducer,
+    auth: authReducer
 });
 
 export const rootEpic = combineEpics(
     // more epics functions go here
-    CategoryEpics.getCategories
+    CategoryEpics.getCategories,
+    AuthEpics.signin
 );
 
 const epicMiddleware = createEpicMiddleware({

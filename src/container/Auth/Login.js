@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 // reactstrap components
 import {
   Button,
@@ -12,15 +12,51 @@ import {
 } from 'reactstrap';
 import logo from '../../assets/img/Logo.svg';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { AuthActions } from '../../store/actions/AuthActions';
+import { StorageService } from '../../store/services/StorageService';
 
 function Login({ history }) {
+
+  const [valid, setValid] = useState({ isValid: true, type: '', message: '' });
+  // const [error, setError] = useState({ isError: false, message: '' });
+  const isError = useSelector(store => store.auth.isError);
+  const errorMessage = useSelector(store => store.auth.errorText);
+  // const isProgress = useSelector(store => store.auth.isProgress);
+  const user = useSelector(store => store.auth.user);
+  const token = StorageService.getToken();
+  const [formValues, setFormValues] = useState({ email: '', password: '' });
+  const dispatch = useDispatch();
 
 
   const onLoginClick = useCallback((e) => {
     e.preventDefault();
-    localStorage.setItem('token', 'asdfasdfads');
-    history.replace('/admin/orders');
-  }, [history]);
+    if (!valid.isValid)
+      setValid({ isValid: true, type: '', message: '' });
+    if (isError)
+      dispatch(AuthActions.clearError());
+    if (
+      !(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i).test(formValues.email)
+    ) {
+      setValid({ isValid: false, type: 'email', message: 'Email is not valid' });
+      return;
+    }
+
+    else if (formValues.password.length < 8) {
+      setValid({ isValid: false, type: 'password', message: 'Password is too short' });
+      return;
+    }
+    let body = {
+      username: formValues.email,
+      password: formValues.password
+    };
+    dispatch(AuthActions.signin(body));
+  }, [formValues, dispatch, valid, isError]);
+
+  useEffect(() => {
+    if (token)
+      history.replace('/admin/orders');
+  }, [user]);
 
 
   return (
@@ -32,6 +68,7 @@ function Login({ history }) {
           <Col sm="12" md="9" lg="5"  >
             <Card className="card-user   " >
               <CardBody>
+                {/* <Alert color="danger" >Invalid username of password</Alert> */}
                 <div className="author">
                   <a href="#pablo" onClick={e => e.preventDefault()}>
                     <img
@@ -50,7 +87,12 @@ function Login({ history }) {
                         <label htmlFor="exampleInputEmail1">
                           Email address
                           </label>
-                        <Input placeholder="Email" type="email" />
+                        <Input placeholder="Email"
+                          type="email"
+                          value={formValues.email}
+                          onChange={(e) => setFormValues({ email: e.target.value, password: formValues.password })}
+                        />
+                        {(!valid.isValid && valid.type === 'email') && <label className="text-danger ml-3" >{valid.message}</label>}
                       </FormGroup>
                     </Col>
                   </Row>
@@ -59,10 +101,12 @@ function Login({ history }) {
                       <FormGroup className="pl-2 pr-2" >
                         <label>Password</label>
                         <Input
-                          defaultValue="Andrew"
                           placeholder="Password"
                           type="password"
+                          value={formValues.password}
+                          onChange={(e) => setFormValues({ email: formValues.email, password: e.target.value })}
                         />
+                        {(!valid.isValid && valid.type === 'password') && <label className="text-danger ml-3" >{valid.message}</label>}
                       </FormGroup>
                     </Col>
                   </Row>
@@ -77,6 +121,7 @@ function Login({ history }) {
                       >
                         Login
                     </Button>
+                      {isError && <label className="text-danger w-100 text-center" >{errorMessage}</label>}
                     </Col>
                   </Row>
                 </Form>

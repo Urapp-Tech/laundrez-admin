@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
+import { StorageService } from '../../store/services/StorageService';
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => (
-        (localStorage.getItem('token'))
+        (StorageService.getToken())
             ? <Component {...props} />
             : <Redirect to={'/auth/login'} />
     )} />
