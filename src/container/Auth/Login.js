@@ -22,7 +22,7 @@ function Login({ history }) {
   // const [error, setError] = useState({ isError: false, message: '' });
   const isError = useSelector(store => store.auth.isError);
   const errorMessage = useSelector(store => store.auth.errorText);
-  // const isProgress = useSelector(store => store.auth.isProgress);
+  const isProgress = useSelector(store => store.auth.isProgress);
   const user = useSelector(store => store.auth.user);
   const [formValues, setFormValues] = useState({ email: '', password: '' });
   const dispatch = useDispatch();
@@ -123,9 +123,15 @@ function Login({ history }) {
                         color="primary"
                         type="submit"
                         size="lg"
+                        disabled={isProgress}
                       >
-                        Login
-                    </Button>
+                        {
+                          isProgress ?
+                            <div className="loader" ></div>
+                            :
+                            <span> Login </span>
+                        }
+                      </Button>
                       {isError && <label className="text-danger w-100 text-center" >{errorMessage}</label>}
                     </Col>
                   </Row>
