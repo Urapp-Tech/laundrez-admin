@@ -6,6 +6,7 @@ import { CategoryActions } from '../../store/actions/CategoryActions';
 
 const EditCategoryModal = () => {
     const [title, setTitle] = useState('');
+    const isProgress = useSelector(store => store?.category?.isProgress);
     const isOpen = useSelector(store => store?.category?.openEditModal);
     const category = useSelector(store => store?.category?.category);
     const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const EditCategoryModal = () => {
 
         dispatch(CategoryActions.editCategory(body));
 
-    }, [dispatch, title]);
+    }, [dispatch, title, category]);
 
 
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
@@ -54,7 +55,14 @@ const EditCategoryModal = () => {
                     </Row>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" className="btn-round btn-add-modal">Edit</Button>{' '}
+                    <Button color="primary" className="btn-round btn-add-modal">
+                        {
+                            isProgress ?
+                                <div className="loader" ></div>
+                                :
+                                <span> Edit </span>
+                        }
+                    </Button>{' '}
                     <Button color="secondary" className="btn-round btn-cancel-modal " onClick={toggle}>Cancel</Button>
                 </ModalFooter>
             </Form>

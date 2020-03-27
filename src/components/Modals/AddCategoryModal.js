@@ -10,9 +10,8 @@ const AddCategoryModal = () => {
     const isOpen = useSelector(store => store?.category?.openAddModal);
     const dispatch = useDispatch();
     const toggle = useCallback(() => {
-        setTitle('');
         dispatch(CategoryActions.toggleAddCategoryModal());
-    }, [setTitle, dispatch]);
+    }, [dispatch]);
     const addCategory = (e) => {
         e.preventDefault();
         let body = {
@@ -22,7 +21,7 @@ const AddCategoryModal = () => {
     };
     useEffect(() => {
         setTitle('');
-    }, [isOpen === false]);
+    }, [isOpen]);
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
         <Modal backdrop={'static'} autoFocus={false} isOpen={isOpen} toggle={toggle} >

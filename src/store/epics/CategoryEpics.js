@@ -5,6 +5,7 @@ import { switchMap, pluck, catchError, map, flatMap } from 'rxjs/operators';
 import { CategoryTypes } from '../action-types/CategoryTypes';
 import { toast } from 'react-toastify';
 import { CategoryActions } from '../actions/CategoryActions';
+const ErrorMsg = 'something went wrong !';
 
 export class CategoryEpics {
     static getCategories(action$, state$, { ajaxGet }) {
@@ -16,8 +17,9 @@ export class CategoryEpics {
                 };
             })
                 , catchError((err) => {
-                    toast.error(err?.response?.message);
-                    return of({ type: CategoryTypes.GET_CATEGORIES_FAIL, payload: err });
+                    let message = err?.response?.Message;
+                    toast.error(message ? message : ErrorMsg);
+                    return of({ type: CategoryTypes.GET_CATEGORIES_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
                 }));
 
         }));
@@ -36,8 +38,9 @@ export class CategoryEpics {
                 );
             })
                 , catchError((err) => {
-                    toast.error(err?.response?.message);
-                    return of({ type: CategoryTypes.ADD_CATEGORY_FAIL, payload: { message: err?.response?.message, status: err?.status } });
+                    let message = err?.response?.Message;
+                    toast.error(message ? message : ErrorMsg);
+                    return of({ type: CategoryTypes.ADD_CATEGORY_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
                 }));
 
         }));
@@ -55,8 +58,9 @@ export class CategoryEpics {
                 );
             })
                 , catchError((err) => {
-                    toast.error(err.message);
-                    return of({ type: CategoryTypes.EDIT_CATEGORY_FAIL, payload: { message: err?.response?.message, status: err?.status } });
+                    let message = err?.response?.Message;
+                    toast.error(message ? message : ErrorMsg);
+                    return of({ type: CategoryTypes.EDIT_CATEGORY_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
                 }));
 
         }));

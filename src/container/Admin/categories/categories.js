@@ -94,7 +94,7 @@ function Categories() {
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
                             color="info"
-                            id="tooltip923217206"
+                            id={`del-${rowIndex}`}
                             type="button"
                             onClick={() => toggleDeleteModal(!openDeleteModal)}
                         >
@@ -102,7 +102,7 @@ function Categories() {
                         </Button>
                         <UncontrolledTooltip
                             delay={0}
-                            target="tooltip923217206"
+                            target={`del-${rowIndex}`}
                         >
                             Remove
                   </UncontrolledTooltip>
