@@ -23,9 +23,11 @@ export function categoryReducer(state = INITIAL_STATE, action) {
         case CategoryTypes.ADD_CATEGORY_PROG:
             return { ...state, isProgress: true };
         case CategoryTypes.ADD_CATEGORY_SUCC:
-            return { ...state, isProgress: false,  };
+            return { ...state, isProgress: false, category: action.payload };
         case CategoryTypes.ADD_CATEGORY_FAIL:
             return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+        case CategoryTypes.CLEAR_CATEGORY:
+            return { ...state, category: {} };
         default:
             return state;
     }

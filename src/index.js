@@ -16,13 +16,15 @@ import AuthContainer from './container/Auth';
 import PrivateRoute from './components/Routes/PrivateRoute';
 import { store } from './store/index';
 import { Provider } from 'react-redux';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const hist = createBrowserHistory();
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={hist}>
+      <ToastContainer />
       <Switch>
         <Route path="/auth" render={props => <AuthContainer {...props} />} />
         <Route path="/admin" render={props => <PrivateRoute {...props} component={AdminLayout} />} />

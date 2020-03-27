@@ -5,9 +5,9 @@ import { AuthTypes } from '../action-types/AuthTypes';
 import { StorageService } from '../services/StorageService';
 
 export class AuthEpics {
-    static signin(action$, state$, { ajaxPost, API_URL }) {
+    static signin(action$, state$, { ajaxPost }) {
         return action$.pipe(ofType(AuthTypes.SIGNIN_PROG), switchMap(({ payload }) => {
-            return ajaxPost(`${API_URL}/User/signin/`, payload.body).pipe(pluck('response'), map(obj => {
+            return ajaxPost('/User/signin/', payload.body).pipe(pluck('response'), map(obj => {
                 StorageService.setToken(obj?.token);
                 let { id, username, firstName, lastName } = obj;
                 let user = { id, username, firstName, lastName };

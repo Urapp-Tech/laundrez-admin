@@ -1,10 +1,11 @@
 import { ajax } from 'rxjs/ajax';
 import { StorageService } from './StorageService';
+import { API_URL } from './Config';
 export class HttpService {
 
     static get(url, headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${StorageService.getToken()}` }) {
         return ajax({
-            url,
+            url: `${API_URL}${url}`,
             headers,
             method: 'GET',
             async: true,
@@ -16,7 +17,7 @@ export class HttpService {
 
     static post(url, body, headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${StorageService.getToken()}` }) {
         return ajax({
-            url,
+            url: `${API_URL}${url}`,
             method: 'POST',
             body,
             headers,
@@ -28,7 +29,7 @@ export class HttpService {
     } // post
     static put(url, body, headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${StorageService.getToken()}` }) {
         return ajax({
-            url,
+            url: `${API_URL}${url}`,
             method: 'PUT',
             body,
             headers,
@@ -41,7 +42,7 @@ export class HttpService {
 
     static delete(url, body, headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${StorageService.getToken()}` }) {
         return ajax({
-            url,
+            url: `${API_URL}${url}`,
             method: 'DELETE',
             body,
             headers,

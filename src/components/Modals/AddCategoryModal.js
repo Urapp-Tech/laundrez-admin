@@ -1,36 +1,19 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useState } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, Row, Col, FormGroup, Input } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { HttpService } from '../../store/services/HttpService';
-import { API_URL } from '../../store/services/Config';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CategoryActions } from '../../store/actions/CategoryActions';
 
 const AddCategoryModal = memo(({ isOpen, toggle }) => {
     const [title, setTitle] = useState('');
-    const [isProgress, setProgress] = useState(false);
+    const isProgress = useSelector(store => store?.category?.isProgress);
     const dispatch = useDispatch();
-    let _subscribe = null;
     const addCategory = () => {
         let body = {
             title: title
         };
-        setProgress(true);
-        _subscribe = HttpService.post(`${API_URL}/Category/`, body).subscribe(() => {
-            setProgress(false);
-            dispatch(CategoryActions.getCategories());
-            toggle();
-        }, () => {
-            setProgress(false);
-        }
-        );
+        dispatch(CategoryActions.addCategory(body));
     };
-    useEffect(() => {
-        return () => {
-            if (_subscribe)
-                _subscribe.unsubscribe();
-        };
-    }, [_subscribe]);
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
         <Modal backdrop={'static'} autoFocus={false} isOpen={isOpen} toggle={toggle} >

@@ -8,4 +8,15 @@ export class CategoryActions {
             payload: { page }
         };
     }
+    static addCategory(body) {
+        return {
+            type: CategoryTypes.ADD_CATEGORY_PROG,
+            payload: { body }
+        };
+    }
+    static clearCategory() {
+        return {
+            type: CategoryTypes.CLEAR_CATEGORY
+        };
+    }
 }

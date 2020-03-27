@@ -26,7 +26,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import AddCategoryModal from '../../../components/Modals/AddCategoryModal';
 import EditCategoryModal from '../../../components/Modals/EditCategoryModal';
-import DleteModal from '../../../components/Modals/DeleteModal';
+import DeleteModal from '../../../components/Modals/DeleteModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { CategoryActions } from '../../../store/actions/CategoryActions';
 
@@ -178,8 +178,8 @@ function Categories() {
                     </Col>
                 </Row>
                 {openAddCategoryModal && <AddCategoryModal isOpen={openAddCategoryModal} toggle={() => toggleAddCategoryModal(!openAddCategoryModal)} />}
-                <EditCategoryModal isOpen={openEditCategoryModal} toggle={() => toggleEditCategoryModal(!openEditCategoryModal)} />
-                <DleteModal isOpen={openDeleteModal} toggle={() => toggleDeleteModal(!openDeleteModal)} />
+                {openEditCategoryModal && <EditCategoryModal isOpen={openEditCategoryModal} toggle={() => toggleEditCategoryModal(!openEditCategoryModal)} />}
+                {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => toggleDeleteModal(!openDeleteModal)} />}
             </div>
 
         </>

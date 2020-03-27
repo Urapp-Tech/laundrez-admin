@@ -8,7 +8,6 @@ import { authReducer } from './reducers/AuthReducer';
 
 
 import { HttpService } from './services/HttpService';
-import { API_URL } from './services/Config';
 import { AuthTypes } from './action-types/AuthTypes';
 
 // epics
@@ -43,7 +42,6 @@ const epicMiddleware = createEpicMiddleware({
         ajaxPost: HttpService.post,
         ajaxPut: HttpService.put,
         ajaxDel: HttpService.delete,
-        API_URL: API_URL
     }
 });
 
