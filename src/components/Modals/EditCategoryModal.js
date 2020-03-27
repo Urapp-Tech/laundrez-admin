@@ -1,19 +1,46 @@
-import React, { memo } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, Row, Col, FormGroup, Input } from 'reactstrap';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { CategoryActions } from '../../store/actions/CategoryActions';
 
-const EditCategoryModal = memo(({ isOpen, toggle }) => {
+const EditCategoryModal = () => {
+    const [title, setTitle] = useState('');
+    const isOpen = useSelector(store => store?.category?.openEditModal);
+    const category = useSelector(store => store?.category?.category);
+    const dispatch = useDispatch();
+    const toggle = useCallback(() => {
+        dispatch(CategoryActions.toggleEditCategoryModal());
+    }, [dispatch]);
+    useEffect(() => {
+        if (category) {
+            setTitle(category.title);
+        }
+    }, [category]);
+
+    const onEditClick = useCallback((e) => {
+        e.preventDefault();
+        let body = {
+            id: category.id,
+            title: title
+        };
+
+        dispatch(CategoryActions.editCategory(body));
+
+    }, [dispatch, title]);
+
+
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
         <Modal autoFocus={false} isOpen={isOpen} toggle={toggle} >
             <ModalHeader toggle={toggle} close={closeBtn}>Edit Category</ModalHeader>
-            <ModalBody>
-                <Form>
+            <Form onSubmit={onEditClick} >
+                <ModalBody>
                     <Row className="justify-content-center" >
                         <Col sm="12">
                             <FormGroup>
                                 <label> Title </label>
-                                <Input autoFocus placeholder="Title" type="name" />
+                                <Input autoFocus placeholder="Title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
                             </FormGroup>
                         </Col>
                     </Row>
@@ -25,16 +52,16 @@ const EditCategoryModal = memo(({ isOpen, toggle }) => {
                             </FormGroup>
                         </Col>
                     </Row>
-                </Form>
-            </ModalBody>
-            <ModalFooter>
-                <Button color="primary" className="btn-round btn-add-modal" onClick={toggle}>Edit</Button>{' '}
-                <Button color="secondary" className="btn-round btn-cancel-modal " onClick={toggle}>Cancel</Button>
-            </ModalFooter>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" className="btn-round btn-add-modal">Edit</Button>{' '}
+                    <Button color="secondary" className="btn-round btn-cancel-modal " onClick={toggle}>Cancel</Button>
+                </ModalFooter>
+            </Form>
         </Modal>
     );
 
-});
+};
 EditCategoryModal.displayName = 'EditCategoryModal';
 EditCategoryModal.propTypes = {
     isOpen: PropTypes.bool,

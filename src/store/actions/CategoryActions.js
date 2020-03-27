@@ -14,9 +14,26 @@ export class CategoryActions {
             payload: { body }
         };
     }
-    static clearCategory() {
+    static editCategory(body) {
         return {
-            type: CategoryTypes.CLEAR_CATEGORY
+            type: CategoryTypes.EDIT_CATEGORY_PROG,
+            payload: { body }
         };
     }
+    static toggleAddCategoryModal() {
+        return {
+            type: CategoryTypes.TOGGLE_ADD_CATEGORY_MODAL
+        };
+    }
+    static toggleEditCategoryModal(index = -1) {
+        return {
+            type: CategoryTypes.TOGGLE_EDIT_CATEGORY_MODAL,
+            payload: { index }
+        };
+    }
+    // static clearCategory() {
+    //     return {
+    //         type: CategoryTypes.CLEAR_CATEGORY
+    //     };
+    // }
 }

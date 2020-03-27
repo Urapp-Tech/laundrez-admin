@@ -33,8 +33,9 @@ import { CategoryActions } from '../../../store/actions/CategoryActions';
 
 function Categories() {
 
-    const [openAddCategoryModal, toggleAddCategoryModal] = useState(false);
-    const [openEditCategoryModal, toggleEditCategoryModal] = useState(false);
+    // const [openAddCategoryModal, toggleAddCategoryModal] = useState(false);
+    // const [openEditCategoryModal, toggleEditCategoryModal] = useState(false);
+    // const openAddModal = useSelector(store => store?.category?.openAddModal);
     const [openDeleteModal, toggleDeleteModal] = useState(false);
     const categories = useSelector(store => store?.category?.categories);
     const paging = useSelector(store => store?.category?.paging);
@@ -80,7 +81,7 @@ function Categories() {
                             color="info"
                             id={`edit-order-${rowIndex}`}
                             type="button"
-                            onClick={() => toggleEditCategoryModal(!openEditCategoryModal)}
+                            onClick={() => dispatch(CategoryActions.toggleEditCategoryModal(rowIndex))}
                         >
                             <i className=" fas fa-edit"></i>
                         </Button>
@@ -121,7 +122,7 @@ function Categories() {
                                 <CardTitle tag="h4">Categories
                                 <Button
                                         className="btn-primary btn-add ml-2"
-                                        onClick={() => { toggleAddCategoryModal(!openAddCategoryModal); }} >
+                                        onClick={() => dispatch(CategoryActions.toggleAddCategoryModal())} >
                                         <i className="fas fa-plus"></i>
                                     </Button>
                                 </CardTitle>
@@ -177,8 +178,8 @@ function Categories() {
                         </Card>
                     </Col>
                 </Row>
-                {openAddCategoryModal && <AddCategoryModal isOpen={openAddCategoryModal} toggle={() => toggleAddCategoryModal(!openAddCategoryModal)} />}
-                {openEditCategoryModal && <EditCategoryModal isOpen={openEditCategoryModal} toggle={() => toggleEditCategoryModal(!openEditCategoryModal)} />}
+                <AddCategoryModal />
+                <EditCategoryModal />
                 {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => toggleDeleteModal(!openDeleteModal)} />}
             </div>
 

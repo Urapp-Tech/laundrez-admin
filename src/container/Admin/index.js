@@ -8,7 +8,6 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // core components
 import DemoNavbar from '../../components/Navbars/DemoNavbar';
-import Footer from '../../components/Footer/Footer';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import routes from '../../routes';
 import { StorageService } from '../../store/services/StorageService';
@@ -70,7 +69,7 @@ class Dashboard extends React.Component {
             })}
             <Redirect from="/admin" to="/admin/orders" />
           </Switch>
-          <Footer fluid />
+          {/* <Footer fluid /> */}
         </div>
       </div>
     );

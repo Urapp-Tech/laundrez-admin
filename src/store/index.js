@@ -31,9 +31,10 @@ export const rootEpic = combineEpics(
     // more epics functions go here
     AuthEpics.signin,
 
-    
+
     CategoryEpics.getCategories,
     CategoryEpics.addCateogry,
+    CategoryEpics.editCateogry
 );
 
 const epicMiddleware = createEpicMiddleware({

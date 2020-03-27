@@ -7,6 +7,9 @@ let INITIAL_STATE = {
     errorText: '',
     errorStatus: 0,
     categories: [],
+    openAddModal: false,
+    openEditModal: false,
+    category: undefined,
     paging: {}
 };
 
@@ -23,11 +26,17 @@ export function categoryReducer(state = INITIAL_STATE, action) {
         case CategoryTypes.ADD_CATEGORY_PROG:
             return { ...state, isProgress: true };
         case CategoryTypes.ADD_CATEGORY_SUCC:
-            return { ...state, isProgress: false, category: action.payload };
+            return { ...state, isProgress: false, };
         case CategoryTypes.ADD_CATEGORY_FAIL:
             return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
-        case CategoryTypes.CLEAR_CATEGORY:
-            return { ...state, category: {} };
+
+        case CategoryTypes.TOGGLE_ADD_CATEGORY_MODAL:
+            return { ...state, openAddModal: !state.openAddModal };
+
+        case CategoryTypes.TOGGLE_EDIT_CATEGORY_MODAL:
+            return { ...state, openEditModal: !state.openEditModal, category: state.categories[action.payload.index] };
+        // case CategoryTypes.CLEAR_CATEGORY:
+        //     return { ...state, category: {} };
         default:
             return state;
     }
