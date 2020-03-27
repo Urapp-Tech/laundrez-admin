@@ -1,6 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, Row, Col, FormGroup, Input } from 'reactstrap';
-import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { CategoryActions } from '../../store/actions/CategoryActions';
 
@@ -72,7 +71,5 @@ const EditCategoryModal = () => {
 };
 EditCategoryModal.displayName = 'EditCategoryModal';
 EditCategoryModal.propTypes = {
-    isOpen: PropTypes.bool,
-    toggle: PropTypes.func
 };
 export default EditCategoryModal;

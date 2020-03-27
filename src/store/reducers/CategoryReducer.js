@@ -9,6 +9,7 @@ let INITIAL_STATE = {
     categories: [],
     openAddModal: false,
     openEditModal: false,
+    openDelModal: false,
     category: undefined,
     paging: {}
 };
@@ -35,6 +36,9 @@ export function categoryReducer(state = INITIAL_STATE, action) {
 
         case CategoryTypes.TOGGLE_EDIT_CATEGORY_MODAL:
             return { ...state, openEditModal: !state.openEditModal, category: state.categories[action.payload.index] };
+
+        case CategoryTypes.TOGGLE_DEL_CATEGORY_MODAL:
+            return { ...state, openDelModal: !state.openDelModal, category: state.categories[action.payload.index] };
         // case CategoryTypes.CLEAR_CATEGORY:
         //     return { ...state, category: {} };
         default:

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -32,11 +32,9 @@ import { CategoryActions } from '../../../store/actions/CategoryActions';
 
 
 function Categories() {
-
-    // const [openAddCategoryModal, toggleAddCategoryModal] = useState(false);
-    // const [openEditCategoryModal, toggleEditCategoryModal] = useState(false);
-    // const openAddModal = useSelector(store => store?.category?.openAddModal);
-    const [openDeleteModal, toggleDeleteModal] = useState(false);
+    const openDeleteModal = useSelector(store => store?.category?.openDelModal);
+    const isProgress = useSelector(store => store?.category?.isProgress);
+    const category = useSelector(store => store?.category?.category);
     const categories = useSelector(store => store?.category?.categories);
     const paging = useSelector(store => store?.category?.paging);
     const dispatch = useDispatch();
@@ -96,7 +94,7 @@ function Categories() {
                             color="info"
                             id={`del-${rowIndex}`}
                             type="button"
-                            onClick={() => toggleDeleteModal(!openDeleteModal)}
+                            onClick={() => dispatch(CategoryActions.toggleDelCategoryModal(rowIndex))}
                         >
                             <i className="fas fa-trash-alt" />
                         </Button>
@@ -180,7 +178,7 @@ function Categories() {
                 </Row>
                 <AddCategoryModal />
                 <EditCategoryModal />
-                {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => toggleDeleteModal(!openDeleteModal)} />}
+                {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(CategoryActions.toggleDelCategoryModal())} isProgress={isProgress} delFunc={() => dispatch(CategoryActions.delCategory(category?.id))} />}
             </div>
 
         </>

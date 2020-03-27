@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, Row, Col, FormGroup, Input } from 'reactstrap';
-import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { CategoryActions } from '../../store/actions/CategoryActions';
 
@@ -63,7 +62,5 @@ const AddCategoryModal = () => {
 };
 AddCategoryModal.displayName = 'AddCategoryModal';
 AddCategoryModal.propTypes = {
-    isOpen: PropTypes.bool,
-    toggle: PropTypes.func
 };
 export default AddCategoryModal;

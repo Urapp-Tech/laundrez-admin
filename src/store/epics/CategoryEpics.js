@@ -65,4 +65,24 @@ export class CategoryEpics {
 
         }));
     }
+    static delCateogry(action$, state$, { ajaxDel }) {
+        return action$.pipe(ofType(CategoryTypes.DEL_CATEGORY_PROG), switchMap(({ payload }) => {
+            return ajaxDel(`/Category/${payload.id}`).pipe(pluck('response'), flatMap(obj => {
+                toast.success('category deleted successfully');
+                return of({
+                    type: CategoryTypes.DEL_CATEGORY_SUCC,
+                    payload: obj
+                },
+                    CategoryActions.toggleDelCategoryModal(),
+                    CategoryActions.getCategories(state$.value.category.paging.pageNumber)
+                );
+            })
+                , catchError((err) => {
+                    let message = err?.response?.Message;
+                    toast.error(message ? message : ErrorMsg);
+                    return of({ type: CategoryTypes.DEL_CATEGORY_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
+                }));
+
+        }));
+    }
 }

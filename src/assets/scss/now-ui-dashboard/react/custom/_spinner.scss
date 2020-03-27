@@ -9,6 +9,11 @@
   /* Safari */
   animation: spin 2s linear infinite;
 }
+.loader-danger {
+  border: 4px solid $danger-color;
+  border-top: 4px solid #f3f3f3;
+}
+
 @-webkit-keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);

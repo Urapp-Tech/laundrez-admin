@@ -34,7 +34,8 @@ export const rootEpic = combineEpics(
 
     CategoryEpics.getCategories,
     CategoryEpics.addCateogry,
-    CategoryEpics.editCateogry
+    CategoryEpics.editCateogry,
+    CategoryEpics.delCateogry
 );
 
 const epicMiddleware = createEpicMiddleware({

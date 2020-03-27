@@ -20,6 +20,12 @@ export class CategoryActions {
             payload: { body }
         };
     }
+    static delCategory(id) {
+        return {
+            type: CategoryTypes.DEL_CATEGORY_PROG,
+            payload: { id }
+        };
+    }
     static toggleAddCategoryModal() {
         return {
             type: CategoryTypes.TOGGLE_ADD_CATEGORY_MODAL
@@ -28,6 +34,12 @@ export class CategoryActions {
     static toggleEditCategoryModal(index = -1) {
         return {
             type: CategoryTypes.TOGGLE_EDIT_CATEGORY_MODAL,
+            payload: { index }
+        };
+    }
+    static toggleDelCategoryModal(index = -1) {
+        return {
+            type: CategoryTypes.TOGGLE_DEL_CATEGORY_MODAL,
             payload: { index }
         };
     }
