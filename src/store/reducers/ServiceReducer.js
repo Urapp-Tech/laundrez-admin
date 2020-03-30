@@ -14,7 +14,7 @@ let INITIAL_STATE = {
 export function serviceReducer(state = INITIAL_STATE, action) {
     switch (action.type) {
         case ServiceTypes.GET_SERVICES_PROG:
-            return { ...state, isProgress: true };
+            return { ...state, isProgress: true, services: [] };
         case ServiceTypes.GET_SERVICES_SUCC:
             return { ...state, isProgress: false, services: action.payload.result, paging: action.payload.paging };
         case ServiceTypes.GET_SERVICES_FAIL:
