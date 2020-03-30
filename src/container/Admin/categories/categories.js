@@ -56,7 +56,7 @@ function Categories() {
     };
     const columns = [
         {
-            dataField: 'id',
+            dataField: 'refId',
             text: '#'
         },
         {
@@ -180,7 +180,7 @@ function Categories() {
                 </Row>
                 <AddCategoryModal />
                 <EditCategoryModal />
-                {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(CategoryActions.toggleDelCategoryModal())} isProgress={isProgress} delFunc={() => dispatch(CategoryActions.delCategory(category?.id))} />}
+                {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(CategoryActions.toggleDelCategoryModal())} isProgress={isProgress} delFunc={() => dispatch(CategoryActions.delCategory(category?.refId))} />}
             </div>
 
         </>

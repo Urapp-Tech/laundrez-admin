@@ -55,7 +55,7 @@ function Services({ history }) {
     };
     const columns = [
         {
-            dataField: 'id',
+            dataField: 'refId',
             text: '#'
         },
         {
@@ -193,7 +193,7 @@ function Services({ history }) {
                     </Card>
                 </Col>
             </Row>
-            {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(ServiceActions.toggleDelServiceModal())} isProgress={isProgress} delFunc={() => dispatch(ServiceActions.delService(service?.id))} />}
+            {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(ServiceActions.toggleDelServiceModal())} isProgress={isProgress} delFunc={() => dispatch(ServiceActions.delService(service?.refId))} />}
 
         </>
     );
