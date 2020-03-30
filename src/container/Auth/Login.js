@@ -69,10 +69,13 @@ function Login({ history }) {
     <>
 
       <div className="content content-padding ">
-
-        <Row className=" justify-content-center   " >
-          <Col sm="12" md="9" lg="5"  >
-            <Card className="card-user   " >
+        <Row className="top-row-height" >
+          <Col>
+          </Col>
+        </Row>
+        <Row className=" justify-content-center middle-row-height  " >
+          <Col sm="12" md="9" lg="6"   >
+            <Card className="card-user h-100  " >
               <CardBody>
                 {/* <Alert color="danger" >Invalid username of password</Alert> */}
                 <div className="author">
@@ -138,6 +141,10 @@ function Login({ history }) {
                 </Form>
               </CardBody>
             </Card>
+          </Col>
+        </Row>
+        <Row className="last-row-height" >
+          <Col>
           </Col>
         </Row>
 
