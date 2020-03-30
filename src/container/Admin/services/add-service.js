@@ -48,7 +48,7 @@ function AddService({ history }) {
             toast.error('title is too short');
             return;
         }
-        else if (formValues.category.length < 25) {
+        else if (formValues.category === '') {
             toast.error('please select category');
             return;
         }
@@ -64,7 +64,7 @@ function AddService({ history }) {
             toast.error('minQty must be a number');
             return;
         }
-        else if (Number(formValues.minQty) == 0) {
+        else if (Number(formValues.minQty) === 0) {
             toast.error('minQty could not be zero');
             return;
         }
@@ -97,7 +97,8 @@ function AddService({ history }) {
                                     <Col sm="6">
                                         <FormGroup>
                                             <Label> Title </Label>
-                                            <Input autoFocus
+                                            <Input
+                                                autoFocus
                                                 placeholder="Title"
                                                 type="text"
                                                 value={formValues.title}
