@@ -48,7 +48,7 @@ const AddCategoryModal = () => {
                     <Button color="primary" type={'submit'} disabled={isProgress} className="btn-round btn-add-modal" >
                         {
                             isProgress ?
-                                <div className="loader" ></div>
+                                <div className="spinner" ></div>
                                 :
                                 <span> Add </span>
                         }

@@ -31,6 +31,26 @@ export function categoryReducer(state = INITIAL_STATE, action) {
         case CategoryTypes.ADD_CATEGORY_FAIL:
             return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
+
+
+        case CategoryTypes.EDIT_CATEGORY_PROG:
+            return { ...state, isProgress: true };
+        case CategoryTypes.EDIT_CATEGORY_SUCC:
+            return { ...state, isProgress: false, };
+        case CategoryTypes.EDIT_CATEGORY_FAIL:
+            return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+
+
+
+
+        case CategoryTypes.DEL_CATEGORY_PROG:
+            return { ...state, isProgress: true };
+        case CategoryTypes.DEL_CATEGORY_SUCC:
+            return { ...state, isProgress: false, };
+        case CategoryTypes.DEL_CATEGORY_FAIL:
+            return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+
+
         case CategoryTypes.TOGGLE_ADD_CATEGORY_MODAL:
             return { ...state, openAddModal: !state.openAddModal };
 

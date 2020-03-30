@@ -23,5 +23,4 @@ export const CategoryTypes = {
 
 
 
-    // CLEAR_CATEGORY: 'CLEAR_CATEGORY',
 };

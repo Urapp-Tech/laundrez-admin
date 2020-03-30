@@ -130,7 +130,7 @@ function Login({ history }) {
                       >
                         {
                           isProgress ?
-                            <div className="loader" ></div>
+                            <div className="spinner" ></div>
                             :
                             <span> Login </span>
                         }

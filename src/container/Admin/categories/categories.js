@@ -136,42 +136,44 @@ function Categories() {
                                 </form>
                             </CardHeader>
                             <CardBody>
-                                <ToolkitProvider
-                                    keyField={'id'}
-                                    data={categories}
-                                    columns={columns}
-                                    bootstrap4
+                                {isProgress ?
+                                    <div className='spinner-lg' ></div>
+                                    : <ToolkitProvider
+                                        keyField={'id'}
+                                        data={categories}
+                                        columns={columns}
+                                        bootstrap4
 
-                                >{
-                                        props => (
-                                            <div>
-                                                {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
-                                                <BootstrapTable
-                                                    remote={remote}
-                                                    wrapperClasses={'table-responsive'}
-                                                    classes=""
-                                                    headerWrapperClasses="text-primary text-left"
-                                                    bordered={false}
-                                                    headerClasses=""
-                                                    bodyClasses="text-left"
-                                                    {...props.baseProps}
-                                                    onTableChange={onTableChange}
-                                                    // keyField='name'
-                                                    // data={products}
-                                                    // columns={columns}
-                                                    pagination={paginationFactory({
-                                                        page: paging.pageNumber,
-                                                        sizePerPage: 10,
-                                                        totalSize: paging.totalCount,
-                                                        hideSizePerPage: true,
+                                    >{
+                                            props => (
+                                                <div>
+                                                    {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
+                                                    <BootstrapTable
+                                                        remote={remote}
+                                                        wrapperClasses={'table-responsive'}
+                                                        classes=""
+                                                        headerWrapperClasses="text-primary text-left"
+                                                        bordered={false}
+                                                        headerClasses=""
+                                                        bodyClasses="text-left"
+                                                        {...props.baseProps}
+                                                        onTableChange={onTableChange}
+                                                        // keyField='name'
+                                                        // data={products}
+                                                        // columns={columns}
+                                                        pagination={paginationFactory({
+                                                            page: paging.pageNumber,
+                                                            sizePerPage: 10,
+                                                            totalSize: paging.totalCount,
+                                                            hideSizePerPage: true,
 
-                                                    })}
-                                                />
-                                            </div>
-                                        )
+                                                        })}
+                                                    />
+                                                </div>
+                                            )
 
-                                    }
-                                </ToolkitProvider>
+                                        }
+                                    </ToolkitProvider>}
                             </CardBody>
                         </Card>
                     </Col>

@@ -14,7 +14,7 @@ function ServicesContainer() {
                 <Switch>
                     <Route exact path="/admin/services" component={Services} />
                     <Route path="/admin/services/add" component={AddService} />
-                    <Route path="/admin/services/update/:id" component={EditSerivce} />
+                    <Route path="/admin/services/update" component={EditSerivce} />
                 </Switch>
             </div>
         </>

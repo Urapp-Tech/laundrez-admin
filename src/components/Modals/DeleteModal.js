@@ -10,7 +10,7 @@ const DleteModal = memo(({ isOpen, toggle, delFunc, isProgress }) => {
                 <Button color="danger" className="btn-round btn-add-modal" onClick={delFunc}>
                     {
                         isProgress ?
-                            <div className="loader loader-danger" ></div>
+                            <div className="spinner spinner-danger" ></div>
                             :
                             <span> Yes </span>
                     }

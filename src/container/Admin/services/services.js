@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -22,15 +22,28 @@ import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import { ServiceActions } from '../../../store/actions/ServiceActions';
+import { useSelector, useDispatch } from 'react-redux';
 
 
 function Services({ history }) {
 
-    // const dispatch = useDispatch();
-    // const users = useSelector(store => store?.sampleReducer.posts);
-    // useEffect(() => {
-    //     // dispatch(SampleActions.sampleReq());
-    // }, [dispatch]);
+    // const openDeleteModal = useSelector(store => store?.category?.openDelModal);
+    const isProgress = useSelector(store => store?.service?.isProgress);
+    // const service = useSelector(store => store?.service?.service);
+    const services = useSelector(store => store?.service?.services);
+    const paging = useSelector(store => store?.service?.paging);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(ServiceActions.getServices());
+    }, [dispatch]);
+
+
+    const onTableChange = (type, newState) => {
+        if (type === 'pagination')
+            dispatch(ServiceActions.getServices(newState?.page));
+    };
 
 
     const remote = {
@@ -45,20 +58,24 @@ function Services({ history }) {
             text: '#'
         },
         {
-            dataField: 'userId',
+            dataField: 'image',
             text: 'Image'
         },
         {
-            dataField: 'userId',
-            text: 'Name'
+            dataField: 'title',
+            text: 'Title'
         },
         {
-            dataField: 'title',
+            dataField: 'description',
             text: 'Description'
         },
         {
-            dataField: 'email',
+            dataField: 'minQty',
             text: 'Min QTY'
+        },
+        {
+            dataField: 'price',
+            text: 'Price'
         },
         {
             dataField: 'action',
@@ -72,29 +89,36 @@ function Services({ history }) {
                             color="info"
                             id={`edit-order-${rowIndex}`}
                             type="button"
+                            onClick={() => history.push({
+                                pathname: '/admin/services/update',
+                                state: {
+                                    service: services[rowIndex]
+                                }
+                            })}
                         >
-                            <i className="now-ui-icons ui-2_settings-90" />
+                            <i className=" fas fa-edit"></i>
                         </Button>
                         <UncontrolledTooltip
-                            delay={0}
+                            delay={5}
                             target={`edit-order-${rowIndex}`}
                         >
-                            Edit Task
-                  </UncontrolledTooltip>
+                            Edit Category
+              </UncontrolledTooltip>
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
-                            color="danger"
-                            id="tooltip923217206"
+                            color="info"
+                            id={`del-${rowIndex}`}
                             type="button"
+                        // onClick={() => dispatch(CategoryActions.toggleDelCategoryModal(rowIndex))}
                         >
-                            <i className="now-ui-icons ui-1_simple-remove" />
+                            <i className="fas fa-trash-alt" />
                         </Button>
                         <UncontrolledTooltip
-                            delay={0}
-                            target="tooltip923217206"
+                            delay={5}
+                            target={`del-${rowIndex}`}
                         >
                             Remove
-                  </UncontrolledTooltip>
+              </UncontrolledTooltip>
                     </div>
                 );
             }
@@ -126,39 +150,44 @@ function Services({ history }) {
                             </form>
                         </CardHeader>
                         <CardBody>
-                            <ToolkitProvider
-                                keyField='id'
-                                data={[]}
-                                columns={columns}
-                                bootstrap4
+                            {isProgress ?
+                                <div className='spinner-lg' ></div>
+                                :
+                                <ToolkitProvider
+                                    keyField='id'
+                                    data={services}
+                                    columns={columns}
+                                    bootstrap4
 
-                            >{
-                                    props => (
-                                        <div>
-                                            {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
-                                            <BootstrapTable
-                                                remote={remote}
-                                                wrapperClasses={'table-responsive'}
-                                                classes=""
-                                                headerWrapperClasses="text-primary text-left"
-                                                bordered={false}
-                                                headerClasses=""
-                                                bodyClasses="text-left"
-                                                {...props.baseProps}
-                                                // keyField='name'
-                                                // data={products}
-                                                // columns={columns}
-                                                pagination={paginationFactory({
-                                                    page: 1,
-                                                    sizePerPage: 10,
-                                                    hideSizePerPage: true
-                                                })}
-                                            />
-                                        </div>
-                                    )
+                                >{
+                                        props => (
+                                            <div>
+                                                {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
+                                                <BootstrapTable
+                                                    remote={remote}
+                                                    wrapperClasses={'table-responsive'}
+                                                    classes=""
+                                                    headerWrapperClasses="text-primary text-left"
+                                                    bordered={false}
+                                                    headerClasses=""
+                                                    bodyClasses="text-left"
+                                                    {...props.baseProps}
+                                                    onTableChange={onTableChange}
+                                                    // keyField='name'
+                                                    // data={products}
+                                                    // columns={columns}
+                                                    pagination={paginationFactory({
+                                                        page: paging.pageNumber,
+                                                        sizePerPage: 10,
+                                                        totalSize: paging.totalCount,
+                                                        hideSizePerPage: true,
+                                                    })}
+                                                />
+                                            </div>
+                                        )
 
-                                }
-                            </ToolkitProvider>
+                                    }
+                                </ToolkitProvider>}
                         </CardBody>
                     </Card>
                 </Col>

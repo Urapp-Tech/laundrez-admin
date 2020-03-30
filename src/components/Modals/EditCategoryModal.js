@@ -57,7 +57,7 @@ const EditCategoryModal = () => {
                     <Button color="primary" className="btn-round btn-add-modal">
                         {
                             isProgress ?
-                                <div className="loader" ></div>
+                                <div className="spinner" ></div>
                                 :
                                 <span> Edit </span>
                         }

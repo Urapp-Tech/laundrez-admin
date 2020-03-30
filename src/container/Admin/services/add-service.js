@@ -49,8 +49,6 @@ function AddService({ history }) {
                                             <Input autoFocus placeholder="Name" type="name" />
                                         </FormGroup>
                                     </Col>
-                                </Row>
-                                <Row>
                                     <Col sm="6">
                                         <FormGroup>
                                             <Label for="exampleSelect">Categories</Label>
@@ -64,6 +62,7 @@ function AddService({ history }) {
                                         </FormGroup>
                                     </Col>
                                 </Row>
+
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
@@ -71,8 +70,6 @@ function AddService({ history }) {
                                             <Input placeholder="Service Description" type="text" />
                                         </FormGroup>
                                     </Col>
-                                </Row>
-                                <Row>
                                     <Col sm="6">
                                         <FormGroup>
                                             <Label> Short Description <b><i> Write 10-15 Characters</i> </b> </Label>
@@ -80,6 +77,7 @@ function AddService({ history }) {
                                         </FormGroup>
                                     </Col>
                                 </Row>
+
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
@@ -87,8 +85,6 @@ function AddService({ history }) {
                                             <Input placeholder="Minimum QTY for order " type="number" />
                                         </FormGroup>
                                     </Col>
-                                </Row>
-                                <Row>
                                     <Col sm="6">
                                         <FormGroup>
                                             <Label> Price </Label>
@@ -96,6 +92,7 @@ function AddService({ history }) {
                                         </FormGroup>
                                     </Col>
                                 </Row>
+
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
@@ -104,11 +101,11 @@ function AddService({ history }) {
                                         </FormGroup>
                                     </Col>
                                 </Row>
+                                <Col sm="6" className="pl-0" >
+                                    <Button className="btn-round btn-primary btn-add-modal" >Add Service</Button>
+                                    <Button className="btn-round btn-default btn-add-modal" onClick={() => history.goBack()}  >Cancel</Button>
+                                </Col>
                                 <Row>
-                                    <Col sm="6">
-                                        <Button className="btn-round btn-primary btn-add-modal" >Add Service</Button>
-                                        <Button className="btn-round btn-default btn-add-modal" onClick={() => history.goBack()}  >Cancel</Button>
-                                    </Col>
                                 </Row>
                             </Form>
                         </CardBody>
