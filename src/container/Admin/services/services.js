@@ -22,15 +22,16 @@ import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import DeleteModal from '../../../components/Modals/DeleteModal';
 import { ServiceActions } from '../../../store/actions/ServiceActions';
 import { useSelector, useDispatch } from 'react-redux';
 
 
 function Services({ history }) {
 
-    // const openDeleteModal = useSelector(store => store?.category?.openDelModal);
+    const openDeleteModal = useSelector(store => store?.service?.openDelModal);
     const isProgress = useSelector(store => store?.service?.isProgress);
-    // const service = useSelector(store => store?.service?.service);
+    const service = useSelector(store => store?.service?.service);
     const services = useSelector(store => store?.service?.services);
     const paging = useSelector(store => store?.service?.paging);
     const dispatch = useDispatch();
@@ -109,7 +110,7 @@ function Services({ history }) {
                             color="info"
                             id={`del-${rowIndex}`}
                             type="button"
-                        // onClick={() => dispatch(CategoryActions.toggleDelCategoryModal(rowIndex))}
+                            onClick={() => dispatch(ServiceActions.toggleDelServiceModal(rowIndex))}
                         >
                             <i className="fas fa-trash-alt" />
                         </Button>
@@ -192,6 +193,8 @@ function Services({ history }) {
                     </Card>
                 </Col>
             </Row>
+            {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(ServiceActions.toggleDelServiceModal())} isProgress={isProgress} delFunc={() => dispatch(ServiceActions.delService(service?.id))} />}
+
         </>
     );
 }

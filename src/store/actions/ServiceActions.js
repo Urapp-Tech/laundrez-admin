@@ -26,5 +26,11 @@ export class ServiceActions {
             payload: { id }
         };
     }
+    static toggleDelServiceModal(index = -1) {
+        return {
+            type: ServiceTypes.TOGGLE_DEL_SERVICE_MODAL,
+            payload: { index }
+        };
+    }
    
 }

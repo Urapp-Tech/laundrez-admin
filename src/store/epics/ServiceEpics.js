@@ -28,7 +28,7 @@ export class ServiceEpics {
     static addService(action$, state$, { ajaxPost }) {
         return action$.pipe(ofType(ServiceTypes.ADD_SERVICE_PROG), switchMap(({ payload }) => {
             return ajaxPost('/Service/', payload.body).pipe(pluck('response'), flatMap(obj => {
-                toast.success('category added successfully');
+                toast.success('service added successfully');
                 return of({
                     type: ServiceTypes.ADD_SERVICE_SUCC,
                     payload: obj
@@ -47,12 +47,12 @@ export class ServiceEpics {
     static editService(action$, state$, { ajaxPut }) {
         return action$.pipe(ofType(ServiceTypes.EDIT_SERVICE_PROG), switchMap(({ payload }) => {
             return ajaxPut('/Service/', payload.body).pipe(pluck('response'), flatMap(obj => {
-                toast.success('category edited successfully');
+                toast.success('service edited successfully');
                 return of({
                     type: ServiceTypes.EDIT_SERVICE_SUCC,
                     payload: obj
                 },
-                    ServiceActions.getServices(state$.value.category.paging.pageNumber)
+                    ServiceActions.getServices(state$.value.service.paging.pageNumber)
                 );
             })
                 , catchError((err) => {
@@ -66,20 +66,21 @@ export class ServiceEpics {
     static delService(action$, state$, { ajaxDel }) {
         return action$.pipe(ofType(ServiceTypes.DEL_SERVICE_PROG), switchMap(({ payload }) => {
             return ajaxDel(`/Service/${payload.id}`).pipe(pluck('response'), flatMap(obj => {
-                toast.success('category deleted successfully');
+                toast.success('service deleted successfully');
                 return of({
                     type: ServiceTypes.DEL_SERVICE_SUCC,
                     payload: obj
                 },
-                    ServiceActions.getServices(state$.value.category.paging.pageNumber)
+                    ServiceActions.getServices(state$.value.service.paging.pageNumber),
+                    ServiceActions.toggleDelServiceModal()
                 );
-            })
-                , catchError((err) => {
-                    let message = err?.response?.Message;
-                    toast.error(message ? message : ErrorMsg);
-                    return of({ type: ServiceTypes.DEL_SERVICE_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
-                }));
+        })
+            , catchError((err) => {
+                let message = err?.response?.Message;
+                toast.error(message ? message : ErrorMsg);
+                return of({ type: ServiceTypes.DEL_SERVICE_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
+            }));
 
-        }));
-    }
+    }));
+}
 }

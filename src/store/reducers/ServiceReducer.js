@@ -8,6 +8,7 @@ let INITIAL_STATE = {
     errorStatus: 0,
     services: [],
     service: undefined,
+    openDelModal: false,
     paging: {}
 };
 
@@ -47,6 +48,8 @@ export function serviceReducer(state = INITIAL_STATE, action) {
         case ServiceTypes.DEL_SERVICE_FAIL:
             return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
+        case ServiceTypes.TOGGLE_DEL_SERVICE_MODAL:
+            return { ...state, openDelModal: !state.openDelModal, service: state.services[action.payload.index] };
         default:
             return state;
     }
