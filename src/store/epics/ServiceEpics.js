@@ -27,13 +27,15 @@ export class ServiceEpics {
 
     static addService(action$, state$, { ajaxPost }) {
         return action$.pipe(ofType(ServiceTypes.ADD_SERVICE_PROG), switchMap(({ payload }) => {
-            return ajaxPost('/Service/', payload.body).pipe(pluck('response'), flatMap(obj => {
+            return ajaxPost('/Service/', payload.body, null).pipe(pluck('response'), flatMap(obj => {
                 toast.success('service added successfully');
+                if (payload?.history) {
+                    payload.history.goBack();
+                }
                 return of({
                     type: ServiceTypes.ADD_SERVICE_SUCC,
                     payload: obj
                 },
-                    ServiceActions.getServices()
                 );
             })
                 , catchError((err) => {
@@ -46,13 +48,15 @@ export class ServiceEpics {
     }
     static editService(action$, state$, { ajaxPut }) {
         return action$.pipe(ofType(ServiceTypes.EDIT_SERVICE_PROG), switchMap(({ payload }) => {
-            return ajaxPut('/Service/', payload.body).pipe(pluck('response'), flatMap(obj => {
+            return ajaxPut('/Service/', payload.body, null).pipe(pluck('response'), flatMap(obj => {
                 toast.success('service edited successfully');
+                if (payload?.history) {
+                    payload.history.goBack();
+                }
                 return of({
                     type: ServiceTypes.EDIT_SERVICE_SUCC,
                     payload: obj
                 },
-                    ServiceActions.getServices(state$.value.service.paging.pageNumber)
                 );
             })
                 , catchError((err) => {
@@ -74,13 +78,13 @@ export class ServiceEpics {
                     ServiceActions.getServices(state$.value.service.paging.pageNumber),
                     ServiceActions.toggleDelServiceModal()
                 );
-        })
-            , catchError((err) => {
-                let message = err?.response?.Message;
-                toast.error(message ? message : ErrorMsg);
-                return of({ type: ServiceTypes.DEL_SERVICE_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
-            }));
+            })
+                , catchError((err) => {
+                    let message = err?.response?.Message;
+                    toast.error(message ? message : ErrorMsg);
+                    return of({ type: ServiceTypes.DEL_SERVICE_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
+                }));
 
-    }));
-}
+        }));
+    }
 }

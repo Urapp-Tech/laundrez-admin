@@ -24,6 +24,9 @@ import { CategoryActions } from '../../../store/actions/CategoryActions';
 
 function AddService({ history }) {
     const dispatch = useDispatch();
+    const [error, setError] = useState({ isError: false, message: '' });
+    const categories = useSelector(store => store?.category?.categories);
+    const isProgress = useSelector(store => store?.service?.isProgress);
     const [formValues, setFormValues] = useState({
         title: '',
         description: '',
@@ -31,24 +34,45 @@ function AddService({ history }) {
         price: 0,
         minQty: 0,
         isActive: true,
-        category: ''
-
+        categoryId: '',
+        file: null
     });
-    const categories = useSelector(store => store?.category?.categories);
-
     useEffect(() => {
-        dispatch(CategoryActions.getCategories());
+        dispatch(CategoryActions.getCategories(1, 1000));
     }, [dispatch]);
 
-    const isProgress = useSelector(store => store?.service?.isProgress);
+    const onImageSelect = useCallback((e) => {
+        let img;
+        let _URL = window.URL || window.webkitURL;
+        let file = e.target.files[0];
+        if (file) {
+            img = new Image();
+            let objectUrl = _URL.createObjectURL(file);
+            img.onload = function () {
+                if (this.height < 512) {
+                    setError({ isError: true, message: 'image dimensions must be 512 x 512' });
+                }
+                else if (this.width < 512) {
+                    setError({ isError: true, message: 'image dimensions must be 512 x 512' });
+                }
+                else if (error.isError) {
+                    setError({ isError: false, message: '' });
+                }
+            };
+            setFormValues({ ...formValues, file: file });
+            img.src = objectUrl;
+        }
+    }, [error, setError, formValues]);
+
 
     const addService = useCallback((e) => {
         e.preventDefault();
+        let fileSizeInMB = formValues.file?.size / 1000000;
         if (formValues.title.length < 3) {
             toast.error('title is too short');
             return;
         }
-        else if (formValues.category === '') {
+        else if (formValues.categoryId === '') {
             toast.error('please select category');
             return;
         }
@@ -72,16 +96,29 @@ function AddService({ history }) {
             toast.error('price must be a number with upto 2 decimal places');
             return;
         }
-        let body = {
-            title: formValues.title,
-            description: formValues.description,
-            shortDescription: formValues.shortDescription,
-            minQty: Number(formValues.minQty),
-            price: parseFloat(formValues.price)
-        };
-        dispatch(ServiceActions.addService(body));
+        else if (!formValues.file) {
+            toast.error('please select image');
+            return;
+        }
+        else if (fileSizeInMB > 11) {
+            toast.error('file size is exceeding 11Mb');
+            return;
+        }
+        else if (error.isError) {
+            toast.error(error.message);
+            return;
+        }
+        let formData = new FormData();
+        formData.append('title', formValues.title);
+        formData.append('categoryId', Number(formValues.categoryId));
+        formData.append('description', formValues.description);
+        formData.append('shortDescription', formValues.shortDescription);
+        formData.append('minQty', Number(formValues.minQty));
+        formData.append('price', parseFloat(formValues.price));
+        formData.append('imageFile', formValues.file);
+        dispatch(ServiceActions.addService(formData, history));
 
-    }, [formValues, dispatch]);
+    }, [formValues, dispatch, error, history]);
 
     return (
         <>
@@ -112,8 +149,8 @@ function AddService({ history }) {
                                             <Input type="select"
                                                 name="select"
                                                 id="exampleSelect"
-                                                value={formValues.category}
-                                                onChange={(e) => setFormValues({ ...formValues, category: Number(e.target.value) })}
+                                                value={formValues.categoryId}
+                                                onChange={(e) => setFormValues({ ...formValues, categoryId: Number(e.target.value) })}
 
                                             >
                                                 <option value={''} >Select Category</option>
@@ -174,8 +211,6 @@ function AddService({ history }) {
                                                 placeholder="0.00"
                                                 type="text"
                                                 value={formValues.price}
-
-
                                                 onChange={(e) => setFormValues({ ...formValues, price: e.target.value })}
                                             />
                                         </FormGroup>
@@ -185,8 +220,16 @@ function AddService({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label htmlFor="service-image" >Service Image (400 X 400)</Label>
-                                            <Input type="file" name="file" id="service-image" />
+                                            <Label htmlFor="service-image" >Upload image with dimension 512 x 512 not exceeding 11Mb</Label>
+                                            <Input
+                                                id="service-image"
+                                                type="file"
+                                                name="file"
+                                                onChange={onImageSelect}
+                                            />
+                                            {error.isError &&
+                                                <label className="text-danger" >{error.message}</label>
+                                            }
                                         </FormGroup>
                                     </Col>
                                 </Row>

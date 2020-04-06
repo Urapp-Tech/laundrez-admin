@@ -25,12 +25,13 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import DeleteModal from '../../../components/Modals/DeleteModal';
 import { ServiceActions } from '../../../store/actions/ServiceActions';
 import { useSelector, useDispatch } from 'react-redux';
+import { API_URL } from '../../../store/services/Config';
 
 
 function Services({ history }) {
 
     const openDeleteModal = useSelector(store => store?.service?.openDelModal);
-    const isProgress = useSelector(store => store?.service?.isProgress);
+    const isProgress = useSelector(store => store?.service?.isProgressList);
     const service = useSelector(store => store?.service?.service);
     const services = useSelector(store => store?.service?.services);
     const paging = useSelector(store => store?.service?.paging);
@@ -55,24 +56,38 @@ function Services({ history }) {
     };
     const columns = [
         {
-            dataField: 'refId',
+            dataField: 'id',
             text: '#'
         },
         {
             dataField: 'image',
-            text: 'Image'
+            text: 'Image',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell) => {
+                return (
+                    <img src={`${API_URL}/${cell}`} alt={'img'} className="img-thumbnail table-image" />
+                );
+            }
         },
         {
             dataField: 'title',
-            text: 'Title'
+            text: 'Title',
         },
         {
             dataField: 'description',
-            text: 'Description'
+            text: 'Description',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell) => {
+                return (
+                    <span className="text-justify" >{cell}</span>
+                );
+            },
+            classes: 'w-25'
         },
         {
             dataField: 'minQty',
-            text: 'Min QTY'
+            text: 'Min QTY',
+            classes: 'text-center'
         },
         {
             dataField: 'price',
@@ -119,7 +134,7 @@ function Services({ history }) {
                             target={`del-${rowIndex}`}
                         >
                             Remove
-              </UncontrolledTooltip>
+                        </UncontrolledTooltip>
                     </div>
                 );
             }

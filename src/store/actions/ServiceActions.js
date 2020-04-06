@@ -8,16 +8,16 @@ export class ServiceActions {
             payload: { page }
         };
     }
-    static addService(body) {
+    static addService(body, history) {
         return {
             type: ServiceTypes.ADD_SERVICE_PROG,
-            payload: { body }
+            payload: { body, history }
         };
     }
-    static editService(body) {
+    static editService(body, history) {
         return {
             type: ServiceTypes.EDIT_SERVICE_PROG,
-            payload: { body }
+            payload: { body, history }
         };
     }
     static delService(id) {
@@ -32,5 +32,5 @@ export class ServiceActions {
             payload: { index }
         };
     }
-   
+
 }

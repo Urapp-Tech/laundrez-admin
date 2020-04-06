@@ -62,12 +62,12 @@ function Categories() {
 
         },
         {
-            dataField: 'userId',
+            dataField: 'image',
             text: 'Image',
             // eslint-disable-next-line react/display-name
-            formatter: (cell, row) => {
+            formatter: (cell) => {
                 return (
-                    <img src={`${API_URL}/${row.image}`} alt={'img'} className="img-thumbnail table-image" />
+                    <img src={`${API_URL}/${cell}`} alt={'img'} className="img-thumbnail table-image" />
                 );
             }
         },

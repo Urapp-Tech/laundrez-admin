@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const DleteModal = memo(({ isOpen, toggle, delFunc, isProgress }) => {
     return (
-        <Modal isOpen={isOpen} toggle={toggle} >
+        <Modal centered={true} isOpen={isOpen} toggle={toggle} >
             <ModalHeader >Do you really want to delete?</ModalHeader>
             <ModalFooter>
                 <Button color="danger" className="btn-round btn-add-modal" onClick={delFunc}>

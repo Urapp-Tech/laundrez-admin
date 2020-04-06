@@ -2,6 +2,7 @@ import { ServiceTypes } from '../action-types/ServiceTypes';
 
 
 let INITIAL_STATE = {
+    isProgressList: false,
     isProgress: false,
     isError: false,
     errorText: '',
@@ -15,11 +16,11 @@ let INITIAL_STATE = {
 export function serviceReducer(state = INITIAL_STATE, action) {
     switch (action.type) {
         case ServiceTypes.GET_SERVICES_PROG:
-            return { ...state, isProgress: true, services: [] };
+            return { ...state, isProgressList: true, services: [] };
         case ServiceTypes.GET_SERVICES_SUCC:
-            return { ...state, isProgress: false, services: action.payload.result, paging: action.payload.paging };
+            return { ...state, isProgressList: false, services: action.payload.result, paging: action.payload.paging };
         case ServiceTypes.GET_SERVICES_FAIL:
-            return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+            return { ...state, isProgressList: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
 
         case ServiceTypes.ADD_SERVICE_PROG:
