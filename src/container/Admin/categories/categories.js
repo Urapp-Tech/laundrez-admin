@@ -171,7 +171,7 @@ function Categories() {
                                                         // columns={columns}
                                                         pagination={paginationFactory({
                                                             page: paging.pageNumber,
-                                                            sizePerPage: 10,
+                                                            sizePerPage: 5,
                                                             totalSize: paging.totalCount,
                                                             hideSizePerPage: true,
 

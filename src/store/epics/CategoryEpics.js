@@ -10,7 +10,7 @@ const ErrorMsg = 'something went wrong !';
 export class CategoryEpics {
     static getCategories(action$, state$, { ajaxGet }) {
         return action$.pipe(ofType(CategoryTypes.GET_CATEGORIES_PROG), switchMap(({ payload }) => {
-            return ajaxGet(`/Category/all?page[number]=${payload?.page}`).pipe(pluck('response'), map(obj => {
+            return ajaxGet(`/Category/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}`).pipe(pluck('response'), map(obj => {
                 return {
                     type: CategoryTypes.GET_CATEGORIES_SUCC,
                     payload: obj

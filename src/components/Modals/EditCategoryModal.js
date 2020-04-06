@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 const EditCategoryModal = () => {
     const [title, setTitle] = useState('');
     const isProgress = useSelector(store => store?.category?.isProgress);
+    const [error, setError] = useState({ isError: false, message: '' });
     const [file, setFile] = useState(null);
     const isOpen = useSelector(store => store?.category?.openEditModal);
     const category = useSelector(store => store?.category?.category);
@@ -20,26 +21,60 @@ const EditCategoryModal = () => {
         }
     }, [category]);
 
+    const onImageSelect = useCallback((e) => {
+        let img;
+        let _URL = window.URL || window.webkitURL;
+        let file = e.target.files[0];
+        if (file) {
+            img = new Image();
+            let objectUrl = _URL.createObjectURL(file);
+            img.onload = function () {
+                if (this.height < 512) {
+                    setError({ isError: true, message: 'image dimensions must be 512 x 512' });
+                }
+                else if (this.width < 512) {
+                    setError({ isError: true, message: 'image dimensions must be 512 x 512' });
+                }
+                else if (error.isError) {
+                    setError({ isError: false, message: '' });
+                }
+            };
+            setFile(file);
+            img.src = objectUrl;
+        }
+    }, [error, setError]);
+
     const onEditClick = useCallback((e) => {
         e.preventDefault();
-        let formData = new FormData();
-        formData.append('id', category.id);
+        let fileSizeInMB = file?.size / 1000000;
         if (title.length < 3) {
             toast.error('title is too short');
             return;
         }
-        formData.append('title', title);
-        if (file) {
-            formData.append('imageFile', file);
+        else if (!file) {
+            toast.error('please select image');
+            return;
         }
+        else if (fileSizeInMB > 11) {
+            toast.error('file size is exceeding 11Mb');
+            return;
+        }
+        else if (error.isError) {
+            toast.error(error.message);
+            return;
+        }
+        let formData = new FormData();
+        formData.append('id', category.id);
+        formData.append('title', title);
+        formData.append('imageFile', file);
         dispatch(CategoryActions.editCategory(formData));
 
-    }, [dispatch, title, category, file]);
+    }, [dispatch, title, category, file, error]);
 
 
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
-        <Modal autoFocus={false} isOpen={isOpen} toggle={toggle} >
+        <Modal autoFocus={false} backdrop={'static'} centered={true} isOpen={isOpen} toggle={toggle} >
             <ModalHeader toggle={toggle} close={closeBtn}>Edit Category</ModalHeader>
             <Form onSubmit={onEditClick} >
                 <ModalBody>
@@ -54,12 +89,15 @@ const EditCategoryModal = () => {
                     <Row className="justify-content-center" >
                         <Col sm="12">
                             <FormGroup>
-                                <label> Image </label>
+                                <label>  Upload image with dimension 512 x 512 not exceeding 11Mb </label>
                                 <Input
                                     placeholder="Image"
                                     type="file"
-                                    onChange={(e) => setFile(e.target.files[0])}
+                                    onChange={onImageSelect}
                                 />
+                                {error.isError &&
+                                    <label className="text-danger" >{error.message}</label>
+                                }
                             </FormGroup>
                         </Col>
                     </Row>
