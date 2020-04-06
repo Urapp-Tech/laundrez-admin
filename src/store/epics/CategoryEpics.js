@@ -27,7 +27,7 @@ export class CategoryEpics {
 
     static addCateogry(action$, state$, { ajaxPost }) {
         return action$.pipe(ofType(CategoryTypes.ADD_CATEGORY_PROG), switchMap(({ payload }) => {
-            return ajaxPost('/Category/', payload.body).pipe(pluck('response'), flatMap(obj => {
+            return ajaxPost('/Category/', payload.body, null).pipe(pluck('response'), flatMap(obj => {
                 toast.success('category added successfully');
                 return of({
                     type: CategoryTypes.ADD_CATEGORY_SUCC,
@@ -47,7 +47,7 @@ export class CategoryEpics {
     }
     static editCateogry(action$, state$, { ajaxPut }) {
         return action$.pipe(ofType(CategoryTypes.EDIT_CATEGORY_PROG), switchMap(({ payload }) => {
-            return ajaxPut('/Category/', payload.body).pipe(pluck('response'), flatMap(obj => {
+            return ajaxPut('/Category/', payload.body, null).pipe(pluck('response'), flatMap(obj => {
                 toast.success('category edited successfully');
                 return of({
                     type: CategoryTypes.EDIT_CATEGORY_SUCC,

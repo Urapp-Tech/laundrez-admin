@@ -2,10 +2,12 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, Row, Col, FormGroup, Input } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { CategoryActions } from '../../store/actions/CategoryActions';
+import { toast } from 'react-toastify';
 
 const EditCategoryModal = () => {
     const [title, setTitle] = useState('');
     const isProgress = useSelector(store => store?.category?.isProgress);
+    const [file, setFile] = useState(null);
     const isOpen = useSelector(store => store?.category?.openEditModal);
     const category = useSelector(store => store?.category?.category);
     const dispatch = useDispatch();
@@ -20,14 +22,19 @@ const EditCategoryModal = () => {
 
     const onEditClick = useCallback((e) => {
         e.preventDefault();
-        let body = {
-            id: category.id,
-            title: title
-        };
+        let formData = new FormData();
+        formData.append('id', category.id);
+        if (title.length < 3) {
+            toast.error('title is too short');
+            return;
+        }
+        formData.append('title', title);
+        if (file) {
+            formData.append('imageFile', file);
+        }
+        dispatch(CategoryActions.editCategory(formData));
 
-        dispatch(CategoryActions.editCategory(body));
-
-    }, [dispatch, title, category]);
+    }, [dispatch, title, category, file]);
 
 
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
@@ -48,7 +55,11 @@ const EditCategoryModal = () => {
                         <Col sm="12">
                             <FormGroup>
                                 <label> Image </label>
-                                <Input placeholder="Image" type="file" />
+                                <Input
+                                    placeholder="Image"
+                                    type="file"
+                                    onChange={(e) => setFile(e.target.files[0])}
+                                />
                             </FormGroup>
                         </Col>
                     </Row>

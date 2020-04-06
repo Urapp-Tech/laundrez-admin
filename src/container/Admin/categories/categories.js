@@ -29,11 +29,12 @@ import EditCategoryModal from '../../../components/Modals/EditCategoryModal';
 import DeleteModal from '../../../components/Modals/DeleteModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { CategoryActions } from '../../../store/actions/CategoryActions';
+import { API_URL } from '../../../store/services/Config';
 
 
 function Categories() {
     const openDeleteModal = useSelector(store => store?.category?.openDelModal);
-    const isProgress = useSelector(store => store?.category?.isProgress);
+    const isProgress = useSelector(store => store?.category?.isProgressList);
     const category = useSelector(store => store?.category?.category);
     const categories = useSelector(store => store?.category?.categories);
     const paging = useSelector(store => store?.category?.paging);
@@ -56,12 +57,19 @@ function Categories() {
     };
     const columns = [
         {
-            dataField: 'refId',
-            text: '#'
+            dataField: 'id',
+            text: '#',
+
         },
         {
             dataField: 'userId',
-            text: 'Image'
+            text: 'Image',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell, row) => {
+                return (
+                    <img src={`${API_URL}/${row.image}`} alt={'img'} className="img-thumbnail table-image" />
+                );
+            }
         },
         {
             dataField: 'title',
@@ -180,7 +188,7 @@ function Categories() {
                 </Row>
                 <AddCategoryModal />
                 <EditCategoryModal />
-                {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(CategoryActions.toggleDelCategoryModal())} isProgress={isProgress} delFunc={() => dispatch(CategoryActions.delCategory(category?.refId))} />}
+                {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(CategoryActions.toggleDelCategoryModal())} isProgress={isProgress} delFunc={() => dispatch(CategoryActions.delCategory(category?.id))} />}
             </div>
 
         </>

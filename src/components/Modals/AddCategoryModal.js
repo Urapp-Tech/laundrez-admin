@@ -2,9 +2,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, Row, Col, FormGroup, Input } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { CategoryActions } from '../../store/actions/CategoryActions';
+import { toast } from 'react-toastify';
 
 const AddCategoryModal = () => {
     const [title, setTitle] = useState('');
+    const [file, setFile] = useState(null);
     const isProgress = useSelector(store => store?.category?.isProgress);
     const isOpen = useSelector(store => store?.category?.openAddModal);
     const dispatch = useDispatch();
@@ -13,13 +15,22 @@ const AddCategoryModal = () => {
     }, [dispatch]);
     const addCategory = (e) => {
         e.preventDefault();
-        let body = {
-            title: title
-        };
-        dispatch(CategoryActions.addCategory(body));
+        if (title.length < 3) {
+            toast.error('title is too short');
+            return;
+        }
+        else if (!file) {
+            toast.error('please select file');
+            return;
+        }
+        let formData = new FormData();
+        formData.append('title', title);
+        formData.append('imageFile', file);
+        dispatch(CategoryActions.addCategory(formData));
     };
     useEffect(() => {
         setTitle('');
+        setFile('');
     }, [isOpen]);
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
@@ -39,7 +50,7 @@ const AddCategoryModal = () => {
                         <Col sm="12">
                             <FormGroup>
                                 <label> Image </label>
-                                <Input placeholder="Image" type="file" />
+                                <Input placeholder="Image" onChange={(e) => setFile(e.target.files[0])} type="file" />
                             </FormGroup>
                         </Col>
                     </Row>

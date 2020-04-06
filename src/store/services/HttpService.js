@@ -3,10 +3,10 @@ import { StorageService } from './StorageService';
 import { API_URL } from './Config';
 export class HttpService {
 
-    static get(url, headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${StorageService.getToken()}` }) {
+    static get(url, headers = { 'Content-Type': 'application/json' }) {
         return ajax({
-            url: `${API_URL}${url}`,
-            headers,
+            url: `${API_URL}/api${url}`,
+            headers: { ...headers, 'Authorization': `Bearer ${StorageService.getToken()}` },
             method: 'GET',
             async: true,
             crossDomain: true,
@@ -15,24 +15,24 @@ export class HttpService {
         });
     } // get
 
-    static post(url, body, headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${StorageService.getToken()}` }) {
+    static post(url, body, headers = { 'Content-Type': 'application/json' }) {
         return ajax({
-            url: `${API_URL}${url}`,
+            url: `${API_URL}/api${url}`,
             method: 'POST',
             body,
-            headers,
+            headers: { ...headers, 'Authorization': `Bearer ${StorageService.getToken()}` },
             async: true,
             crossDomain: true,
             responseType: 'json',
             createXHR: () => new XMLHttpRequest()
         });
     } // post
-    static put(url, body, headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${StorageService.getToken()}` }) {
+    static put(url, body, headers = { 'Content-Type': 'application/json' }) {
         return ajax({
-            url: `${API_URL}${url}`,
+            url: `${API_URL}/api${url}`,
             method: 'PUT',
             body,
-            headers,
+            headers: { ...headers, 'Authorization': `Bearer ${StorageService.getToken()}` },
             async: true,
             crossDomain: true,
             responseType: 'json',
@@ -40,12 +40,12 @@ export class HttpService {
         });
     } // put
 
-    static delete(url, body, headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${StorageService.getToken()}` }) {
+    static delete(url, body, headers = { 'Content-Type': 'application/json' }) {
         return ajax({
-            url: `${API_URL}${url}`,
+            url: `${API_URL}/api${url}`,
             method: 'DELETE',
             body,
-            headers,
+            headers:{ ...headers, 'Authorization': `Bearer ${StorageService.getToken()}` },
             async: true,
             crossDomain: true,
             responseType: 'json',
