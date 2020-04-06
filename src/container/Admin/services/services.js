@@ -208,7 +208,7 @@ function Services({ history }) {
                     </Card>
                 </Col>
             </Row>
-            {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(ServiceActions.toggleDelServiceModal())} isProgress={isProgress} delFunc={() => dispatch(ServiceActions.delService(service?.refId))} />}
+            {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(ServiceActions.toggleDelServiceModal())} isProgress={isProgress} delFunc={() => dispatch(ServiceActions.delService(service?.id))} />}
 
         </>
     );
