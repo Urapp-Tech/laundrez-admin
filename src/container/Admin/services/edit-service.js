@@ -246,7 +246,7 @@ function EditSerivce({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label htmlFor="service-image" >Service Image (400 X 400)</Label>
+                                            <Label htmlFor="service-image" >Upload image with dimension 512 x 512 not exceeding 11Mb</Label>
                                             <Input
                                                 id="service-image"
                                                 type="file"
