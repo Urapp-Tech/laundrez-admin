@@ -79,10 +79,10 @@ function Services({ history }) {
             // eslint-disable-next-line react/display-name
             formatter: (cell) => {
                 return (
-                    <span className="text-justify" >{cell}</span>
+                    <span className="text-center" >{cell}</span>
                 );
             },
-            classes: 'w-25'
+            classes: 'w-50'
         },
         {
             dataField: 'minQty',
