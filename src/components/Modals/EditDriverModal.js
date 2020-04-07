@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const EditDriverModal = memo(({ isOpen, toggle }) => {
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
-        <Modal autoFocus={false} isOpen={isOpen} toggle={toggle} >
+        <Modal autoFocus={false} centered={true} isOpen={isOpen} toggle={toggle} >
             <ModalHeader toggle={toggle} close={closeBtn}>Edit Driver</ModalHeader>
             <ModalBody>
                 <Form>
