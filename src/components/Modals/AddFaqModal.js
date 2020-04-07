@@ -28,7 +28,7 @@ const AddFaqModal = () => {
             return;
         }
         else if (formValues.serviceId === '') {
-            toast.error('please select category');
+            toast.error('please select service');
             return;
         }
         else if (formValues.answer.length < 10) {
@@ -75,7 +75,7 @@ const AddFaqModal = () => {
                                 <label> Question </label>
                                 <Input
                                     autoFocus
-                                    placeholder="Title"
+                                    placeholder="Question"
                                     type="text"
                                     value={formValues.question}
                                     onChange={(e) => setFormValues({ ...formValues, question: e.target.value })}
@@ -91,6 +91,7 @@ const AddFaqModal = () => {
                                     id="description"
                                     type="textarea"
                                     name="text"
+                                    placeholder="Description"
                                     value={formValues.answer}
                                     onChange={(e) => setFormValues({ ...formValues, answer: e.target.value })}
                                 />

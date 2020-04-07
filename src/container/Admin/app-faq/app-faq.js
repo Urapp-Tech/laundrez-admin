@@ -27,6 +27,7 @@ import DeleteModal from '../../../components/Modals/DeleteModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { FaqActions } from '../../../store/actions/FaqActions';
 import AddFaqModal from '../../../components/Modals/AddFaqModal';
+import EditFaqModal from '../../../components/Modals/EditFaqModal';
 
 function AppFaq() {
 
@@ -178,6 +179,7 @@ function AppFaq() {
                     </Col>
                 </Row>
                 <AddFaqModal />
+                <EditFaqModal />
                 {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(FaqActions.toggleDelFaqModal())} isProgress={isProgress} delFunc={() => dispatch(FaqActions.delFaq(faq?.id))} />}
 
             </div>
