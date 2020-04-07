@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -33,6 +33,7 @@ import { API_URL } from '../../../store/services/Config';
 
 
 function Categories() {
+    const [search, setSearch] = useState('');
     const openDeleteModal = useSelector(store => store?.category?.openDelModal);
     const isProgress = useSelector(store => store?.category?.isProgressList);
     const category = useSelector(store => store?.category?.category);
@@ -51,10 +52,14 @@ function Categories() {
         sort: false,
         cellEdit: false
     };
-    const onTableChange = (type, newState) => {
+    const onTableChange = useCallback((type, newState) => {
         if (type === 'pagination')
             dispatch(CategoryActions.getCategories(newState?.page));
-    };
+    }, [dispatch]);
+    const onSearch = useCallback((e) => {
+        e.preventDefault();
+        dispatch(CategoryActions.getCategories(undefined, undefined, search));
+    }, [dispatch, search]);
     const columns = [
         {
             dataField: 'id',
@@ -132,9 +137,13 @@ function Categories() {
                                         <i className="fas fa-plus"></i>
                                     </Button>
                                 </CardTitle>
-                                <form className="col-md-8 align-self-center " >
+                                <form onSubmit={onSearch} className="col-md-8 align-self-center " >
                                     <InputGroup className=" no-border">
-                                        <Input className="" placeholder="Search..." />
+                                        <Input
+                                            value={search}
+                                            onChange={e => setSearch(e.target.value)}
+                                            className=""
+                                            placeholder="Search..." />
                                         <InputGroupAddon addonType="append">
                                             <InputGroupText>
                                                 <i className="now-ui-icons ui-1_zoom-bold" />

@@ -2,10 +2,10 @@ import { CategoryTypes } from '../action-types/CategoryTypes';
 
 
 export class CategoryActions {
-    static getCategories(page = 1, pageSize = 5) {
+    static getCategories(page = 1, pageSize = 5, search = '') {
         return {
             type: CategoryTypes.GET_CATEGORIES_PROG,
-            payload: { page, pageSize }
+            payload: { page, pageSize, search }
         };
     }
     static addCategory(body) {

@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -30,6 +30,7 @@ import { API_URL } from '../../../store/services/Config';
 
 function Services({ history }) {
 
+    const [search, setSearch] = useState('');
     const openDeleteModal = useSelector(store => store?.service?.openDelModal);
     const isProgress = useSelector(store => store?.service?.isProgressList);
     const service = useSelector(store => store?.service?.service);
@@ -42,10 +43,15 @@ function Services({ history }) {
     }, [dispatch]);
 
 
-    const onTableChange = (type, newState) => {
+    const onTableChange = useCallback((type, newState) => {
         if (type === 'pagination')
             dispatch(ServiceActions.getServices(newState?.page));
-    };
+    }, [dispatch]);
+
+    const onSearch = useCallback((e) => {
+        e.preventDefault();
+        dispatch(ServiceActions.getServices(undefined, undefined, search));
+    }, [dispatch, search]);
 
 
     const remote = {
@@ -154,9 +160,9 @@ function Services({ history }) {
                                     <i className="fas fa-plus"></i>
                                 </Button>
                             </CardTitle>
-                            <form className="col-md-8 align-self-center " >
+                            <form onSubmit={onSearch} className="col-md-8 align-self-center " >
                                 <InputGroup className=" no-border">
-                                    <Input className="" placeholder="Search..." />
+                                    <Input className="" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                                     <InputGroupAddon addonType="append">
                                         <InputGroupText>
                                             <i className="now-ui-icons ui-1_zoom-bold" />

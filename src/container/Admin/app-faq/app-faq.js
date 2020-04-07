@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 // reactstrap components
 import {
@@ -30,7 +30,7 @@ import AddFaqModal from '../../../components/Modals/AddFaqModal';
 import EditFaqModal from '../../../components/Modals/EditFaqModal';
 
 function AppFaq() {
-
+    const [search, setSearch] = useState('');
     const openDeleteModal = useSelector(store => store?.faq?.openDelModal);
     const isProgress = useSelector(store => store?.faq?.isProgressList);
     const faq = useSelector(store => store?.faq?.faq);
@@ -49,10 +49,14 @@ function AppFaq() {
         sort: false,
         cellEdit: false
     };
-    const onTableChange = (type, newState) => {
+    const onTableChange = useCallback((type, newState) => {
         if (type === 'pagination')
             dispatch(FaqActions.getFaqs(newState?.page));
-    };
+    }, [dispatch]);
+    const onSearch = useCallback((e) => {
+        e.preventDefault();
+        dispatch(FaqActions.getFaqs(undefined, undefined, search));
+    }, [dispatch, search]);
     const columns = [
         {
             dataField: 'id',
@@ -123,9 +127,9 @@ function AppFaq() {
                                         <i className="fas fa-plus"></i>
                                     </Button>
                                 </CardTitle>
-                                <form className="col-md-8 align-self-center " >
+                                <form onSubmit={onSearch} className="col-md-8 align-self-center " >
                                     <InputGroup className=" no-border">
-                                        <Input className="" placeholder="Search..." />
+                                        <Input value={search} onChange={(e) => setSearch(e.target.value)} className="" placeholder="Search..." />
                                         <InputGroupAddon addonType="append">
                                             <InputGroupText>
                                                 <i className="now-ui-icons ui-1_zoom-bold" />

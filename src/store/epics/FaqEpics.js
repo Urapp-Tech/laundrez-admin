@@ -10,7 +10,7 @@ const ErrorMsg = 'something went wrong !';
 export class FaqEpics {
     static getFaqs(action$, state$, { ajaxGet }) {
         return action$.pipe(ofType(FaqTypes.GET_FAQS_PROG), switchMap(({ payload }) => {
-            return ajaxGet(`/FAQ/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}`).pipe(pluck('response'), map(obj => {
+            return ajaxGet(`/FAQ/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[question]=${payload.search}`).pipe(pluck('response'), map(obj => {
                 return {
                     type: FaqTypes.GET_FAQS_SUCC,
                     payload: obj

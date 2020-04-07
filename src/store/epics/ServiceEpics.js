@@ -10,7 +10,7 @@ const ErrorMsg = 'something went wrong !';
 export class ServiceEpics {
     static getServices(action$, state$, { ajaxGet }) {
         return action$.pipe(ofType(ServiceTypes.GET_SERVICES_PROG), switchMap(({ payload }) => {
-            return ajaxGet(`/Service/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}`).pipe(pluck('response'), map(obj => {
+            return ajaxGet(`/Service/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[title]=${payload.search}`).pipe(pluck('response'), map(obj => {
                 return {
                     type: ServiceTypes.GET_SERVICES_SUCC,
                     payload: obj

@@ -2,10 +2,10 @@ import { FaqTypes } from '../action-types/FaqTypes';
 
 
 export class FaqActions {
-    static getFaqs(page = 1, pageSize = 10) {
+    static getFaqs(page = 1, pageSize = 10, search = '') {
         return {
             type: FaqTypes.GET_FAQS_PROG,
-            payload: { page, pageSize }
+            payload: { page, pageSize, search }
         };
     }
     static addFaq(body) {

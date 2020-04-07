@@ -2,10 +2,10 @@ import { ServiceTypes } from '../action-types/ServiceTypes';
 
 
 export class ServiceActions {
-    static getServices(page = 1, pageSize = 10) {
+    static getServices(page = 1, pageSize = 10, search = '') {
         return {
             type: ServiceTypes.GET_SERVICES_PROG,
-            payload: { page, pageSize }
+            payload: { page, pageSize, search }
         };
     }
     static addService(body, history) {
