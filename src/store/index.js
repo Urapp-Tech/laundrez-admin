@@ -3,21 +3,32 @@ import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { createLogger } from 'redux-logger';
 // reducers
 
-import { categoryReducer, authReducer, serviceReducer } from './reducers';
+import {
+    categoryReducer,
+    authReducer,
+    serviceReducer,
+    faqReducer
+} from './reducers';
 
 
 import { HttpService } from './services/HttpService';
 import { AuthTypes } from './action-types/AuthTypes';
 
 // epics
-import { CategoryEpics, AuthEpics, ServiceEpics } from './epics';
+import {
+    CategoryEpics,
+    AuthEpics,
+    ServiceEpics,
+    FaqEpics
+} from './epics';
 
 const loggerMiddleware = createLogger();
 // Application Reducers
 const appReducer = combineReducers({
     category: categoryReducer,
     auth: authReducer,
-    service: serviceReducer
+    service: serviceReducer,
+    faq: faqReducer
 });
 const rootReducer = (state, action) => {
     if (action.type === AuthTypes.SIGNOUT_USER) {
@@ -39,7 +50,12 @@ export const rootEpic = combineEpics(
     ServiceEpics.getServices,
     ServiceEpics.addService,
     ServiceEpics.editService,
-    ServiceEpics.delService
+    ServiceEpics.delService,
+
+    FaqEpics.getFaqs,
+    FaqEpics.addFaq,
+    FaqEpics.editFaq,
+    FaqEpics.delFaq,
 
 );
 

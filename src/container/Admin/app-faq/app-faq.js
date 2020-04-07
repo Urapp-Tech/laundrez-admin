@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 // reactstrap components
 import {
@@ -21,26 +21,36 @@ import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
 
-import { appFaqData } from '../../../variables/general';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import DleteModal from '../../../components/Modals/DeleteModal';
+import DeleteModal from '../../../components/Modals/DeleteModal';
+import { useSelector, useDispatch } from 'react-redux';
+import { FaqActions } from '../../../store/actions/FaqActions';
 import AddFaqModal from '../../../components/Modals/AddFaqModal';
-import EditFaqModal from '../../../components/Modals/EditFaqModal';
 
 function AppFaq() {
 
-    const [openAddFaqModal, toggleAddFaqModal] = useState(false);
-    const [openEditFaqModal, toggleEditFaqModal] = useState(false);
-    const [openDeleteModal, toggleDeleteModal] = useState(false);
+    const openDeleteModal = useSelector(store => store?.faq?.openDelModal);
+    const isProgress = useSelector(store => store?.faq?.isProgressList);
+    const faq = useSelector(store => store?.faq?.faq);
+    const faqs = useSelector(store => store?.faq?.faqs);
+    const paging = useSelector(store => store?.faq?.paging);
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(FaqActions.getFaqs());
+    }, [dispatch]);
 
 
     const remote = {
         filter: false,
-        pagination: false,
+        pagination: true,
         sort: false,
         cellEdit: false
+    };
+    const onTableChange = (type, newState) => {
+        if (type === 'pagination')
+            dispatch(FaqActions.getFaqs(newState?.page));
     };
     const columns = [
         {
@@ -48,11 +58,11 @@ function AppFaq() {
             text: '#'
         },
         {
-            dataField: 'title',
+            dataField: 'question',
             text: 'Title'
         },
         {
-            dataField: 'description',
+            dataField: 'answer',
             text: 'Description'
         },
         {
@@ -67,7 +77,7 @@ function AppFaq() {
                             color="info"
                             id={`edit-order-${rowIndex}`}
                             type="button"
-                            onClick={() => toggleEditFaqModal(!openEditFaqModal)}
+                            onClick={() => dispatch(FaqActions.toggleEditFaqModal(rowIndex))}
                         >
                             <i className="fas fa-edit" />
                         </Button>
@@ -82,7 +92,7 @@ function AppFaq() {
                             color="info"
                             id={`tooltip-${rowIndex}`}
                             type="button"
-                            onClick={() => toggleDeleteModal(!openDeleteModal)}
+                            onClick={() => dispatch(FaqActions.toggleDelFaqModal(rowIndex))}
                         >
                             <i className="fas fa-trash-alt" />
                         </Button>
@@ -108,7 +118,7 @@ function AppFaq() {
                                 <CardTitle tag="h4">App Faqs
                                 <Button
                                         className="btn-primary btn-add ml-2"
-                                        onClick={() => toggleAddFaqModal(!openAddFaqModal)} >
+                                        onClick={() => dispatch(FaqActions.toggleAddFaqModal())} >
                                         <i className="fas fa-plus"></i>
                                     </Button>
                                 </CardTitle>
@@ -124,46 +134,51 @@ function AppFaq() {
                                 </form>
                             </CardHeader>
                             <CardBody>
-                                <ToolkitProvider
-                                    keyField='id'
-                                    data={appFaqData}
-                                    columns={columns}
-                                    bootstrap4
+                                {isProgress ?
+                                    <div className='spinner-lg' ></div> :
+                                    <ToolkitProvider
+                                        keyField='id'
+                                        data={faqs}
+                                        columns={columns}
+                                        bootstrap4
 
-                                >{
-                                        props => (
-                                            <div>
-                                                {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
-                                                <BootstrapTable
-                                                    remote={remote}
-                                                    wrapperClasses={'table-responsive'}
-                                                    classes=""
-                                                    headerWrapperClasses="text-primary text-left"
-                                                    bordered={false}
-                                                    headerClasses=""
-                                                    bodyClasses="text-left"
-                                                    {...props.baseProps}
-                                                    // keyField='name'
-                                                    // data={products}
-                                                    // columns={columns}
-                                                    pagination={paginationFactory({
-                                                        page: 1,
-                                                        sizePerPage: 10,
-                                                        hideSizePerPage: true
-                                                    })}
-                                                />
-                                            </div>
-                                        )
+                                    >{
+                                            props => (
+                                                <div>
+                                                    {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
+                                                    <BootstrapTable
+                                                        remote={remote}
+                                                        wrapperClasses={'table-responsive'}
+                                                        classes=""
+                                                        headerWrapperClasses="text-primary text-left"
+                                                        bordered={false}
+                                                        headerClasses=""
+                                                        bodyClasses="text-left"
+                                                        {...props.baseProps}
+                                                        // keyField='name'
+                                                        // data={products}
+                                                        // columns={columns}
+                                                        onTableChange={onTableChange}
+                                                        pagination={paginationFactory({
+                                                            page: paging.pageNumber,
+                                                            sizePerPage: 5,
+                                                            totalSize: paging.totalCount,
+                                                            hideSizePerPage: true,
 
-                                    }
-                                </ToolkitProvider>
+                                                        })}
+
+                                                    />
+                                                </div>
+                                            )
+
+                                        }
+                                    </ToolkitProvider>}
                             </CardBody>
                         </Card>
                     </Col>
                 </Row>
-                <AddFaqModal isOpen={openAddFaqModal} toggle={() => toggleAddFaqModal(!openAddFaqModal)} />
-                <EditFaqModal isOpen={openEditFaqModal} toggle={() => toggleEditFaqModal(!openEditFaqModal)} />
-                <DleteModal isOpen={openDeleteModal} toggle={() => toggleDeleteModal(!openDeleteModal)} />
+                <AddFaqModal />
+                {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(FaqActions.toggleDelFaqModal())} isProgress={isProgress} delFunc={() => dispatch(FaqActions.delFaq(faq?.id))} />}
 
             </div>
         </>
