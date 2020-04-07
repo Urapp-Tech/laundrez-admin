@@ -55,8 +55,8 @@ const EditCategoryModal = () => {
             toast.error('please select image');
             return;
         }
-        else if (fileSizeInMB > 11) {
-            toast.error('file size is exceeding 11Mb');
+        else if (fileSizeInMB > 4) {
+            toast.error('file size is exceeding 4Mb');
             return;
         }
         else if (error.isError) {
@@ -93,6 +93,7 @@ const EditCategoryModal = () => {
                                 <Input
                                     placeholder="Image"
                                     type="file"
+                                    accept="image/x-png,image/jpg,image/jpeg,image/svg+xml"
                                     onChange={onImageSelect}
                                 />
                                 {error.isError &&
