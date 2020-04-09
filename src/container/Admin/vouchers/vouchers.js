@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -135,12 +135,12 @@ function Vouchers({ history }) {
                             color="info"
                             id={`edit-order-${rowIndex}`}
                             type="button"
-                            // onClick={() => history.push({
-                            //     pathname: '/admin/services/update',
-                            //     state: {
-                            //         service: services[rowIndex]
-                            //     }
-                            // })}
+                        // onClick={() => history.push({
+                        //     pathname: '/admin/services/update',
+                        //     state: {
+                        //         service: services[rowIndex]
+                        //     }
+                        // })}
                         >
                             <i className=" fas fa-edit"></i>
                         </Button>
@@ -155,7 +155,7 @@ function Vouchers({ history }) {
                             color="info"
                             id={`del-${rowIndex}`}
                             type="button"
-                            // onClick={() => dispatch(ServiceActions.toggleDelServiceModal(rowIndex))}
+                        // onClick={() => dispatch(ServiceActions.toggleDelServiceModal(rowIndex))}
                         >
                             <i className="fas fa-trash-alt" />
                         </Button>
