@@ -7,7 +7,8 @@ import {
     categoryReducer,
     authReducer,
     serviceReducer,
-    faqReducer
+    faqReducer,
+    voucherReducer
 } from './reducers';
 
 
@@ -19,7 +20,8 @@ import {
     CategoryEpics,
     AuthEpics,
     ServiceEpics,
-    FaqEpics
+    FaqEpics,
+    VoucherEpics
 } from './epics';
 
 const loggerMiddleware = createLogger();
@@ -28,7 +30,8 @@ const appReducer = combineReducers({
     category: categoryReducer,
     auth: authReducer,
     service: serviceReducer,
-    faq: faqReducer
+    faq: faqReducer,
+    voucher: voucherReducer
 });
 const rootReducer = (state, action) => {
     if (action.type === AuthTypes.SIGNOUT_USER) {
@@ -56,6 +59,13 @@ export const rootEpic = combineEpics(
     FaqEpics.addFaq,
     FaqEpics.editFaq,
     FaqEpics.delFaq,
+
+    VoucherEpics.getVouchers,
+    VoucherEpics.addVoucher,
+    VoucherEpics.editVoucher,
+    VoucherEpics.delVoucher,
+
+
 
 );
 

@@ -195,9 +195,6 @@ function Services({ history }) {
                                                     bodyClasses="text-left"
                                                     {...props.baseProps}
                                                     onTableChange={onTableChange}
-                                                    // keyField='name'
-                                                    // data={products}
-                                                    // columns={columns}
                                                     pagination={paginationFactory({
                                                         page: paging.pageNumber,
                                                         sizePerPage: 10,

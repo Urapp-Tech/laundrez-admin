@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -16,18 +16,45 @@ import {
     InputGroupText,
     Input,
     FormGroup,
+    UncontrolledTooltip,
 } from 'reactstrap';
-import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
-
-import { couponsData } from '../../../variables/general';
-
+import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import { useSelector, useDispatch } from 'react-redux';
+import { VoucherActions } from '../../../store/actions/VoucherActions';
+import DeleteModal from '../../../components/Modals/DeleteModal';
 
 
 
 function Vouchers({ history }) {
+
+
+    // const [search, setSearch] = useState('');
+    const openDeleteModal = useSelector(store => store?.voucher?.openDelModal);
+    const isProgress = useSelector(store => store?.voucher?.isProgressList);
+    const voucher = useSelector(store => store?.voucher?.voucher);
+    const vouchers = useSelector(store => store?.voucher?.vouchers);
+    const paging = useSelector(store => store?.voucher?.paging);
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        dispatch(VoucherActions.getVouchers());
+    }, [dispatch]);
+
+
+    const onTableChange = useCallback((type, newState) => {
+        if (type === 'pagination')
+            dispatch(VoucherActions.getVouchers(newState?.page));
+    }, [dispatch]);
+
+    // const onSearch = useCallback((e) => {
+    //     e.preventDefault();
+    //     dispatch(VoucherActions.getVouchers(undefined, undefined, search));
+    // }, [dispatch, search]);
+
 
     const remote = {
         filter: false,
@@ -36,28 +63,36 @@ function Vouchers({ history }) {
         cellEdit: false
     };
     const columns = [
-        {
-            dataField: 'id',
-            text: '#'
-        },
+        // {
+        //     dataField: 'id',
+        //     text: '#'
+        // },
         {
             dataField: 'code',
             text: 'Coupon Code'
         },
         {
-            dataField: 'from',
-            text: 'Valid From'
+            dataField: 'validFrom',
+            text: 'Valid From',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell, ) => {
+                return (<span>{new Date(cell).toLocaleDateString()}</span>);
+            }
         },
         {
-            dataField: 'till',
-            text: 'Valid Till'
+            dataField: 'validTo',
+            text: 'Valid Till',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell, ) => {
+                return (<span>{new Date(cell).toLocaleDateString()}</span>);
+            }
         },
         {
-            dataField: 'amount',
-            text: 'Offer Amount'
+            dataField: 'offerValue',
+            text: 'Offer Value'
         },
         {
-            dataField: 'products',
+            dataField: 'minProduct',
             text: 'Min Products'
         },
         {
@@ -65,24 +100,74 @@ function Vouchers({ history }) {
             text: 'Min Amount'
         },
         {
-            dataField: 'title',
+            dataField: 'couponType',
+            text: 'Coupon Type'
+        },
+        {
+            dataField: 'offerType',
+            text: 'Offer Type'
+        },
+        {
+            dataField: 'isActive',
             text: 'Status',
             // eslint-disable-next-line react/display-name
             formatter: (cell, row, rowIndex) => {
                 return (
                     <FormGroup className="" key={rowIndex} >
 
-                        <Input type="select" name="select" id="exampleSelect">
-                            <option>Active</option>
-                            <option>InActive</option>
+                        <Input type="select" name="select" value={cell} id="exampleSelect">
+                            <option value={true} >Active</option>
+                            <option value={false} >InActive</option>
                         </Input>
                     </FormGroup>
                 );
             }
         },
         {
-            dataField: 'addedOn',
-            text: 'Added On'
+            dataField: 'action',
+            text: 'Action',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell, row, rowIndex) => {
+                return (
+                    <div>
+                        <Button
+                            className="btn-round btn-icon btn-icon-mini btn-neutral"
+                            color="info"
+                            id={`edit-order-${rowIndex}`}
+                            type="button"
+                            // onClick={() => history.push({
+                            //     pathname: '/admin/services/update',
+                            //     state: {
+                            //         service: services[rowIndex]
+                            //     }
+                            // })}
+                        >
+                            <i className=" fas fa-edit"></i>
+                        </Button>
+                        <UncontrolledTooltip
+                            delay={5}
+                            target={`edit-order-${rowIndex}`}
+                        >
+                            Edit
+              </UncontrolledTooltip>
+                        <Button
+                            className="btn-round btn-icon btn-icon-mini btn-neutral"
+                            color="info"
+                            id={`del-${rowIndex}`}
+                            type="button"
+                            // onClick={() => dispatch(ServiceActions.toggleDelServiceModal(rowIndex))}
+                        >
+                            <i className="fas fa-trash-alt" />
+                        </Button>
+                        <UncontrolledTooltip
+                            delay={5}
+                            target={`del-${rowIndex}`}
+                        >
+                            Remove
+                        </UncontrolledTooltip>
+                    </div>
+                );
+            }
         }
 
     ];
@@ -111,43 +196,46 @@ function Vouchers({ history }) {
                             </form>
                         </CardHeader>
                         <CardBody>
-                            <ToolkitProvider
-                                keyField='id'
-                                data={couponsData}
-                                columns={columns}
-                                bootstrap4
+                            {isProgress ?
+                                <div className='spinner-lg' ></div>
+                                : <ToolkitProvider
+                                    keyField='id'
+                                    data={vouchers}
+                                    columns={columns}
+                                    bootstrap4
 
-                            >{
-                                    props => (
-                                        <div>
-                                            {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
-                                            <BootstrapTable
-                                                remote={remote}
-                                                wrapperClasses={'table-responsive'}
-                                                classes=""
-                                                headerWrapperClasses="text-primary text-left"
-                                                bordered={false}
-                                                headerClasses=""
-                                                bodyClasses="text-left"
-                                                {...props.baseProps}
-                                                // keyField='name'
-                                                // data={products}
-                                                // columns={columns}
-                                                pagination={paginationFactory({
-                                                    page: 1,
-                                                    sizePerPage: 10,
-                                                    hideSizePerPage: true
-                                                })}
-                                            />
-                                        </div>
-                                    )
+                                >{
+                                        props => (
+                                            <div>
+                                                {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
+                                                <BootstrapTable
+                                                    remote={remote}
+                                                    wrapperClasses={'table-responsive'}
+                                                    classes=""
+                                                    headerWrapperClasses="text-primary text-left"
+                                                    bordered={false}
+                                                    headerClasses=""
+                                                    bodyClasses="text-left"
+                                                    {...props.baseProps}
+                                                    onTableChange={onTableChange}
+                                                    pagination={paginationFactory({
+                                                        page: paging.pageNumber,
+                                                        sizePerPage: 10,
+                                                        totalSize: paging.totalCount,
+                                                        hideSizePerPage: true,
+                                                    })}
+                                                />
+                                            </div>
+                                        )
 
-                                }
-                            </ToolkitProvider>
+                                    }
+                                </ToolkitProvider>}
                         </CardBody>
                     </Card>
                 </Col>
             </Row>
+            {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(VoucherActions.toggleDelVoucherModal())} isProgress={isProgress} delFunc={() => dispatch(VoucherActions.delService(voucher?.id))} />}
+
         </>
     );
 }
