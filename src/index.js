@@ -27,7 +27,7 @@ ReactDOM.render(
       <Switch>
         <Route path="/admin/auth" render={props => <AuthContainer {...props} />} />
         <Route path="/admin" render={props => <PrivateRoute {...props} component={AdminLayout} />} />
-        <Redirect to="/admin/auth/login" />
+        <Redirect from="/admin" to="/admin/auth/login" />
       </Switch>
     </Router>
   </Provider>,

@@ -6,7 +6,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => (
         (StorageService.getToken())
             ? <Component {...props} />
-            : <Redirect to={'/auth/login'} />
+            : <Redirect to={'/admin/auth/login'} />
     )} />
 );
 PrivateRoute.propTypes = {
