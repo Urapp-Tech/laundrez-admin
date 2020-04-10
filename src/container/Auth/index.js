@@ -7,7 +7,7 @@ function AuthContainer() {
         <div className="wrapper">
             <div className="main-panel-login">
                 <Switch>
-                    <Route path="/auth/login" component={Login} />
+                    <Route path="/admin/auth/login" component={Login} />
                 </Switch>
             </div>
         </div>

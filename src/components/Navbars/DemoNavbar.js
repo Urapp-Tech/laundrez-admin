@@ -89,7 +89,7 @@ class Header extends React.Component {
   onLogout = () => {
     StorageService.clearStorage();
     this.props.signout();
-    this.props.history.replace('/auth/login');
+    this.props.history.replace('/admin/auth/login');
 
   }
   componentDidMount() {

@@ -25,9 +25,9 @@ ReactDOM.render(
     <Router history={hist}>
       <ToastContainer />
       <Switch>
-        <Route path="/auth" render={props => <AuthContainer {...props} />} />
+        <Route path="/admin/auth" render={props => <AuthContainer {...props} />} />
         <Route path="/admin" render={props => <PrivateRoute {...props} component={AdminLayout} />} />
-        <Redirect to="/auth/login" />
+        <Redirect to="/admin/auth/login" />
       </Switch>
     </Router>
   </Provider>,
