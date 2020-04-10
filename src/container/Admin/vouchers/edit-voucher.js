@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -17,9 +17,10 @@ import {
 } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { VoucherActions } from '../../../store/actions/VoucherActions';
+import moment from 'moment';
 
 
-function AddVoucher({ history }) {
+function EditVoucher({ history }) {
     const dispatch = useDispatch();
     const [notValid, setNotValid] = useState({ error: false, type: '', message: '' });
     const isProgress = useSelector(store => store?.voucher?.isProgress);
@@ -35,9 +36,50 @@ function AddVoucher({ history }) {
         maxRedeem: 0,
         numberRedeem: 0,
         isActive: true,
+        id: 0
 
     });
-    const addVoucher = useCallback((e) => {
+    useEffect(() => {
+        let voucher = history?.location?.state?.voucher;
+        if (voucher) {
+
+            let {
+                code,
+                validFrom,
+                validTo,
+                couponType,
+                offerType,
+                offerValue,
+                minProduct,
+                minAmount,
+                maxRedeem,
+                numberRedeem,
+                isActive,
+                id
+            } = voucher;
+
+
+            setFormValues({
+                code,
+                validFrom: moment(validFrom).format('YYYY-MM-DD'),
+                validTo: moment(validTo).format('YYYY-MM-DD'),
+                couponType,
+                offerType,
+                offerValue,
+                minProduct,
+                minAmount,
+                maxRedeem,
+                numberRedeem,
+                isActive,
+                id
+            });
+        }
+        else {
+            history.goBack();
+        }
+
+    }, [dispatch, history]);
+    const editVoucher = useCallback((e) => {
         e.preventDefault();
         if (notValid.error) {
             setNotValid({ error: false, type: '', message: '' });
@@ -87,8 +129,9 @@ function AddVoucher({ history }) {
             maxRedeem: Number(formValues.maxRedeem),
             numberRedeem: Number(formValues.numberRedeem),
             isActive: formValues.isActive,
+            id: formValues.id
         };
-        dispatch(VoucherActions.addVoucher(body, history));
+        dispatch(VoucherActions.editVoucher(body, history));
 
     }, [formValues, dispatch, notValid, history]);
     return (
@@ -97,10 +140,10 @@ function AddVoucher({ history }) {
                 <Col xs={12}>
                     <Card>
                         <CardHeader className="d-flex justify-content-between" >
-                            <CardTitle tag="h4">Add Voucher</CardTitle>
+                            <CardTitle tag="h4">Edit Voucher</CardTitle>
                         </CardHeader>
                         <CardBody>
-                            <Form onSubmit={addVoucher} >
+                            <Form onSubmit={editVoucher} >
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
@@ -243,10 +286,10 @@ function AddVoucher({ history }) {
                                 </Row>
                                 <Row>
                                     <Col sm="6">
-                                        <div>
+                                        <div className="w-100" >
                                             <label>Status</label>
                                         </div>
-                                        <label className="mr-2" style={{ width: '3rem' }}>{formValues.isActive ? 'Active' : 'In Active'}</label>
+                                        <label className="mr-2  " style={{ width: '3rem' }} >{formValues.isActive ? 'Active' : 'In Active'}</label>
                                         <label className="switch">
                                             <input
                                                 type="checkbox"
@@ -267,7 +310,7 @@ function AddVoucher({ history }) {
                                                     ?
                                                     <div className="spinner" ></div>
                                                     :
-                                                    ' Add Voucher'
+                                                    ' Edit Voucher'
                                             }
                                         </Button>
                                         <Button className="btn-round btn-default btn-add-modal" onClick={() => history.goBack()}  >Cancel</Button>
@@ -282,7 +325,7 @@ function AddVoucher({ history }) {
     );
 }
 
-AddVoucher.propTypes = {
+EditVoucher.propTypes = {
     history: PropTypes.object
 };
-export default AddVoucher;
+export default EditVoucher;

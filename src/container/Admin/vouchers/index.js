@@ -5,6 +5,7 @@ import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
 import Vouchers from './vouchers';
 import AddVoucher from './add-voucher';
+import EditVoucher from './edit-voucher';
 
 function VouchersContainer() {
     return (
@@ -14,6 +15,7 @@ function VouchersContainer() {
                 <Switch>
                     <Route exact path="/admin/vouchers" component={Vouchers} />
                     <Route path="/admin/vouchers/add" component={AddVoucher} />
+                    <Route path="/admin/vouchers/update" component={EditVoucher} />
                 </Switch>
             </div>
         </>

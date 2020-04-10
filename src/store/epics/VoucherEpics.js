@@ -27,7 +27,7 @@ export class VoucherEpics {
 
     static addVoucher(action$, state$, { ajaxPost }) {
         return action$.pipe(ofType(VoucherTypes.ADD_VOUCHER_PROG), switchMap(({ payload }) => {
-            return ajaxPost('/Coupon/', payload.body, null).pipe(pluck('response'), flatMap(obj => {
+            return ajaxPost('/Coupon/', payload.body).pipe(pluck('response'), flatMap(obj => {
                 toast.success('voucher added successfully');
                 if (payload?.history) {
                     payload.history.goBack();
@@ -48,7 +48,7 @@ export class VoucherEpics {
     }
     static editVoucher(action$, state$, { ajaxPut }) {
         return action$.pipe(ofType(VoucherTypes.EDIT_VOUCHER_PROG), switchMap(({ payload }) => {
-            return ajaxPut('/Coupon/', payload.body, null).pipe(pluck('response'), flatMap(obj => {
+            return ajaxPut('/Coupon/', payload.body).pipe(pluck('response'), flatMap(obj => {
                 toast.success('voucher edited successfully');
                 if (payload?.history) {
                     payload.history.goBack();

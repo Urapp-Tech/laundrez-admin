@@ -42,31 +42,38 @@ function EditSerivce({ history }) {
     });
 
     useEffect(() => {
-        let {
-            title,
-            description,
-            shortDescription,
-            price,
-            minQty,
-            isActive,
-            categoryId,
-            id
-        } = history?.location?.state?.service;
+        let service = history?.location?.state?.service;
+        if (service) {
+
+            let {
+                title,
+                description,
+                shortDescription,
+                price,
+                minQty,
+                isActive,
+                categoryId,
+                id
+            } = service;
 
 
-        setFormValues({
-            title,
-            description,
-            shortDescription,
-            price,
-            minQty,
-            isActive,
-            categoryId,
-            id
-        });
+            setFormValues({
+                title,
+                description,
+                shortDescription,
+                price,
+                minQty,
+                isActive,
+                categoryId,
+                id
+            });
 
 
-        dispatch(CategoryActions.getCategories(1, 1000));
+            dispatch(CategoryActions.getCategories(1, 1000));
+        }
+        else {
+            history.goBack();
+        }
     }, [dispatch, history]);
 
 

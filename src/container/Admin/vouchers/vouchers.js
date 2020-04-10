@@ -15,7 +15,6 @@ import {
     InputGroupAddon,
     InputGroupText,
     Input,
-    FormGroup,
     UncontrolledTooltip,
 } from 'reactstrap';
 // core components
@@ -25,6 +24,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import { useSelector, useDispatch } from 'react-redux';
 import { VoucherActions } from '../../../store/actions/VoucherActions';
 import DeleteModal from '../../../components/Modals/DeleteModal';
+import moment from 'moment';
 
 
 
@@ -33,7 +33,8 @@ function Vouchers({ history }) {
 
     // const [search, setSearch] = useState('');
     const openDeleteModal = useSelector(store => store?.voucher?.openDelModal);
-    const isProgress = useSelector(store => store?.voucher?.isProgressList);
+    const isProgressList = useSelector(store => store?.voucher?.isProgressList);
+    const isProgress = useSelector(store => store?.voucher?.isProgress);
     const voucher = useSelector(store => store?.voucher?.voucher);
     const vouchers = useSelector(store => store?.voucher?.vouchers);
     const paging = useSelector(store => store?.voucher?.paging);
@@ -76,7 +77,7 @@ function Vouchers({ history }) {
             text: 'Valid From',
             // eslint-disable-next-line react/display-name
             formatter: (cell, ) => {
-                return (<span>{new Date(cell).toLocaleDateString()}</span>);
+                return (<span>{moment(cell).format('DD/MM/YYYY')}</span>);
             }
         },
         {
@@ -84,7 +85,7 @@ function Vouchers({ history }) {
             text: 'Valid Till',
             // eslint-disable-next-line react/display-name
             formatter: (cell, ) => {
-                return (<span>{new Date(cell).toLocaleDateString()}</span>);
+                return (<span>{moment(cell).format('DD/MM/YYYY')}</span>);
             }
         },
         {
@@ -108,18 +109,21 @@ function Vouchers({ history }) {
             text: 'Offer Type'
         },
         {
+            dataField: 'numberRedeem',
+            text: 'Number Redeem'
+        },
+        {
+            dataField: 'maxRedeem',
+            text: 'Max Redeem'
+        },
+        {
             dataField: 'isActive',
             text: 'Status',
             // eslint-disable-next-line react/display-name
-            formatter: (cell, row, rowIndex) => {
+            formatter: (cell) => {
                 return (
-                    <FormGroup className="" key={rowIndex} >
 
-                        <Input type="select" name="select" value={cell} id="exampleSelect">
-                            <option value={true} >Active</option>
-                            <option value={false} >InActive</option>
-                        </Input>
-                    </FormGroup>
+                    cell ? 'Active' : 'InActive'
                 );
             }
         },
@@ -129,18 +133,18 @@ function Vouchers({ history }) {
             // eslint-disable-next-line react/display-name
             formatter: (cell, row, rowIndex) => {
                 return (
-                    <div>
+                    <div style={{ width: '4.8rem' }} >
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
                             color="info"
                             id={`edit-order-${rowIndex}`}
                             type="button"
-                        // onClick={() => history.push({
-                        //     pathname: '/admin/services/update',
-                        //     state: {
-                        //         service: services[rowIndex]
-                        //     }
-                        // })}
+                            onClick={() => history.push({
+                                pathname: '/admin/vouchers/update',
+                                state: {
+                                    voucher: vouchers[rowIndex]
+                                }
+                            })}
                         >
                             <i className=" fas fa-edit"></i>
                         </Button>
@@ -155,7 +159,7 @@ function Vouchers({ history }) {
                             color="info"
                             id={`del-${rowIndex}`}
                             type="button"
-                        // onClick={() => dispatch(ServiceActions.toggleDelServiceModal(rowIndex))}
+                            onClick={() => dispatch(VoucherActions.toggleDelVoucherModal(rowIndex))}
                         >
                             <i className="fas fa-trash-alt" />
                         </Button>
@@ -196,7 +200,7 @@ function Vouchers({ history }) {
                             </form>
                         </CardHeader>
                         <CardBody>
-                            {isProgress ?
+                            {isProgressList ?
                                 <div className='spinner-lg' ></div>
                                 : <ToolkitProvider
                                     keyField='id'
@@ -234,7 +238,7 @@ function Vouchers({ history }) {
                     </Card>
                 </Col>
             </Row>
-            {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(VoucherActions.toggleDelVoucherModal())} isProgress={isProgress} delFunc={() => dispatch(VoucherActions.delService(voucher?.id))} />}
+            {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(VoucherActions.toggleDelVoucherModal())} isProgress={isProgress} delFunc={() => dispatch(VoucherActions.delVoucher(voucher?.id))} />}
 
         </>
     );
