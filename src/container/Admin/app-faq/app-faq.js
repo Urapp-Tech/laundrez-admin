@@ -32,6 +32,7 @@ import EditFaqModal from '../../../components/Modals/EditFaqModal';
 
 function AppFaq() {
     const [search, setSearch] = useState('');
+    const [isSearch, setIsSearch] = useState(false);
     const openDeleteModal = useSelector(store => store?.faq?.openDelModal);
     const isProgress = useSelector(store => store?.faq?.isProgressList);
     const faq = useSelector(store => store?.faq?.faq);
@@ -44,6 +45,9 @@ function AppFaq() {
     }, [dispatch]);
 
 
+
+
+
     const remote = {
         filter: false,
         pagination: true,
@@ -54,10 +58,27 @@ function AppFaq() {
         if (type === 'pagination')
             dispatch(FaqActions.getFaqs(newState?.page));
     }, [dispatch]);
+
+
     const onSearch = useCallback((e) => {
         e.preventDefault();
-        dispatch(FaqActions.getFaqs(undefined, undefined, search));
+        if (search) {
+            setIsSearch(true);
+            dispatch(FaqActions.getFaqs(undefined, undefined, search));
+        }
+
     }, [dispatch, search]);
+
+
+    useEffect(() => {
+        if (isSearch && search === '') {
+            setIsSearch(false);
+            dispatch(FaqActions.getFaqs(undefined, undefined, search));
+        }
+
+    }, [search, onSearch, isSearch, dispatch]);
+
+
     const columns = [
         {
             dataField: 'id',
@@ -139,7 +160,7 @@ function AppFaq() {
                                         <Input value={search} onChange={(e) => setSearch(e.target.value)} className="" placeholder="Search..." />
                                         <InputGroupAddon addonType="append">
                                             <InputGroupText>
-                                                <i className="now-ui-icons ui-1_zoom-bold" />
+                                                <i className="now-ui-icons ui-1_zoom-bold cursor-pointer " onClick={onSearch} />
                                             </InputGroupText>
                                         </InputGroupAddon>
                                     </InputGroup>
@@ -149,7 +170,7 @@ function AppFaq() {
                                 {isProgress ?
                                     <div className='spinner-lg' ></div> :
                                     <>
-                                        <Badge color="primary">{paging.totalCount}{ ' Faq\'s'}</Badge>
+                                        <Badge color="primary">{paging.totalCount}{' Faq\'s'}</Badge>
                                         <ToolkitProvider
                                             keyField='id'
                                             data={faqs}
@@ -173,6 +194,7 @@ function AppFaq() {
                                                             // data={products}
                                                             // columns={columns}
                                                             onTableChange={onTableChange}
+                                                            noDataIndication={() => <div className="text-center" >{'No results found'}</div>}
                                                             pagination={paginationFactory({
                                                                 page: paging.pageNumber,
                                                                 sizePerPage: 5,

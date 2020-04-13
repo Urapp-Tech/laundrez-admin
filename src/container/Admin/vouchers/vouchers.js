@@ -1,5 +1,5 @@
 
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -32,7 +32,8 @@ import moment from 'moment';
 function Vouchers({ history }) {
 
 
-    // const [search, setSearch] = useState('');
+    const [search, setSearch] = useState('');
+    const [isSearch, setIsSearch] = useState(false);
     const openDeleteModal = useSelector(store => store?.voucher?.openDelModal);
     const isProgressList = useSelector(store => store?.voucher?.isProgressList);
     const isProgress = useSelector(store => store?.voucher?.isProgress);
@@ -52,10 +53,21 @@ function Vouchers({ history }) {
             dispatch(VoucherActions.getVouchers(newState?.page));
     }, [dispatch]);
 
-    // const onSearch = useCallback((e) => {
-    //     e.preventDefault();
-    //     dispatch(VoucherActions.getVouchers(undefined, undefined, search));
-    // }, [dispatch, search]);
+    const onSearch = useCallback((e) => {
+        e.preventDefault();
+        if (search) {
+            setIsSearch(true);
+            dispatch(VoucherActions.getVouchers(undefined, undefined, search));
+        }
+    }, [dispatch, search]);
+
+    useEffect(() => {
+        if (isSearch && search === '') {
+            setIsSearch(false);
+            dispatch(VoucherActions.getVouchers(undefined, undefined, search));
+        }
+    }, [search, onSearch, isSearch, dispatch]);
+
 
 
     const remote = {
@@ -195,12 +207,12 @@ function Vouchers({ history }) {
                                     <i className="fas fa-plus"></i>
                                 </Button>
                             </CardTitle>
-                            <form className="col-md-8 align-self-center " >
+                            <form className="col-md-8 align-self-center " onSubmit={onSearch} >
                                 <InputGroup className=" no-border">
-                                    <Input className="" placeholder="Search..." />
+                                    <Input className="" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                                     <InputGroupAddon addonType="append">
                                         <InputGroupText>
-                                            <i className="now-ui-icons ui-1_zoom-bold" />
+                                            <i className="now-ui-icons ui-1_zoom-bold cursor-pointer " onClick={onSearch} />
                                         </InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>
@@ -234,6 +246,7 @@ function Vouchers({ history }) {
                                                         bodyClasses="text-left"
                                                         {...props.baseProps}
                                                         onTableChange={onTableChange}
+                                                        noDataIndication={() => <div className="text-center" >{'No results found'}</div>}
                                                         pagination={paginationFactory({
                                                             page: paging.pageNumber,
                                                             sizePerPage: 10,

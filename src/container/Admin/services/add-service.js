@@ -198,7 +198,7 @@ function AddService({ history }) {
                                             <Label> Min Order Qty </Label>
                                             <Input
                                                 placeholder="Minimum QTY for order "
-                                                type="text"
+                                                type="number"
                                                 value={formValues.minQty}
                                                 onChange={(e) => setFormValues({ ...formValues, minQty: e.target.value })}
                                             />
@@ -206,10 +206,10 @@ function AddService({ history }) {
                                     </Col>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label> Price </Label>
+                                            <Label> Price$ </Label>
                                             <Input
                                                 placeholder="0.00"
-                                                type="text"
+                                                type="number"
                                                 value={formValues.price}
                                                 onChange={(e) => setFormValues({ ...formValues, price: e.target.value })}
                                             />

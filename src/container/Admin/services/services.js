@@ -32,6 +32,7 @@ import { API_URL } from '../../../store/services/Config';
 function Services({ history }) {
 
     const [search, setSearch] = useState('');
+    const [isSearch, setIsSearch] = useState(false);
     const openDeleteModal = useSelector(store => store?.service?.openDelModal);
     const isProgress = useSelector(store => store?.service?.isProgressList);
     const service = useSelector(store => store?.service?.service);
@@ -44,6 +45,8 @@ function Services({ history }) {
     }, [dispatch]);
 
 
+
+
     const onTableChange = useCallback((type, newState) => {
         if (type === 'pagination')
             dispatch(ServiceActions.getServices(newState?.page));
@@ -51,8 +54,21 @@ function Services({ history }) {
 
     const onSearch = useCallback((e) => {
         e.preventDefault();
-        dispatch(ServiceActions.getServices(undefined, undefined, search));
+        if (search) {
+            setIsSearch(true);
+            dispatch(ServiceActions.getServices(undefined, undefined, search));
+        }
     }, [dispatch, search]);
+
+    useEffect(() => {
+        if (isSearch && search === '') {
+            setIsSearch(false);
+            dispatch(ServiceActions.getServices(undefined, undefined, search));
+        }
+
+    }, [search, onSearch, isSearch, dispatch]);
+
+
 
 
     const remote = {
@@ -104,7 +120,7 @@ function Services({ history }) {
         },
         {
             dataField: 'price',
-            text: 'Price'
+            text: 'Price$'
         },
         {
             dataField: 'action',
@@ -172,7 +188,7 @@ function Services({ history }) {
                                     <Input className="" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                                     <InputGroupAddon addonType="append">
                                         <InputGroupText>
-                                            <i className="now-ui-icons ui-1_zoom-bold" />
+                                            <i className="now-ui-icons ui-1_zoom-bold cursor-pointer " onClick={onSearch} />
                                         </InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>
@@ -203,6 +219,7 @@ function Services({ history }) {
                                                         headerClasses=""
                                                         bodyClasses="text-left"
                                                         {...props.baseProps}
+                                                        noDataIndication={() => <div className="text-center" >{'No results found'}</div>}
                                                         onTableChange={onTableChange}
                                                         pagination={paginationFactory({
                                                             page: paging.pageNumber,

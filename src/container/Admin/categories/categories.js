@@ -35,6 +35,7 @@ import { API_URL } from '../../../store/services/Config';
 
 function Categories() {
     const [search, setSearch] = useState('');
+    const [isSearch, setIsSearch] = useState(false);
     const openDeleteModal = useSelector(store => store?.category?.openDelModal);
     const isProgress = useSelector(store => store?.category?.isProgressList);
     const category = useSelector(store => store?.category?.category);
@@ -57,10 +58,23 @@ function Categories() {
         if (type === 'pagination')
             dispatch(CategoryActions.getCategories(newState?.page));
     }, [dispatch]);
+
+
     const onSearch = useCallback((e) => {
         e.preventDefault();
-        dispatch(CategoryActions.getCategories(undefined, undefined, search));
+        if (search) {
+            setIsSearch(true);
+            dispatch(CategoryActions.getCategories(undefined, undefined, search));
+        }
     }, [dispatch, search]);
+
+
+    useEffect(() => {
+        if (isSearch && search === '') {
+            setIsSearch(false);
+            dispatch(CategoryActions.getCategories(undefined, undefined, search));
+        }
+    }, [search, onSearch, isSearch, dispatch]);
     const columns = [
         {
             dataField: 'id',
@@ -152,7 +166,7 @@ function Categories() {
                                             placeholder="Search..." />
                                         <InputGroupAddon addonType="append">
                                             <InputGroupText>
-                                                <i className="now-ui-icons ui-1_zoom-bold" />
+                                                <i className="now-ui-icons ui-1_zoom-bold cursor-pointer " onClick={onSearch} />
                                             </InputGroupText>
                                         </InputGroupAddon>
                                     </InputGroup>
@@ -184,9 +198,7 @@ function Categories() {
                                                             bodyClasses="text-left"
                                                             {...props.baseProps}
                                                             onTableChange={onTableChange}
-                                                            // keyField='name'
-                                                            // data={products}
-                                                            // columns={columns}
+                                                            noDataIndication={() => <div className="text-center" >{'No results found'}</div>}
                                                             pagination={paginationFactory({
                                                                 page: paging.pageNumber,
                                                                 sizePerPage: 5,

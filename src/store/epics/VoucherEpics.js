@@ -10,7 +10,7 @@ const ErrorMsg = 'something went wrong !';
 export class VoucherEpics {
     static getVouchers(action$, state$, { ajaxGet }) {
         return action$.pipe(ofType(VoucherTypes.GET_VOUCHERS_PROG), switchMap(({ payload }) => {
-            return ajaxGet(`/Coupon/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[title]=${payload.search}`).pipe(pluck('response'), map(obj => {
+            return ajaxGet(`/Coupon/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[code]=${payload.search}`).pipe(pluck('response'), map(obj => {
                 return {
                     type: VoucherTypes.GET_VOUCHERS_SUCC,
                     payload: obj
