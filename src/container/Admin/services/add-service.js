@@ -114,7 +114,7 @@ function AddService({ history }) {
         formData.append('imageFile', formValues.file);
         dispatch(ServiceActions.addService(formData, history));
 
-    }, [formValues, dispatch, imageNotValid, history,notValid]);
+    }, [formValues, dispatch, imageNotValid, history, notValid]);
 
     return (
         <>
@@ -129,7 +129,7 @@ function AddService({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label> Title </Label>
+                                            <Label><span className="text-danger" >*</span> Title </Label>
                                             <Input
                                                 autoFocus
                                                 placeholder="Title"
@@ -144,7 +144,7 @@ function AddService({ history }) {
                                     </Col>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label for="exampleSelect">Categories</Label>
+                                            <Label for="exampleSelect"><span className="text-danger" >*</span> Categories</Label>
                                             <Input type="select"
                                                 name="select"
                                                 id="exampleSelect"
@@ -171,7 +171,7 @@ function AddService({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label> Description </Label>
+                                            <Label><span className="text-danger" >*</span> Description </Label>
                                             <Input
                                                 placeholder="Service Description"
                                                 type="textarea"
@@ -186,7 +186,7 @@ function AddService({ history }) {
                                     </Col>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label> Short Description <b><i> Write 10-15 Characters</i> </b> </Label>
+                                            <Label><span className="text-danger" >*</span> Short Description <b><i> Write 10-15 Characters</i> </b> </Label>
                                             <Input
                                                 placeholder="Service Description ( Write 10-15 Characters ) "
                                                 type="text"
@@ -203,7 +203,7 @@ function AddService({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label> Min Order Qty </Label>
+                                            <Label><span className="text-danger" >*</span> Min Order Qty </Label>
                                             <Input
                                                 placeholder="Minimum QTY for order "
                                                 type="number"
@@ -217,7 +217,7 @@ function AddService({ history }) {
                                     </Col>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label> $Price </Label>
+                                            <Label><span className="text-danger" >*</span> $Price </Label>
                                             <Input
                                                 placeholder="0.00"
                                                 type="number"
@@ -249,6 +249,11 @@ function AddService({ history }) {
                                                 <label className=" ml-1 text-danger" >{notValid.message}</label>
                                             }
                                         </FormGroup>
+                                    </Col>
+                                </Row>
+                                <Row className=" " >
+                                    <Col sm="6" >
+                                        <span className="text-danger" >*</span><span> Required fields</span>
                                     </Col>
                                 </Row>
                                 <Col sm="6" className="pl-0" >
