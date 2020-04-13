@@ -114,7 +114,7 @@ function AddService({ history }) {
         formData.append('imageFile', formValues.file);
         dispatch(ServiceActions.addService(formData, history));
 
-    }, [formValues, dispatch, imageNotValid, history]);
+    }, [formValues, dispatch, imageNotValid, history,notValid]);
 
     return (
         <>

@@ -153,7 +153,7 @@ function EditSerivce({ history }) {
         formData.append('id', formValues.id);
         dispatch(ServiceActions.editService(formData, history));
 
-    }, [formValues, dispatch, history, imageNotValid]);
+    }, [formValues, dispatch, history, imageNotValid, notValid]);
     return (
         <>
             <Row>
