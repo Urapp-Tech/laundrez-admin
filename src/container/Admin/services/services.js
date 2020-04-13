@@ -93,9 +93,10 @@ function Services({ history }) {
             text: 'Image',
             // eslint-disable-next-line react/display-name
             formatter: (cell) => {
-                return (
-                    <img src={`${API_URL}/${cell}`} alt={'img'} className="img-thumbnail table-image" />
-                );
+                if (cell)
+                    return (
+                        <img src={`${API_URL}/${cell}`} alt={'img'} className="img-thumbnail table-image" />
+                    );
             }
         },
         {
@@ -120,7 +121,7 @@ function Services({ history }) {
         },
         {
             dataField: 'price',
-            text: 'Price$'
+            text: '$Price'
         },
         {
             dataField: 'action',
@@ -147,7 +148,7 @@ function Services({ history }) {
                             delay={5}
                             target={`edit-order-${rowIndex}`}
                         >
-                            Edit Category
+                            Edit 
               </UncontrolledTooltip>
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"

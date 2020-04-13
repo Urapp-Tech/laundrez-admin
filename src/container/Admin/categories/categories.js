@@ -120,7 +120,7 @@ function Categories() {
                             delay={0}
                             target={`edit-order-${rowIndex}`}
                         >
-                            Edit Category
+                            Edit
                   </UncontrolledTooltip>
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"

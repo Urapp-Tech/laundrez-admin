@@ -118,7 +118,7 @@ function AppFaq() {
                             delay={0}
                             target={`edit-order-${rowIndex}`}
                         >
-                            Edit Task
+                            Edit
                   </UncontrolledTooltip>
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"

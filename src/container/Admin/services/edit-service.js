@@ -18,16 +18,17 @@ import {
 } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { CategoryActions } from '../../../store/actions/CategoryActions';
-import { toast } from 'react-toastify';
 import { ServiceActions } from '../../../store/actions/ServiceActions';
 
 
 function EditSerivce({ history }) {
 
     const dispatch = useDispatch();
+    const [notValid, setNotValid] = useState({ error: false, type: '', message: '' });
+    const [imageNotValid, setImageNotValid] = useState({ error: false, type: '', message: '' });
     const categories = useSelector(store => store?.category?.categories);
     const isProgress = useSelector(store => store?.service?.isProgress);
-    const [error, setError] = useState({ isError: false, message: '' });
+    // const [error, setError] = useState({ isError: false, message: '' });
     const [formValues, setFormValues] = useState({
         title: '',
         description: '',
@@ -82,67 +83,63 @@ function EditSerivce({ history }) {
         let _URL = window.URL || window.webkitURL;
         let file = e.target.files[0];
         if (file) {
+            let fileSizeInMB = file?.size / 1000000;
             img = new Image();
             let objectUrl = _URL.createObjectURL(file);
             img.onload = function () {
                 if (this.height < 512) {
-                    setError({ isError: true, message: 'image dimensions must be 512 x 512' });
+                    setImageNotValid({ error: true, message: 'Image dimensions must be atleast 512x512' });
                 }
                 else if (this.width < 512) {
-                    setError({ isError: true, message: 'image dimensions must be 512 x 512' });
+                    setImageNotValid({ error: true, message: 'Image dimensions must be atleast 512x512' });
                 }
-                else if (error.isError) {
-                    setError({ isError: false, message: '' });
+                else if (fileSizeInMB > 4) {
+                    setImageNotValid({ error: true, message: 'Image greater than 4 MB is not allowed' });
+                }
+                else if (imageNotValid.error) {
+                    setImageNotValid({ error: false, message: '' });
                 }
             };
             setFormValues({ ...formValues, file: file });
             img.src = objectUrl;
+        } else {
+            setImageNotValid({ error: false, message: '' });
+            setFormValues({ ...formValues, file: file });
         }
-    }, [error, setError, formValues]);
+    }, [formValues, imageNotValid]);
 
 
 
     const editService = useCallback((e) => {
         e.preventDefault();
-        let fileSizeInMB = formValues.file?.size / 1000000;
+        if (notValid.error) {
+            setNotValid({ error: false, type: '', message: '' });
+        }
         if (formValues.title.length < 3) {
-            toast.error('title is too short');
+            setNotValid({ error: true, type: 'title', message: 'Title is too short' });
             return;
         }
-        else if (!formValues.categoryId) {
-            toast.error('please select category');
+        else if (formValues.categoryId === '') {
+            setNotValid({ error: true, type: 'categoryId', message: 'Please select category' });
             return;
         }
         else if (formValues.description.length < 25) {
-            toast.error('description is too short');
+            setNotValid({ error: true, type: 'description', message: 'Description is too short ' });
             return;
         }
         else if (formValues.shortDescription < 15) {
-            toast.error('shortDescription is too short');
-            return;
-        }
-        else if (!(/^\d+$/).test(formValues.minQty)) {
-            toast.error('minQty must be a number');
+            setNotValid({ error: true, type: 'shortDescription', message: 'Short description is too short' });
             return;
         }
         else if (Number(formValues.minQty) === 0) {
-            toast.error('minQty could not be zero');
+            setNotValid({ error: true, type: 'minQty', message: 'Minimum order qty could not be zero' });
             return;
         }
         else if (!(/^\s*-?[1-9]\d*(\.\d{1,2})?\s*$/).test(formValues.price)) {
-            toast.error('price must be a number with upto 2 decimal places');
+            setNotValid({ error: true, type: 'price', message: 'Price must be a number with upto 2 decimal places' });
             return;
         }
-        else if (!formValues.file) {
-            toast.error('please select image');
-            return;
-        }
-        else if (fileSizeInMB > 4) {
-            toast.error('file size is exceeding 4Mb');
-            return;
-        }
-        else if (error.isError) {
-            toast.error(error.message);
+        else if (formValues.file && imageNotValid.error) {
             return;
         }
         let formData = new FormData();
@@ -156,7 +153,7 @@ function EditSerivce({ history }) {
         formData.append('id', formValues.id);
         dispatch(ServiceActions.editService(formData, history));
 
-    }, [formValues, dispatch, error, history]);
+    }, [formValues, dispatch, history, imageNotValid]);
     return (
         <>
             <Row>
@@ -170,7 +167,7 @@ function EditSerivce({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label> Name </Label>
+                                            <Label> Title </Label>
                                             <Input
                                                 autoFocus
                                                 placeholder="Title"
@@ -178,6 +175,9 @@ function EditSerivce({ history }) {
                                                 value={formValues.title}
                                                 onChange={(e) => setFormValues({ ...formValues, title: e.target.value })}
                                             />
+                                            {notValid.error && notValid.type === 'title' &&
+                                                <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                            }
                                         </FormGroup>
                                     </Col>
                                     <Col sm="6">
@@ -187,7 +187,7 @@ function EditSerivce({ history }) {
                                                 name="select"
                                                 id="exampleSelect"
                                                 value={formValues.categoryId}
-                                                onChange={(e) => setFormValues({ ...formValues, category: Number(e.target.value) })}
+                                                onChange={(e) => setFormValues({ ...formValues, categoryId: Number(e.target.value) })}
 
                                             >
                                                 <option value={''} >Select Category</option>
@@ -199,6 +199,9 @@ function EditSerivce({ history }) {
                                                 }
 
                                             </Input>
+                                            {notValid.error && notValid.type === 'categoryId' &&
+                                                <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                            }
                                         </FormGroup>
                                     </Col>
                                 </Row>
@@ -214,6 +217,9 @@ function EditSerivce({ history }) {
                                                 style={{ height: '10rem' }}
                                                 onChange={(e) => setFormValues({ ...formValues, description: e.target.value })}
                                             />
+                                            {notValid.error && notValid.type === 'description' &&
+                                                <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                            }
                                         </FormGroup>
                                     </Col>
                                     <Col sm="6">
@@ -225,6 +231,9 @@ function EditSerivce({ history }) {
                                                 value={formValues.shortDescription}
                                                 onChange={(e) => setFormValues({ ...formValues, shortDescription: e.target.value })}
                                             />
+                                            {notValid.error && notValid.type === 'shortDescription' &&
+                                                <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                            }
                                         </FormGroup>
                                     </Col>
                                 </Row>
@@ -233,19 +242,29 @@ function EditSerivce({ history }) {
                                     <Col sm="6">
                                         <FormGroup>
                                             <Label> Min Order Qty </Label>
-                                            <Input placeholder="Minimum QTY for order "
+                                            <Input
+                                                placeholder="Minimum QTY for order "
                                                 type="number"
                                                 value={formValues.minQty}
-                                                onChange={(e) => setFormValues({ ...formValues, minQty: e.target.value })} />
+                                                onChange={(e) => setFormValues({ ...formValues, minQty: e.target.value })}
+                                            />
+                                            {notValid.error && notValid.type === 'minQty' &&
+                                                <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                            }
                                         </FormGroup>
                                     </Col>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label> Price$ </Label>
-                                            <Input placeholder="0.00"
+                                            <Label> $Price </Label>
+                                            <Input
+                                                placeholder="0.00"
                                                 type="number"
                                                 value={formValues.price}
-                                                onChange={(e) => setFormValues({ ...formValues, price: e.target.value })} />
+                                                onChange={(e) => setFormValues({ ...formValues, price: e.target.value })}
+                                            />
+                                            {notValid.error && notValid.type === 'price' &&
+                                                <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                            }
                                         </FormGroup>
                                     </Col>
                                 </Row>
@@ -253,7 +272,7 @@ function EditSerivce({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label htmlFor="service-image" >Upload image with dimension 512 x 512 not exceeding 11Mb</Label>
+                                            <Label htmlFor="service-image" >Upload image with dimension 512 x 512 not exceeding 4Mb</Label>
                                             <Input
                                                 id="service-image"
                                                 type="file"
@@ -261,9 +280,12 @@ function EditSerivce({ history }) {
                                                 accept="image/x-png,image/jpg,image/jpeg,image/svg+xml"
                                                 onChange={onImageSelect}
                                             />
-                                            {error.isError &&
-                                                <label className="text-danger" >{error.message}</label>
+                                            {imageNotValid.error &&
+                                                <label className=" ml-1 text-danger" >{imageNotValid.message}</label>
                                             }
+                                            {/* {notValid.error && notValid.type === 'image' &&
+                                                <label className=" ml-1 text-danger" >{notValid.message}</label>
+                                            } */}
                                         </FormGroup>
                                     </Col>
                                 </Row>

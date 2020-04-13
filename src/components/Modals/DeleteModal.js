@@ -1,12 +1,13 @@
 import React, { memo } from 'react';
-import { Modal, ModalHeader, ModalFooter, Button } from 'reactstrap';
+import { Modal, ModalHeader, ModalFooter, Button, ModalBody } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-const DleteModal = memo(({ isOpen, toggle, delFunc, isProgress }) => {
+const DeleteModal = memo(({ isOpen, toggle, delFunc, isProgress }) => {
     return (
         <Modal centered={true} isOpen={isOpen} toggle={toggle} >
-            <ModalHeader >Do you really want to delete?</ModalHeader>
-            <ModalFooter>
+            <ModalHeader >Confirm Delete</ModalHeader>
+            <ModalBody>Do you really want to delete this?</ModalBody>
+            <ModalFooter className="p-0 pr-2"  >
                 <Button color="danger" className="btn-round btn-add-modal" onClick={delFunc}>
                     {
                         isProgress ?
@@ -21,11 +22,11 @@ const DleteModal = memo(({ isOpen, toggle, delFunc, isProgress }) => {
     );
 
 });
-DleteModal.displayName = 'DleteModal';
-DleteModal.propTypes = {
+DeleteModal.displayName = 'DeleteModal';
+DeleteModal.propTypes = {
     isOpen: PropTypes.bool,
     toggle: PropTypes.func,
     delFunc: PropTypes.func,
     isProgress: PropTypes.bool
 };
-export default DleteModal;
+export default DeleteModal;
