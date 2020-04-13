@@ -15,7 +15,8 @@ import {
     InputGroupAddon,
     InputGroupText,
     Input,
-    UncontrolledTooltip
+    UncontrolledTooltip,
+    Badge
 } from 'reactstrap';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 
@@ -56,14 +57,20 @@ function Services({ history }) {
 
     const remote = {
         filter: false,
-        pagination: false,
+        pagination: true,
         sort: false,
         cellEdit: false
     };
     const columns = [
         {
             dataField: 'id',
-            text: '#'
+            text: '#',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell, row, rowIndex) => {
+                return (
+                    <span>{rowIndex + 1}</span>
+                );
+            }
         },
         {
             dataField: 'image',
@@ -175,38 +182,42 @@ function Services({ history }) {
                             {isProgress ?
                                 <div className='spinner-lg' ></div>
                                 :
-                                <ToolkitProvider
-                                    keyField='id'
-                                    data={services}
-                                    columns={columns}
-                                    bootstrap4
+                                <>
+                                    <Badge color="primary">{paging.totalCount} Services</Badge>
+                                    <ToolkitProvider
+                                        keyField='id'
+                                        data={services}
+                                        columns={columns}
+                                        bootstrap4
 
-                                >{
-                                        props => (
-                                            <div>
-                                                {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
-                                                <BootstrapTable
-                                                    remote={remote}
-                                                    wrapperClasses={'table-responsive'}
-                                                    classes=""
-                                                    headerWrapperClasses="text-primary text-left"
-                                                    bordered={false}
-                                                    headerClasses=""
-                                                    bodyClasses="text-left"
-                                                    {...props.baseProps}
-                                                    onTableChange={onTableChange}
-                                                    pagination={paginationFactory({
-                                                        page: paging.pageNumber,
-                                                        sizePerPage: 10,
-                                                        totalSize: paging.totalCount,
-                                                        hideSizePerPage: true,
-                                                    })}
-                                                />
-                                            </div>
-                                        )
+                                    >{
+                                            props => (
+                                                <div>
+                                                    {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
+                                                    <BootstrapTable
+                                                        remote={remote}
+                                                        wrapperClasses={'table-responsive'}
+                                                        classes=""
+                                                        headerWrapperClasses="text-primary text-left"
+                                                        bordered={false}
+                                                        headerClasses=""
+                                                        bodyClasses="text-left"
+                                                        {...props.baseProps}
+                                                        onTableChange={onTableChange}
+                                                        pagination={paginationFactory({
+                                                            page: paging.pageNumber,
+                                                            sizePerPage: 10,
+                                                            totalSize: paging.totalCount,
+                                                            hideSizePerPage: true,
+                                                        })}
+                                                    />
+                                                </div>
+                                            )
 
-                                    }
-                                </ToolkitProvider>}
+                                        }
+                                    </ToolkitProvider>
+                                </>
+                            }
                         </CardBody>
                     </Card>
                 </Col>

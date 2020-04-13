@@ -15,7 +15,8 @@ import {
     InputGroupAddon,
     InputGroupText,
     Input,
-    UncontrolledTooltip
+    UncontrolledTooltip,
+    Badge
 } from 'reactstrap';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
@@ -64,7 +65,12 @@ function Categories() {
         {
             dataField: 'id',
             text: '#',
-
+            // eslint-disable-next-line react/display-name
+            formatter: (cell, row, rowIndex) => {
+                return (
+                    <span>{rowIndex + 1}</span>
+                );
+            }
         },
         {
             dataField: 'image',
@@ -155,42 +161,47 @@ function Categories() {
                             <CardBody>
                                 {isProgress ?
                                     <div className='spinner-lg' ></div>
-                                    : <ToolkitProvider
-                                        keyField={'id'}
-                                        data={categories}
-                                        columns={columns}
-                                        bootstrap4
+                                    :
+                                    <>
+                                        <Badge color="primary">{paging.totalCount} Categories</Badge>
+                                        <ToolkitProvider
+                                            keyField={'id'}
+                                            data={categories}
+                                            columns={columns}
+                                            bootstrap4
 
-                                    >{
-                                            props => (
-                                                <div>
-                                                    {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
-                                                    <BootstrapTable
-                                                        remote={remote}
-                                                        wrapperClasses={'table-responsive'}
-                                                        classes=""
-                                                        headerWrapperClasses="text-primary text-left"
-                                                        bordered={false}
-                                                        headerClasses=""
-                                                        bodyClasses="text-left"
-                                                        {...props.baseProps}
-                                                        onTableChange={onTableChange}
-                                                        // keyField='name'
-                                                        // data={products}
-                                                        // columns={columns}
-                                                        pagination={paginationFactory({
-                                                            page: paging.pageNumber,
-                                                            sizePerPage: 5,
-                                                            totalSize: paging.totalCount,
-                                                            hideSizePerPage: true,
+                                        >{
+                                                props => (
+                                                    <div>
+                                                        {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
+                                                        <BootstrapTable
+                                                            remote={remote}
+                                                            wrapperClasses={'table-responsive'}
+                                                            classes=""
+                                                            headerWrapperClasses="text-primary text-left"
+                                                            bordered={false}
+                                                            headerClasses=""
+                                                            bodyClasses="text-left"
+                                                            {...props.baseProps}
+                                                            onTableChange={onTableChange}
+                                                            // keyField='name'
+                                                            // data={products}
+                                                            // columns={columns}
+                                                            pagination={paginationFactory({
+                                                                page: paging.pageNumber,
+                                                                sizePerPage: 5,
+                                                                totalSize: paging.totalCount,
+                                                                hideSizePerPage: true,
 
-                                                        })}
-                                                    />
-                                                </div>
-                                            )
+                                                            })}
+                                                        />
+                                                    </div>
+                                                )
 
-                                        }
-                                    </ToolkitProvider>}
+                                            }
+                                        </ToolkitProvider>
+                                    </>
+                                }
                             </CardBody>
                         </Card>
                     </Col>

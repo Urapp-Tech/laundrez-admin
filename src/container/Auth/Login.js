@@ -56,7 +56,7 @@ function Login({ history }) {
     const token = StorageService.getToken();
 
     if (token && Object.keys(user).length) {
-      history.replace('/admin/orders');
+      history.replace('/admin/services');
     }
     else if (token && Object.keys(user).length === 0) {
       const userFromStorage = StorageService.getUser();
@@ -143,10 +143,10 @@ function Login({ history }) {
             </Card>
           </Col>
         </Row>
-        <Row className="last-row-height" >
+        {/* <Row className="last-row-height" >
           <Col>
           </Col>
-        </Row>
+        </Row> */}
 
       </div>
     </>
