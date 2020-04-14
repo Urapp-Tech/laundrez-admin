@@ -38,11 +38,15 @@ function AddVoucher({ history }) {
 
     });
 
-    
+
     const addVoucher = useCallback((e) => {
         e.preventDefault();
         if (notValid.error) {
             setNotValid({ error: false, type: '', message: '' });
+        }
+        if (!formValues.code) {
+            setNotValid({ error: true, type: 'code', message: 'Please provide coupon code' });
+            return;
         }
         if (formValues.code.length < 3) {
             setNotValid({ error: true, type: 'code', message: 'coupon code is too short' });

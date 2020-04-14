@@ -71,6 +71,10 @@ const EditCategoryModal = () => {
         if (notValid.error) {
             setNotValid({ error: false, type: '', message: '' });
         }
+        if (!title) {
+            setNotValid({ error: true, type: 'title', message: 'Please provide title' });
+            return;
+        }
         if (title.length < 3) {
             setNotValid({ error: true, type: 'title', message: 'Title is too short' });
             return;

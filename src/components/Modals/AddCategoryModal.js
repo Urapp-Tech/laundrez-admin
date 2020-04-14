@@ -54,6 +54,10 @@ const AddCategoryModal = () => {
         if (notValid.error) {
             setNotValid({ error: false, type: '', message: '' });
         }
+        if (!title) {
+            setNotValid({ error: true, type: 'title', message: 'Please provide title' });
+            return;
+        }
         if (title.length < 3) {
             setNotValid({ error: true, type: 'title', message: 'Title is too short' });
             return;
@@ -75,7 +79,7 @@ const AddCategoryModal = () => {
         setImageNotValid({ error: false, message: '' });
     }, [isOpen]);
 
-    
+
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
         <Modal backdrop={'static'} centered={true} autoFocus={false} isOpen={isOpen} toggle={toggle} >

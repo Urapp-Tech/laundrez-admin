@@ -39,8 +39,16 @@ const AddFaqModal = () => {
             setNotValid({ error: true, type: 'serviceId', message: 'Please select service' });
             return;
         }
+        else if (!formValues.question) {
+            setNotValid({ error: true, type: 'question', message: 'Please provide question' });
+            return;
+        }
         else if (formValues.question.length < 3) {
             setNotValid({ error: true, type: 'question', message: 'Question is too short' });
+            return;
+        }
+        else if (!formValues.answer) {
+            setNotValid({ error: true, type: 'answer', message: 'Please provide descritpion' });
             return;
         }
         else if (formValues.answer.length < 10) {

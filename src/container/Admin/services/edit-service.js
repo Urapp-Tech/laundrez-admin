@@ -115,6 +115,10 @@ function EditSerivce({ history }) {
         if (notValid.error) {
             setNotValid({ error: false, type: '', message: '' });
         }
+        if (!formValues.title) {
+            setNotValid({ error: true, type: 'title', message: 'Please provide title' });
+            return;
+        }
         if (formValues.title.length < 3) {
             setNotValid({ error: true, type: 'title', message: 'Title is too short' });
             return;
@@ -123,11 +127,19 @@ function EditSerivce({ history }) {
             setNotValid({ error: true, type: 'categoryId', message: 'Please select category' });
             return;
         }
+        else if (!formValues.description) {
+            setNotValid({ error: true, type: 'description', message: 'Please provide description' });
+            return;
+        }
         else if (formValues.description.length < 25) {
             setNotValid({ error: true, type: 'description', message: 'Description is too short ' });
             return;
         }
-        else if (formValues.shortDescription < 15) {
+        else if (!formValues.shortDescription) {
+            setNotValid({ error: true, type: 'shortDescription', message: 'Please provide short description' });
+            return;
+        }
+        else if (formValues.shortDescription.length < 15) {
             setNotValid({ error: true, type: 'shortDescription', message: 'Short description is too short' });
             return;
         }
