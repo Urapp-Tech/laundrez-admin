@@ -210,9 +210,9 @@ function Vouchers({ history }) {
                             <form className="col-md-8 align-self-center " onSubmit={onSearch} >
                                 <InputGroup className=" no-border">
                                     <Input className="" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
-                                    <InputGroupAddon addonType="append">
+                                    <InputGroupAddon addonType="append" onClick={onSearch} >
                                         <InputGroupText>
-                                            <i className="now-ui-icons ui-1_zoom-bold cursor-pointer " onClick={onSearch} />
+                                            <i className="now-ui-icons ui-1_zoom-bold " />
                                         </InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>

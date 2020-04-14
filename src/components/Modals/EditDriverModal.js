@@ -54,7 +54,7 @@ const EditDriverModal = memo(({ isOpen, toggle }) => {
                 </Form>
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" className="btn-round btn-add-modal" onClick={toggle}>Edit</Button>{' '}
+                <Button color="primary" className="btn-round btn-add-modal" onClick={toggle}>Update</Button>{' '}
                 <Button color="secondary" className="btn-round btn-cancel-modal " onClick={toggle}>Cancel</Button>
             </ModalFooter>
         </Modal>

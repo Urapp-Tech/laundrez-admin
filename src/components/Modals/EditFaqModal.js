@@ -143,7 +143,7 @@ const EditFaqModal = () => {
                             isProgress ?
                                 <div className="spinner" ></div>
                                 :
-                                <span> Edit </span>
+                                <span> Update </span>
                         }
                     </Button>
                     <Button color="secondary" className="btn-round btn-cancel-modal " onClick={toggle}>Cancel</Button>

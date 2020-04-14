@@ -158,9 +158,9 @@ function AppFaq() {
                                 <form onSubmit={onSearch} className="col-md-8 align-self-center " >
                                     <InputGroup className=" no-border">
                                         <Input value={search} onChange={(e) => setSearch(e.target.value)} className="" placeholder="Search..." />
-                                        <InputGroupAddon addonType="append">
+                                        <InputGroupAddon addonType="append" onClick={onSearch} >
                                             <InputGroupText>
-                                                <i className="now-ui-icons ui-1_zoom-bold cursor-pointer " onClick={onSearch} />
+                                                <i className="now-ui-icons ui-1_zoom-bold  "  />
                                             </InputGroupText>
                                         </InputGroupAddon>
                                     </InputGroup>

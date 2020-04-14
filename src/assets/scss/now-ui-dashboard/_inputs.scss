@@ -145,13 +145,14 @@
   .form-control,
   .form-control + .input-group-prepend .input-group-text,
   .form-control + .input-group-append .input-group-text {
-    background-color: $opacity-gray-3;
-    border: medium none;
+    // background-color: $opacity-gray-3;
+    // border: medium none;
+    border:1px solid $opacity-gray-5;
     &:focus,
     &:active,
     &:active {
-      border: medium none;
-      background-color: $opacity-gray-5;
+      // border: medium none;
+      // background-color: $opacity-gray-5;
     }
   }
 
@@ -167,7 +168,9 @@
   .input-group-prepend .input-group-text,
   .input-group-append .input-group-text {
     background-color: $opacity-gray-3;
-    border: none;
+    padding-left: 19px !important;
+    cursor: pointer;
+    // border: none;
   }
 }
 

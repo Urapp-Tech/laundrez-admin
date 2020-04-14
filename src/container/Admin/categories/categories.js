@@ -99,7 +99,8 @@ function Categories() {
         },
         {
             dataField: 'title',
-            text: 'Title'
+            text: 'Title',
+            classes: 'w-50'
         },
         {
             dataField: 'action',
@@ -159,15 +160,15 @@ function Categories() {
                                     </Button>
                                 </CardTitle>
                                 <form onSubmit={onSearch} className="col-md-8 align-self-center " >
-                                    <InputGroup className=" no-border">
+                                    <InputGroup className="no-border ">
                                         <Input
                                             value={search}
                                             onChange={e => setSearch(e.target.value)}
                                             className=""
                                             placeholder="Search..." />
-                                        <InputGroupAddon addonType="append">
-                                            <InputGroupText>
-                                                <i className="now-ui-icons ui-1_zoom-bold cursor-pointer " onClick={onSearch} />
+                                        <InputGroupAddon addonType="append" onClick={onSearch}   >
+                                            <InputGroupText  >
+                                                <i className="now-ui-icons ui-1_zoom-bold  " />
                                             </InputGroupText>
                                         </InputGroupAddon>
                                     </InputGroup>

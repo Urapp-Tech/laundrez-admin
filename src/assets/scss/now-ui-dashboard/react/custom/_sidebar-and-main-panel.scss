@@ -33,11 +33,11 @@
 
   .sidebar-wrapper {
     position: relative;
-    height: calc(100vh - 75px);
+    height: calc(100vh - 72px);
     overflow: auto;
     width: 260px;
     z-index: 4;
-    padding-bottom: 100px;
+    padding-bottom: 0px;
 
     .dropdown .dropdown-backdrop {
       display: none !important;

@@ -321,7 +321,7 @@ function EditVoucher({ history }) {
                                                     ?
                                                     <div className="spinner" ></div>
                                                     :
-                                                    ' Edit Voucher'
+                                                    ' Update'
                                             }
                                         </Button>
                                         <Button className="btn-round btn-default btn-add-modal" onClick={() => history.goBack()}  >Cancel</Button>
