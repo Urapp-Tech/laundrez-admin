@@ -1,6 +1,7 @@
 
 import React, { useEffect, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
+import defaultImage from '../../../assets/img/no-image.png';
 
 // reactstrap components
 import {
@@ -95,6 +96,11 @@ function Categories() {
                     return (
                         <img src={`${API_URL}/${cell}`} alt={'img'} className="img-thumbnail table-image" />
                     );
+                else {
+                    return (
+                        <img src={defaultImage} alt={'img'} className="img-thumbnail table-image" />
+                    );
+                }
             }
         },
         {

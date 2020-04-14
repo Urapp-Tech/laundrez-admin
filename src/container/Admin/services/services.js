@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import defaultImage from '../../../assets/img/no-image.png';
 
 // reactstrap components
 import {
@@ -60,7 +61,7 @@ function Services({ history }) {
             dispatch(ServiceActions.getServices(undefined, undefined, search));
         }
     }, [dispatch, search]);
-    
+
 
     useEffect(() => {
         if (isSearch && search === '') {
@@ -99,6 +100,11 @@ function Services({ history }) {
                     return (
                         <img src={`${API_URL}/${cell}`} alt={'img'} className="img-thumbnail table-image" />
                     );
+                else {
+                    return (
+                        <img src={defaultImage} alt={'img'} className="img-thumbnail table-image" />
+                    );
+                }
             }
         },
         {
@@ -198,7 +204,7 @@ function Services({ history }) {
                                     <Input className="" placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} />
                                     <InputGroupAddon addonType="append" onClick={onSearch} >
                                         <InputGroupText>
-                                            <i className="now-ui-icons ui-1_zoom-bold "  />
+                                            <i className="now-ui-icons ui-1_zoom-bold " />
                                         </InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>

@@ -34,10 +34,19 @@ function Login({ history }) {
       setValid({ isValid: true, type: '', message: '' });
     if (isError)
       dispatch(AuthActions.clearError());
+    if (!formValues.email) {
+      setValid({ isValid: false, type: 'email', message: 'Please provide email' });
+      return;
+    }
     if (
       !(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i).test(formValues.email)
     ) {
       setValid({ isValid: false, type: 'email', message: 'Email is not valid' });
+      return;
+    }
+
+    else if (!formValues.password) {
+      setValid({ isValid: false, type: 'password', message: 'Please provide password' });
       return;
     }
 
