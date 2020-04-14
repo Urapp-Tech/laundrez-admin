@@ -3,12 +3,12 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, Row, Col, For
 import { useDispatch, useSelector } from 'react-redux';
 import { ServiceActions } from '../../store/actions/ServiceActions';
 import { FaqActions } from '../../store/actions/FaqActions';
-import { toast } from 'react-toastify';
 
 const EditFaqModal = () => {
 
     const dispatch = useDispatch();
     const [formValues, setFormValues] = useState({ question: '', answer: '', serviceId: '', id: 0 });
+    const [notValid, setNotValid] = useState({ error: false, type: '', message: '' });
     const isProgress = useSelector(store => store?.faq?.isProgress);
     const services = useSelector(store => store?.service?.services);
     const isOpen = useSelector(store => store?.faq?.openEditModal);
@@ -16,6 +16,8 @@ const EditFaqModal = () => {
     useEffect(() => {
         dispatch(ServiceActions.getServices(1, 1000));
     }, [dispatch]);
+
+    
     useEffect(() => {
         if (faq) {
             let { question, answer, serviceId, id } = faq;
@@ -23,21 +25,32 @@ const EditFaqModal = () => {
         }
     }, [faq]);
 
+
+    useEffect(() => {
+        setNotValid({ error: false, type: '', message: '' });
+    }, [isOpen]);
+
+
     const toggle = useCallback(() => {
         dispatch(FaqActions.toggleEditFaqModal());
     }, [dispatch]);
+
+
     const editFaq = useCallback((e) => {
         e.preventDefault();
-        if (formValues.question.length < 3) {
-            toast.error('title is too short');
+        if (notValid.error) {
+            setNotValid({ error: false, type: '', message: '' });
+        }
+        if (formValues.serviceId === '') {
+            setNotValid({ error: true, type: 'serviceId', message: 'Please select service' });
             return;
         }
-        else if (formValues.serviceId === '') {
-            toast.error('please select service');
+        else if (formValues.question.length < 3) {
+            setNotValid({ error: true, type: 'question', message: 'Question is too short' });
             return;
         }
         else if (formValues.answer.length < 10) {
-            toast.error('description is too short');
+            setNotValid({ error: true, type: 'answer', message: 'Description is too short' });
             return;
         }
         let body = {
@@ -48,7 +61,7 @@ const EditFaqModal = () => {
         };
         dispatch(FaqActions.editFaq(body));
 
-    }, [formValues, dispatch]);
+    }, [formValues, dispatch, notValid]);
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
         <Modal autoFocus={false} centered={true} isOpen={isOpen} toggle={toggle} >
@@ -58,8 +71,10 @@ const EditFaqModal = () => {
                     <Row className="justify-content-center" >
                         <Col sm="12">
                             <FormGroup>
-                                <Label for="exampleSelect">Services</Label>
-                                <Input type="select"
+                                <Label for="exampleSelect"><span className="text-danger" >*</span> Services</Label>
+                                <Input
+                                    autoFocus
+                                    type="select"
                                     name="select"
                                     value={formValues.serviceId}
                                     onChange={(e) => setFormValues({ ...formValues, serviceId: e.target.value })}
@@ -72,27 +87,32 @@ const EditFaqModal = () => {
                                         })
                                     }
                                 </Input>
+                                {notValid.error && notValid.type === 'serviceId' &&
+                                    <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                }
                             </FormGroup>
                         </Col>
                     </Row>
                     <Row className="justify-content-center" >
                         <Col sm="12">
                             <FormGroup>
-                                <label> Question </label>
+                                <label><span className="text-danger" >*</span> Question </label>
                                 <Input
-                                    autoFocus
                                     placeholder="Question"
                                     type="text"
                                     value={formValues.question}
                                     onChange={(e) => setFormValues({ ...formValues, question: e.target.value })}
                                 />
+                                {notValid.error && notValid.type === 'question' &&
+                                    <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                }
                             </FormGroup>
                         </Col>
                     </Row>
                     <Row className="justify-content-center" >
                         <Col sm="12">
                             <FormGroup>
-                                <Label for="description"> Description </Label>
+                                <Label for="description"><span className="text-danger" >*</span> Description </Label>
                                 <Input
                                     id="description"
                                     type="textarea"
@@ -101,7 +121,15 @@ const EditFaqModal = () => {
                                     value={formValues.answer}
                                     onChange={(e) => setFormValues({ ...formValues, answer: e.target.value })}
                                 />
+                                {notValid.error && notValid.type === 'answer' &&
+                                    <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                }
                             </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row className=" " >
+                        <Col sm="6" >
+                            <span className="text-danger" >*</span><span> Required fields</span>
                         </Col>
                     </Row>
                 </ModalBody>

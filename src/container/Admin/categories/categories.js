@@ -91,9 +91,10 @@ function Categories() {
             text: 'Image',
             // eslint-disable-next-line react/display-name
             formatter: (cell) => {
-                return (
-                    <img src={`${API_URL}/${cell}`} alt={'img'} className="img-thumbnail table-image" />
-                );
+                if (cell)
+                    return (
+                        <img src={`${API_URL}/${cell}`} alt={'img'} className="img-thumbnail table-image" />
+                    );
             }
         },
         {

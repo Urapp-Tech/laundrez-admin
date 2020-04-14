@@ -2,68 +2,80 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, Row, Col, FormGroup, Input } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { CategoryActions } from '../../store/actions/CategoryActions';
-import { toast } from 'react-toastify';
 
 const AddCategoryModal = () => {
     const [title, setTitle] = useState('');
     const [file, setFile] = useState(null);
-    const [error, setError] = useState({ isError: false, message: '' });
+    const [notValid, setNotValid] = useState({ error: false, type: '', message: '' });
+    const [imageNotValid, setImageNotValid] = useState({ error: false, type: '', message: '' });
     const isProgress = useSelector(store => store?.category?.isProgress);
     const isOpen = useSelector(store => store?.category?.openAddModal);
     const dispatch = useDispatch();
+
+
     const toggle = useCallback(() => {
         dispatch(CategoryActions.toggleAddCategoryModal());
     }, [dispatch]);
+
+
     const onImageSelect = useCallback((e) => {
         let img;
         let _URL = window.URL || window.webkitURL;
         let file = e.target.files[0];
         if (file) {
+            let fileSizeInMB = file?.size / 1000000;
             img = new Image();
             let objectUrl = _URL.createObjectURL(file);
             img.onload = function () {
                 if (this.height < 512) {
-                    setError({ isError: true, message: 'image dimensions must be 512 x 512' });
+                    setImageNotValid({ error: true, message: 'Image dimensions must be atleast 512x512' });
                 }
                 else if (this.width < 512) {
-                    setError({ isError: true, message: 'image dimensions must be 512 x 512' });
+                    setImageNotValid({ error: true, message: 'Image dimensions must be atleast 512x512' });
                 }
-                else if (error.isError) {
-                    setError({ isError: false, message: '' });
+                else if (fileSizeInMB > 4) {
+                    setImageNotValid({ error: true, message: 'Image greater than 4 MB is not allowed' });
+                }
+                else if (imageNotValid.error) {
+                    setImageNotValid({ error: false, message: '' });
                 }
             };
             setFile(file);
             img.src = objectUrl;
+        } else {
+            setImageNotValid({ error: false, message: '' });
+            setFile(file);
         }
-    }, [error, setError]);
+    }, [imageNotValid]);
+
+
     const addCategory = useCallback((e) => {
         e.preventDefault();
-        let fileSizeInMB = file?.size / 1000000;
+        if (notValid.error) {
+            setNotValid({ error: false, type: '', message: '' });
+        }
         if (title.length < 3) {
-            toast.error('title is too short');
+            setNotValid({ error: true, type: 'title', message: 'Title is too short' });
             return;
         }
-        else if (!file) {
-            toast.error('please select image');
-            return;
-        }
-        else if (fileSizeInMB > 4) {
-            toast.error('file size is exceeding 4Mb');
-            return;
-        }
-        else if (error.isError) {
-            toast.error(error.message);
+        else if (file && imageNotValid.error) {
             return;
         }
         let formData = new FormData();
         formData.append('title', title);
         formData.append('imageFile', file);
         dispatch(CategoryActions.addCategory(formData));
-    }, [dispatch, title, file, error.isError, error.message]);
+    }, [dispatch, title, file, imageNotValid, notValid]);
+
+
     useEffect(() => {
         setTitle('');
         setFile('');
+        setNotValid({ error: false, type: '', message: '' });
+        setImageNotValid({ error: false, message: '' });
     }, [isOpen]);
+
+    
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
         <Modal backdrop={'static'} centered={true} autoFocus={false} isOpen={isOpen} toggle={toggle} >
@@ -73,25 +85,34 @@ const AddCategoryModal = () => {
                     <Row className="justify-content-center" >
                         <Col sm="12">
                             <FormGroup>
-                                <label> Title </label>
+                                <label><span className="text-danger" >*</span> Title </label>
                                 <Input autoFocus placeholder="Title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
                             </FormGroup>
+                            {notValid.error && notValid.type === 'title' &&
+                                <label className=" ml-3 text-danger" >{notValid.message}</label>
+                            }
                         </Col>
                     </Row>
                     <Row className="justify-content-center" >
                         <Col sm="12">
                             <FormGroup>
-                                <label> Upload image with dimension 512 x 512 not exceeding 11Mb</label>
+                                <label> Upload image with dimension 512 x 512 not exceeding 4Mb</label>
                                 <Input
                                     type="file"
                                     placeholder="Image"
                                     accept="image/x-png,image/jpg,image/jpeg,image/svg+xml"
                                     onChange={onImageSelect}
                                 />
-                                {error.isError &&
-                                    <label className="text-danger" >{error.message}</label>
+                                {imageNotValid.error &&
+                                    <label className=" ml-1 text-danger" >{imageNotValid.message}</label>
                                 }
+
                             </FormGroup>
+                        </Col>
+                    </Row>
+                    <Row className=" " >
+                        <Col sm="6" className="py-0"  >
+                            <span className="text-danger" >*</span><span> Required fields</span>
                         </Col>
                     </Row>
                 </ModalBody>

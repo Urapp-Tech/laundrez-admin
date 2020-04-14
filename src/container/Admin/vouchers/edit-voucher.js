@@ -39,6 +39,8 @@ function EditVoucher({ history }) {
         id: 0
 
     });
+
+
     useEffect(() => {
         let voucher = history?.location?.state?.voucher;
         if (voucher) {
@@ -79,6 +81,8 @@ function EditVoucher({ history }) {
         }
 
     }, [dispatch, history]);
+
+
     const editVoucher = useCallback((e) => {
         e.preventDefault();
         if (notValid.error) {
@@ -134,6 +138,8 @@ function EditVoucher({ history }) {
         dispatch(VoucherActions.editVoucher(body, history));
 
     }, [formValues, dispatch, notValid, history]);
+
+    
     return (
         <>
             <Row>
@@ -147,7 +153,7 @@ function EditVoucher({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <label> Coupon Code </label>
+                                            <label><span className="text-danger" >*</span> Coupon Code </label>
                                             <Input
                                                 autoFocus
                                                 placeholder="Coupon Code"
@@ -160,7 +166,7 @@ function EditVoucher({ history }) {
                                     </Col>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <label> Valid From </label>
+                                            <label><span className="text-danger" >*</span> Valid From </label>
                                             <Input
                                                 placeholder="Valid From"
                                                 type="date"
@@ -175,7 +181,7 @@ function EditVoucher({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <label> Valid Till </label>
+                                            <label><span className="text-danger" >*</span> Valid Till </label>
                                             <Input
                                                 placeholder="Valid Till"
                                                 type="date"
@@ -187,7 +193,7 @@ function EditVoucher({ history }) {
                                     </Col>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <label> Offer Value </label>
+                                            <label><span className="text-danger" >*</span> Offer Value </label>
                                             <Input
                                                 placeholder="Offer Value"
                                                 type="number"
@@ -201,7 +207,7 @@ function EditVoucher({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <label> Max Redeem </label>
+                                            <label><span className="text-danger" >*</span> Max Redeem </label>
                                             <Input
                                                 placeholder="Max Redeem"
                                                 type="number"
@@ -213,7 +219,7 @@ function EditVoucher({ history }) {
                                     </Col>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <label> Redeemed </label>
+                                            <label><span className="text-danger" >*</span> Redeemed </label>
                                             <Input
                                                 placeholder="Redeemed"
                                                 type="number"
@@ -228,7 +234,7 @@ function EditVoucher({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <label> Min Products </label>
+                                            <label><span className="text-danger" >*</span> Min Products </label>
                                             <Input
                                                 placeholder="Min Products"
                                                 type="number"
@@ -240,7 +246,7 @@ function EditVoucher({ history }) {
                                     </Col>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <label> Min Amount </label>
+                                            <label><span className="text-danger" >*</span> Min Amount </label>
                                             <Input
                                                 placeholder="Min Amount"
                                                 type="number"
@@ -254,7 +260,7 @@ function EditVoucher({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup className=""  >
-                                            <label> Coupon Type </label>
+                                            <label><span className="text-danger" >*</span> Coupon Type </label>
                                             <Input
                                                 type="select"
                                                 value={formValues.couponType}
@@ -269,7 +275,7 @@ function EditVoucher({ history }) {
                                     </Col>
                                     <Col sm="6">
                                         <FormGroup className=""  >
-                                            <label> Offer Type </label>
+                                            <label><span className="text-danger" >*</span> Offer Type </label>
                                             <Input
                                                 type="select"
                                                 value={formValues.offerType}
@@ -287,9 +293,9 @@ function EditVoucher({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <div className="w-100" >
-                                            <label>Status</label>
+                                            <label><span className="text-danger" >*</span> Status</label>
                                         </div>
-                                        <label className="mr-2  " style={{ width: '3rem' }} >{formValues.isActive ? 'Active' : 'In Active'}</label>
+                                        <label className="mr-2 ml-2  " style={{ width: '3rem' }} >{formValues.isActive ? 'Active' : 'In Active'}</label>
                                         <label className="switch">
                                             <input
                                                 type="checkbox"
@@ -299,6 +305,11 @@ function EditVoucher({ history }) {
                                             />
                                             <span className="slider round"></span>
                                         </label>
+                                    </Col>
+                                </Row>
+                                <Row className=" " >
+                                    <Col sm="6" >
+                                        <span className="text-danger" >*</span><span> Required fields</span>
                                     </Col>
                                 </Row>
                                 <Row>

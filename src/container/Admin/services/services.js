@@ -52,6 +52,7 @@ function Services({ history }) {
             dispatch(ServiceActions.getServices(newState?.page));
     }, [dispatch]);
 
+
     const onSearch = useCallback((e) => {
         e.preventDefault();
         if (search) {
@@ -59,6 +60,7 @@ function Services({ history }) {
             dispatch(ServiceActions.getServices(undefined, undefined, search));
         }
     }, [dispatch, search]);
+    
 
     useEffect(() => {
         if (isSearch && search === '') {
@@ -121,7 +123,14 @@ function Services({ history }) {
         },
         {
             dataField: 'price',
-            text: '$Price'
+            text: 'Price',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell) => {
+                return (
+                    <span className="text-center" >${cell}</span>
+                );
+            },
+
         },
         {
             dataField: 'action',
@@ -148,7 +157,7 @@ function Services({ history }) {
                             delay={5}
                             target={`edit-order-${rowIndex}`}
                         >
-                            Edit 
+                            Edit
               </UncontrolledTooltip>
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"

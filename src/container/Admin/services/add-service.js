@@ -37,6 +37,8 @@ function AddService({ history }) {
         categoryId: '',
         file: null
     });
+
+    
     useEffect(() => {
         dispatch(CategoryActions.getCategories(1, 1000));
     }, [dispatch]);
@@ -245,9 +247,9 @@ function AddService({ history }) {
                                             {imageNotValid.error &&
                                                 <label className=" ml-1 text-danger" >{imageNotValid.message}</label>
                                             }
-                                            {notValid.error && notValid.type === 'shortDescription' &&
+                                            {/* {notValid.error && notValid.type === 'shortDescription' &&
                                                 <label className=" ml-1 text-danger" >{notValid.message}</label>
-                                            }
+                                            } */}
                                         </FormGroup>
                                     </Col>
                                 </Row>
