@@ -76,6 +76,18 @@ function AddVoucher({ history }) {
             return;
         }
 
+        if (formValues.couponType === 'Referral') {
+
+            if (!formValues.maxRedeem) {
+                setNotValid({ error: true, type: 'maxRedeem', message: 'Please provide max redeem ' });
+                return;
+            }
+            else if (Number(formValues.maxRedeem) === 0) {
+                setNotValid({ error: true, type: 'maxRedeem', message: 'Max redeem value  must be greater than 0' });
+                return;
+            }
+        }
+
         // else if (!formValues.maxRedeem) {
         //     setNotValid({ error: true, type: 'maxRedeem', message: 'Please provide max redeem ' });
         //     return;
@@ -222,7 +234,7 @@ function AddVoucher({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <label> Max Redeem </label>
+                                            <label>{formValues.couponType === 'Referral' ? <span className="text-danger" >*</span> : null} Max Redeem </label>
                                             <Input
                                                 placeholder="Max Redeem"
                                                 type="number"
