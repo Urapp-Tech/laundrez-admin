@@ -29,11 +29,11 @@ function AddVoucher({ history }) {
         validTo: '',
         couponType: 'Promo',
         offerType: 'Amount',
-        offerValue: 0,
-        minProduct: 0,
-        minAmount: 0,
-        maxRedeem: 0,
-        numberRedeem: 0,
+        offerValue: '',
+        minProduct: '',
+        minAmount: '',
+        maxRedeem: '',
+        numberRedeem: '',
         isActive: true,
 
     });
@@ -49,36 +49,55 @@ function AddVoucher({ history }) {
             return;
         }
         if (formValues.code.length < 3) {
-            setNotValid({ error: true, type: 'code', message: 'coupon code is too short' });
+            setNotValid({ error: true, type: 'code', message: 'Coupon code is too short' });
             return;
         }
         else if (formValues.validFrom === '') {
-            setNotValid({ error: true, type: 'validFrom', message: 'please select valid date' });
+            setNotValid({ error: true, type: 'validFrom', message: 'Please select valid date' });
             return;
         }
         else if (formValues.validTo === '') {
-            setNotValid({ error: true, type: 'validTo', message: 'please select valid date' });
+            setNotValid({ error: true, type: 'validTo', message: 'Please select valid date' });
             return;
         }
         else if (new Date(formValues.validTo).getTime() < new Date(formValues.validFrom)) {
-            setNotValid({ error: true, type: 'validTo', message: 'valid till must be greater than valid from' });
+            setNotValid({ error: true, type: 'validTo', message: 'Valid till must be greater than valid from' });
             return;
         }
 
+        else if (!formValues.offerValue) {
+            setNotValid({ error: true, type: 'offerValue', message: 'Please provide offer value' });
+            return;
+        }
         else if (Number(formValues.offerValue) === 0) {
-            setNotValid({ error: true, type: 'offerValue', message: 'offer value  must be greater than 0' });
+            setNotValid({ error: true, type: 'offerValue', message: 'Offer value  must be greater than 0' });
+            return;
+        }
+
+        else if (!formValues.maxRedeem) {
+            setNotValid({ error: true, type: 'maxRedeem', message: 'Please provide max redeem ' });
             return;
         }
         else if (Number(formValues.maxRedeem) === 0) {
-            setNotValid({ error: true, type: 'maxRedeem', message: 'max redeem value  must be greater than 0' });
+            setNotValid({ error: true, type: 'maxRedeem', message: 'Max redeem value  must be greater than 0' });
+            return;
+        }
+
+        else if (!formValues.minProduct) {
+            setNotValid({ error: true, type: 'minProduct', message: 'Please provide min product' });
             return;
         }
         else if (Number(formValues.minProduct) === 0) {
-            setNotValid({ error: true, type: 'minProduct', message: 'min product value  must be greater than 0' });
+            setNotValid({ error: true, type: 'minProduct', message: 'Min product value  must be greater than 0' });
+            return;
+        }
+
+        else if (!formValues.minAmount) {
+            setNotValid({ error: true, type: 'minAmount', message: 'Please provide min amount' });
             return;
         }
         else if (Number(formValues.minAmount) === 0) {
-            setNotValid({ error: true, type: 'minAmount', message: 'min amount value  must be greater than 0' });
+            setNotValid({ error: true, type: 'minAmount', message: 'Min amount value  must be greater than 0' });
             return;
         }
         let body = {

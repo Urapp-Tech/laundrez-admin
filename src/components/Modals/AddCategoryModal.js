@@ -34,7 +34,7 @@ const AddCategoryModal = () => {
                     setImageNotValid({ error: true, message: 'Image dimensions must be atleast 512x512' });
                 }
                 else if (fileSizeInMB > 4) {
-                    setImageNotValid({ error: true, message: 'Image greater than 4 MB is not allowed' });
+                    setImageNotValid({ error: true, message: 'File size is exceeding 4MB' });
                 }
                 else if (imageNotValid.error) {
                     setImageNotValid({ error: false, message: '' });
@@ -100,7 +100,7 @@ const AddCategoryModal = () => {
                     <Row className="justify-content-center" >
                         <Col sm="12">
                             <FormGroup>
-                                <label> Upload image with dimension 512 x 512 not exceeding 4Mb</label>
+                                <label> Upload image with minimum dimension of 512 x 512 not exceeding 4MB</label>
                                 <Input
                                     type="file"
                                     placeholder="Image"

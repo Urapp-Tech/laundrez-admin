@@ -59,7 +59,7 @@ function AddService({ history }) {
                     setImageNotValid({ error: true, message: 'Image dimensions must be atleast 512x512' });
                 }
                 else if (fileSizeInMB > 4) {
-                    setImageNotValid({ error: true, message: 'Image greater than 4 MB is not allowed' });
+                    setImageNotValid({ error: true, message: 'File size is exceeding 4MB' });
                 }
                 else if (imageNotValid.error) {
                     setImageNotValid({ error: false, message: '' });
@@ -107,8 +107,20 @@ function AddService({ history }) {
             setNotValid({ error: true, type: 'shortDescription', message: 'Short description is too short' });
             return;
         }
+        else if (!formValues.minQty) {
+            setNotValid({ error: true, type: 'minQty', message: 'Please provide min order qty' });
+            return;
+        }
         else if (Number(formValues.minQty) === 0) {
             setNotValid({ error: true, type: 'minQty', message: 'Minimum order qty could not be zero' });
+            return;
+        }
+        else if (!formValues.price) {
+            setNotValid({ error: true, type: 'price', message: 'Please provide price' });
+            return;
+        }
+        else if (Number(formValues.price) === 0) {
+            setNotValid({ error: true, type: 'price', message: 'Price could not be zero' });
             return;
         }
         else if (!(/^\s*-?[1-9]\d*(\.\d{1,2})?\s*$/).test(formValues.price)) {
@@ -248,7 +260,7 @@ function AddService({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label htmlFor="service-image" >Upload image with dimension 512 x 512 not exceeding 4Mb</Label>
+                                            <Label htmlFor="service-image" >Upload image with minimum dimension of 512 x 512 not exceeding 4MB</Label>
                                             <Input
                                                 id="service-image"
                                                 type="file"
