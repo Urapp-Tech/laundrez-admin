@@ -88,27 +88,28 @@ function EditVoucher({ history }) {
         if (notValid.error) {
             setNotValid({ error: false, type: '', message: '' });
         }
-        if (!formValues.code) {
-            setNotValid({ error: true, type: 'code', message: 'Please provide coupon code' });
-            return;
+        if (formValues.couponType === 'Promo') {
+            if (!formValues.code) {
+                setNotValid({ error: true, type: 'code', message: 'Please provide coupon code' });
+                return;
+            }
+            if (formValues.code.length < 3) {
+                setNotValid({ error: true, type: 'code', message: 'Coupon code is too short' });
+                return;
+            }
+            else if (formValues.validFrom === '') {
+                setNotValid({ error: true, type: 'validFrom', message: 'Please select valid date' });
+                return;
+            }
+            else if (formValues.validTo === '') {
+                setNotValid({ error: true, type: 'validTo', message: 'Please select valid date' });
+                return;
+            }
+            else if (new Date(formValues.validTo).getTime() < new Date(formValues.validFrom)) {
+                setNotValid({ error: true, type: 'validTo', message: 'Valid till must be greater than valid from' });
+                return;
+            }
         }
-        if (formValues.code.length < 3) {
-            setNotValid({ error: true, type: 'code', message: 'Coupon code is too short' });
-            return;
-        }
-        else if (formValues.validFrom === '') {
-            setNotValid({ error: true, type: 'validFrom', message: 'Please select valid date' });
-            return;
-        }
-        else if (formValues.validTo === '') {
-            setNotValid({ error: true, type: 'validTo', message: 'Please select valid date' });
-            return;
-        }
-        else if (new Date(formValues.validTo).getTime() < new Date(formValues.validFrom)) {
-            setNotValid({ error: true, type: 'validTo', message: 'Valid till must be greater than valid from' });
-            return;
-        }
-
         else if (!formValues.offerValue) {
             setNotValid({ error: true, type: 'offerValue', message: 'Please provide offer value' });
             return;
@@ -118,14 +119,14 @@ function EditVoucher({ history }) {
             return;
         }
 
-        else if (!formValues.maxRedeem) {
-            setNotValid({ error: true, type: 'maxRedeem', message: 'Please provide max redeem ' });
-            return;
-        }
-        else if (Number(formValues.maxRedeem) === 0) {
-            setNotValid({ error: true, type: 'maxRedeem', message: 'Max redeem value  must be greater than 0' });
-            return;
-        }
+        // else if (!formValues.maxRedeem) {
+        //     setNotValid({ error: true, type: 'maxRedeem', message: 'Please provide max redeem ' });
+        //     return;
+        // }
+        // else if (Number(formValues.maxRedeem) === 0) {
+        //     setNotValid({ error: true, type: 'maxRedeem', message: 'Max redeem value  must be greater than 0' });
+        //     return;
+        // }
 
         // else if (!formValues.minProduct) {
         //     setNotValid({ error: true, type: 'minProduct', message: 'Please provide min product' });
@@ -162,7 +163,7 @@ function EditVoucher({ history }) {
 
     }, [formValues, dispatch, notValid, history]);
 
-    
+
     return (
         <>
             <Row>
@@ -173,115 +174,6 @@ function EditVoucher({ history }) {
                         </CardHeader>
                         <CardBody>
                             <Form onSubmit={editVoucher} >
-                                <Row>
-                                    <Col sm="6">
-                                        <FormGroup>
-                                            <label><span className="text-danger" >*</span> Coupon Code </label>
-                                            <Input
-                                                autoFocus
-                                                placeholder="Coupon Code"
-                                                type="text"
-                                                value={formValues.code}
-                                                onChange={(e) => setFormValues({ ...formValues, code: e.target.value })}
-                                            />
-                                            {(notValid.error && notValid.type === 'code') && <label className='ml-3 text-danger' >{notValid.message}</label>}
-                                        </FormGroup>
-                                    </Col>
-                                    <Col sm="6">
-                                        <FormGroup>
-                                            <label><span className="text-danger" >*</span> Valid From </label>
-                                            <Input
-                                                placeholder="Valid From"
-                                                type="date"
-                                                min={moment(new Date()).format('YYYY-MM-DD')}
-                                                value={formValues.validFrom}
-                                                onChange={(e) => setFormValues({ ...formValues, validFrom: e.target.value })}
-                                            />
-                                            {(notValid.error && notValid.type === 'validFrom') && <label className='ml-3 text-danger' >{notValid.message}</label>}
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-
-                                <Row>
-                                    <Col sm="6">
-                                        <FormGroup>
-                                            <label><span className="text-danger" >*</span> Valid Till </label>
-                                            <Input
-                                                placeholder="Valid Till"
-                                                type="date"
-                                                min={moment(new Date()).format('YYYY-MM-DD')}
-                                                value={formValues.validTo}
-                                                onChange={(e) => setFormValues({ ...formValues, validTo: e.target.value })}
-                                            />
-                                            {(notValid.error && notValid.type === 'validTo') && <label className='ml-3 text-danger' >{notValid.message}</label>}
-                                        </FormGroup>
-                                    </Col>
-                                    <Col sm="6">
-                                        <FormGroup>
-                                            <label><span className="text-danger" >*</span> Offer Value </label>
-                                            <Input
-                                                placeholder="Offer Value"
-                                                type="number"
-                                                value={formValues.offerValue}
-                                                onChange={(e) => setFormValues({ ...formValues, offerValue: e.target.value })}
-                                            />
-                                            {(notValid.error && notValid.type === 'offerValue') && <label className='ml-3 text-danger' >{notValid.message}</label>}
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col sm="6">
-                                        <FormGroup>
-                                            <label><span className="text-danger" >*</span> Max Redeem </label>
-                                            <Input
-                                                placeholder="Max Redeem"
-                                                type="number"
-                                                value={formValues.maxRedeem}
-                                                onChange={(e) => setFormValues({ ...formValues, maxRedeem: e.target.value })}
-                                            />
-                                            {(notValid.error && notValid.type === 'maxRedeem') && <label className='ml-3 text-danger' >{notValid.message}</label>}
-                                        </FormGroup>
-                                    </Col>
-                                    <Col sm="6">
-                                        <FormGroup>
-                                            <label><span className="text-danger" >*</span> Redeemed </label>
-                                            <Input
-                                                placeholder="Redeemed"
-                                                type="number"
-                                                value={formValues.numberRedeem}
-                                                onChange={(e) => setFormValues({ ...formValues, numberRedeem: e.target.value })}
-                                            />
-                                            {(notValid.error && notValid.type === 'numberRedeem') && <label className='ml-3 text-danger' >{notValid.message}</label>}
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
-
-                                <Row>
-                                    <Col sm="6">
-                                        <FormGroup>
-                                            <label><span className="text-danger" >*</span> Min Products </label>
-                                            <Input
-                                                placeholder="Min Products"
-                                                type="number"
-                                                value={formValues.minProduct}
-                                                onChange={(e) => setFormValues({ ...formValues, minProduct: e.target.value })}
-                                            />
-                                            {(notValid.error && notValid.type === 'minProduct') && <label className='ml-3 text-danger' >{notValid.message}</label>}
-                                        </FormGroup>
-                                    </Col>
-                                    <Col sm="6">
-                                        <FormGroup>
-                                            <label><span className="text-danger" >*</span> Min Amount </label>
-                                            <Input
-                                                placeholder="Min Amount"
-                                                type="number"
-                                                value={formValues.minAmount}
-                                                onChange={(e) => setFormValues({ ...formValues, minAmount: e.target.value })}
-                                            />
-                                            {(notValid.error && notValid.type === 'minAmount') && <label className='ml-3 text-danger' >{notValid.message}</label>}
-                                        </FormGroup>
-                                    </Col>
-                                </Row>
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup className=""  >
@@ -315,12 +207,124 @@ function EditVoucher({ history }) {
                                         </FormGroup>
                                     </Col>
                                 </Row>
+                                {formValues.couponType === 'Promo' ? <Row>
+                                    <Col sm="6">
+                                        <FormGroup>
+                                            <label><span className="text-danger" >*</span> Coupon Code </label>
+                                            <Input
+                                                autoFocus
+                                                placeholder="Coupon Code"
+                                                type="text"
+                                                value={formValues.code}
+                                                onChange={(e) => setFormValues({ ...formValues, code: e.target.value })}
+                                            />
+                                            {(notValid.error && notValid.type === 'code') && <label className='ml-3 text-danger' >{notValid.message}</label>}
+                                        </FormGroup>
+                                    </Col>
+                                    <Col sm="6">
+                                        <FormGroup>
+                                            <label><span className="text-danger" >*</span> Valid From </label>
+                                            <Input
+                                                placeholder="Valid From"
+                                                type="date"
+                                                min={moment(new Date()).format('YYYY-MM-DD')}
+                                                value={formValues.validFrom}
+                                                onChange={(e) => setFormValues({ ...formValues, validFrom: e.target.value })}
+                                            />
+                                            {(notValid.error && notValid.type === 'validFrom') && <label className='ml-3 text-danger' >{notValid.message}</label>}
+                                        </FormGroup>
+                                    </Col>
+                                </Row> : null}
+
+                                <Row>
+                                    {formValues.couponType === 'Promo' ? <Col sm="6">
+                                        <FormGroup>
+                                            <label><span className="text-danger" >*</span> Valid Till </label>
+                                            <Input
+                                                placeholder="Valid Till"
+                                                type="date"
+                                                min={moment(new Date()).format('YYYY-MM-DD')}
+                                                value={formValues.validTo}
+                                                onChange={(e) => setFormValues({ ...formValues, validTo: e.target.value })}
+                                            />
+                                            {(notValid.error && notValid.type === 'validTo') && <label className='ml-3 text-danger' >{notValid.message}</label>}
+                                        </FormGroup>
+                                    </Col>
+                                        : null
+                                    }
+                                    <Col sm="6">
+                                        <FormGroup>
+                                            <label><span className="text-danger" >*</span> Offer Value{formValues.offerType === 'Amount' ? ' ($)' : ' (%)'}</label>
+                                            <Input
+                                                placeholder="Offer Value"
+                                                type="number"
+                                                value={formValues.offerValue}
+                                                onChange={(e) => setFormValues({ ...formValues, offerValue: e.target.value })}
+                                            />
+                                            {(notValid.error && notValid.type === 'offerValue') && <label className='ml-3 text-danger' >{notValid.message}</label>}
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
                                 <Row>
                                     <Col sm="6">
-                                        <div className="w-100" >
-                                            <label><span className="text-danger" >*</span> Status</label>
+                                        <FormGroup>
+                                            <label> Max Redeem </label>
+                                            <Input
+                                                placeholder="Max Redeem"
+                                                type="number"
+                                                value={formValues.maxRedeem}
+                                                onChange={(e) => setFormValues({ ...formValues, maxRedeem: e.target.value })}
+                                            />
+                                            {(notValid.error && notValid.type === 'maxRedeem') && <label className='ml-3 text-danger' >{notValid.message}</label>}
+                                        </FormGroup>
+                                    </Col>
+                                    <Col sm="6">
+                                        <FormGroup>
+                                            <label> Redeemed </label>
+                                            <Input
+                                                placeholder="Redeemed"
+                                                type="number"
+                                                value={formValues.numberRedeem}
+                                                onChange={(e) => setFormValues({ ...formValues, numberRedeem: e.target.value })}
+                                            />
+                                            {(notValid.error && notValid.type === 'numberRedeem') && <label className='ml-3 text-danger' >{notValid.message}</label>}
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+
+                                <Row>
+                                    <Col sm="6">
+                                        <FormGroup>
+                                            <label> Min Products </label>
+                                            <Input
+                                                placeholder="Min Products"
+                                                type="number"
+                                                value={formValues.minProduct}
+                                                onChange={(e) => setFormValues({ ...formValues, minProduct: e.target.value })}
+                                            />
+                                            {(notValid.error && notValid.type === 'minProduct') && <label className='ml-3 text-danger' >{notValid.message}</label>}
+                                        </FormGroup>
+                                    </Col>
+                                    <Col sm="6">
+                                        <FormGroup>
+                                            <label> Min Amount </label>
+                                            <Input
+                                                placeholder="Min Amount"
+                                                type="number"
+                                                value={formValues.minAmount}
+                                                onChange={(e) => setFormValues({ ...formValues, minAmount: e.target.value })}
+                                            />
+                                            {(notValid.error && notValid.type === 'minAmount') && <label className='ml-3 text-danger' >{notValid.message}</label>}
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+
+                                <Row>
+                                    <Col sm="6">
+                                        <div>
+                                            <label><span className="text-danger" >*</span>  Status</label>
                                         </div>
-                                        <label className="mr-2 ml-2  " style={{ width: '3rem' }} >{formValues.isActive ? 'Active' : 'In Active'}</label>
+                                        <label className="mr-2 ml-2" style={{ width: '3rem' }}>{formValues.isActive ? 'Active' : 'In Active'}</label>
                                         <label className="switch">
                                             <input
                                                 type="checkbox"

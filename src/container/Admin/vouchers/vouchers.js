@@ -109,7 +109,14 @@ function Vouchers({ history }) {
         },
         {
             dataField: 'offerValue',
-            text: 'Offer Value'
+            text: 'Offer Value',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell, row) => {
+                if (row.offerType === 'Amount')
+                    return (<span>${cell}</span>);
+                else if (row.offerType === 'Percentage')
+                    return (<span>{cell}%</span>);
+            }
         },
         {
             dataField: 'minProduct',
@@ -117,7 +124,11 @@ function Vouchers({ history }) {
         },
         {
             dataField: 'minAmount',
-            text: 'Min Amount'
+            text: 'Min Amount',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell) => {
+                return (<span>${cell}</span>);
+            }
         },
         {
             dataField: 'couponType',
