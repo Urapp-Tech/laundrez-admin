@@ -127,23 +127,23 @@ function EditVoucher({ history }) {
             return;
         }
 
-        else if (!formValues.minProduct) {
-            setNotValid({ error: true, type: 'minProduct', message: 'Please provide min product' });
-            return;
-        }
-        else if (Number(formValues.minProduct) === 0) {
-            setNotValid({ error: true, type: 'minProduct', message: 'Min product value  must be greater than 0' });
-            return;
-        }
+        // else if (!formValues.minProduct) {
+        //     setNotValid({ error: true, type: 'minProduct', message: 'Please provide min product' });
+        //     return;
+        // }
+        // else if (Number(formValues.minProduct) === 0) {
+        //     setNotValid({ error: true, type: 'minProduct', message: 'Min product value  must be greater than 0' });
+        //     return;
+        // }
 
-        else if (!formValues.minAmount) {
-            setNotValid({ error: true, type: 'minAmount', message: 'Please provide min amount' });
-            return;
-        }
-        else if (Number(formValues.minAmount) === 0) {
-            setNotValid({ error: true, type: 'minAmount', message: 'Min amount value  must be greater than 0' });
-            return;
-        }
+        // else if (!formValues.minAmount) {
+        //     setNotValid({ error: true, type: 'minAmount', message: 'Please provide min amount' });
+        //     return;
+        // }
+        // else if (Number(formValues.minAmount) === 0) {
+        //     setNotValid({ error: true, type: 'minAmount', message: 'Min amount value  must be greater than 0' });
+        //     return;
+        // }
         let body = {
             code: formValues.code,
             validFrom: new Date(formValues.validFrom).toISOString(),
@@ -193,6 +193,7 @@ function EditVoucher({ history }) {
                                             <Input
                                                 placeholder="Valid From"
                                                 type="date"
+                                                min={moment(new Date()).format('YYYY-MM-DD')}
                                                 value={formValues.validFrom}
                                                 onChange={(e) => setFormValues({ ...formValues, validFrom: e.target.value })}
                                             />
@@ -208,6 +209,7 @@ function EditVoucher({ history }) {
                                             <Input
                                                 placeholder="Valid Till"
                                                 type="date"
+                                                min={moment(new Date()).format('YYYY-MM-DD')}
                                                 value={formValues.validTo}
                                                 onChange={(e) => setFormValues({ ...formValues, validTo: e.target.value })}
                                             />
