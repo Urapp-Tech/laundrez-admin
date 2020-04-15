@@ -169,7 +169,7 @@ function EditVoucher({ history }) {
                 <Col xs={12}>
                     <Card>
                         <CardHeader className="d-flex justify-content-between" >
-                            <CardTitle tag="h4">Edit Voucher</CardTitle>
+                            <CardTitle tag="h4">Update Voucher</CardTitle>
                         </CardHeader>
                         <CardBody>
                             <Form onSubmit={editVoucher} >

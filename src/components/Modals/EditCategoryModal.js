@@ -94,7 +94,7 @@ const EditCategoryModal = () => {
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
         <Modal autoFocus={false} backdrop={'static'} centered={true} isOpen={isOpen} toggle={toggle} >
-            <ModalHeader toggle={toggle} close={closeBtn}>Edit Category</ModalHeader>
+            <ModalHeader toggle={toggle} close={closeBtn}>Update Category</ModalHeader>
             <Form onSubmit={onEditClick} >
                 <ModalBody>
                     <Row className="justify-content-center" >

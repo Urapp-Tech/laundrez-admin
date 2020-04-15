@@ -1,6 +1,6 @@
 {
   "name": "laundrez-admin",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "homepage": "/admin",
   "private": true,
   "dependencies": {

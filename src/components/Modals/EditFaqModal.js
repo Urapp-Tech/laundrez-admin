@@ -73,7 +73,7 @@ const EditFaqModal = () => {
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
         <Modal autoFocus={false} centered={true} isOpen={isOpen} toggle={toggle} >
-            <ModalHeader toggle={toggle} close={closeBtn}>Edit FAQ</ModalHeader>
+            <ModalHeader toggle={toggle} close={closeBtn}>Update FAQ</ModalHeader>
             <Form onSubmit={editFaq} >
                 <ModalBody>
                     <Row className="justify-content-center" >
