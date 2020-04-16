@@ -123,47 +123,55 @@ function EditSerivce({ history }) {
             setNotValid({ error: true, type: 'title', message: 'Title is too short' });
             return;
         }
-        else if (formValues.categoryId === '') {
+        if (formValues.categoryId === '') {
             setNotValid({ error: true, type: 'categoryId', message: 'Please select category' });
             return;
         }
-        else if (!formValues.description) {
+        if (!formValues.description) {
             setNotValid({ error: true, type: 'description', message: 'Please provide description' });
             return;
         }
-        else if (formValues.description.length < 25) {
+        if (formValues.description.length < 25) {
             setNotValid({ error: true, type: 'description', message: 'Description is too short ' });
             return;
         }
-        else if (!formValues.shortDescription) {
+        if (!formValues.shortDescription) {
             setNotValid({ error: true, type: 'shortDescription', message: 'Please provide short description' });
             return;
         }
-        else if (formValues.shortDescription.length < 15) {
+        if (formValues.shortDescription.length < 15) {
             setNotValid({ error: true, type: 'shortDescription', message: 'Short description is too short' });
             return;
         }
-        else if (!formValues.minQty) {
+        if (!formValues.minQty) {
             setNotValid({ error: true, type: 'minQty', message: 'Please provide min order qty' });
             return;
         }
-        else if (Number(formValues.minQty) === 0) {
+        if (Number(formValues.minQty) === 0) {
             setNotValid({ error: true, type: 'minQty', message: 'Minimum order qty could not be zero' });
             return;
         }
-        else if (!formValues.price) {
+        if (Number(formValues.minQty) < 0) {
+            setNotValid({ error: true, type: 'minQty', message: 'Negative number not allow in min qty' });
+            return;
+        }
+        if (!formValues.price) {
             setNotValid({ error: true, type: 'price', message: 'Please provide price' });
             return;
         }
-        else if (Number(formValues.price) === 0) {
+        if (Number(formValues.price) === 0) {
             setNotValid({ error: true, type: 'price', message: 'Price could not be zero' });
             return;
         }
-        else if (!(/^\s*-?[1-9]\d*(\.\d{1,2})?\s*$/).test(formValues.price)) {
+        if (Number(formValues.price) < 0) {
+            setNotValid({ error: true, type: 'price', message: 'Negative number not allow in price' });
+            return;
+        }
+        if (!(/^\s*-?[1-9]\d*(\.\d{1,2})?\s*$/).test(formValues.price)) {
             setNotValid({ error: true, type: 'price', message: 'Price must be a number with upto 2 decimal places' });
             return;
         }
-        else if (formValues.file && imageNotValid.error) {
+        if (formValues.file && imageNotValid.error) {
             return;
         }
         let formData = new FormData();
