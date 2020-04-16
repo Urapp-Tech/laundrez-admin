@@ -160,7 +160,7 @@ function AppFaq() {
                                         <Input value={search} onChange={(e) => setSearch(e.target.value)} className="" placeholder="Search..." />
                                         <InputGroupAddon addonType="append" onClick={onSearch} >
                                             <InputGroupText>
-                                                <i className="now-ui-icons ui-1_zoom-bold  "  />
+                                                <i className="now-ui-icons ui-1_zoom-bold  " />
                                             </InputGroupText>
                                         </InputGroupAddon>
                                     </InputGroup>
@@ -197,7 +197,7 @@ function AppFaq() {
                                                             noDataIndication={() => <div className="text-center" >{'No results found'}</div>}
                                                             pagination={paginationFactory({
                                                                 page: paging.pageNumber,
-                                                                sizePerPage: 5,
+                                                                sizePerPage: 10,
                                                                 totalSize: paging.totalCount,
                                                                 hideSizePerPage: true,
 

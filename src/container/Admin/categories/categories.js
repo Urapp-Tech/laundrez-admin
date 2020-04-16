@@ -209,7 +209,7 @@ function Categories() {
                                                             noDataIndication={() => <div className="text-center" >{'No results found'}</div>}
                                                             pagination={paginationFactory({
                                                                 page: paging.pageNumber,
-                                                                sizePerPage: 5,
+                                                                sizePerPage: 10,
                                                                 totalSize: paging.totalCount,
                                                                 hideSizePerPage: true,
 

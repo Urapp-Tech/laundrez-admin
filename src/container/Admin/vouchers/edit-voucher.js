@@ -146,10 +146,10 @@ function EditVoucher({ history }) {
             setNotValid({ error: true, type: 'maxRedeem', message: 'Negative numbers not allowed in max redeem' });
             return;
         }
-        if (Number(formValues.numberRedeem) < 0) {
-            setNotValid({ error: true, type: 'numberRedeem', message: 'Negative numbers not allowed in  redeemed' });
-            return;
-        }
+        // if (Number(formValues.numberRedeem) < 0) {
+        //     setNotValid({ error: true, type: 'numberRedeem', message: 'Negative numbers not allowed in  redeemed' });
+        //     return;
+        // }
         if (Number(formValues.minProduct) < 0) {
             setNotValid({ error: true, type: 'minProduct', message: 'Negative numbers not allow in min product' });
             return;
@@ -290,9 +290,7 @@ function EditVoucher({ history }) {
                                             {(notValid.error && notValid.type === 'offerValue') && <label className='ml-3 text-danger' >{notValid.message}</label>}
                                         </FormGroup>
                                     </Col>
-                                </Row>
-                                <Row>
-                                    <Col sm="6">
+                                    {formValues.couponType === 'Referral' && <Col sm="6">
                                         <FormGroup>
                                             <label>{formValues.couponType === 'Referral' ? <span className="text-danger" >*</span> : null} Max Redeem </label>
                                             <Input
@@ -303,20 +301,9 @@ function EditVoucher({ history }) {
                                             />
                                             {(notValid.error && notValid.type === 'maxRedeem') && <label className='ml-3 text-danger' >{notValid.message}</label>}
                                         </FormGroup>
-                                    </Col>
-                                    <Col sm="6">
-                                        <FormGroup>
-                                            <label> Redeemed </label>
-                                            <Input
-                                                placeholder="Redeemed"
-                                                type="number"
-                                                value={formValues.numberRedeem}
-                                                onChange={(e) => setFormValues({ ...formValues, numberRedeem: e.target.value })}
-                                            />
-                                            {(notValid.error && notValid.type === 'numberRedeem') && <label className='ml-3 text-danger' >{notValid.message}</label>}
-                                        </FormGroup>
-                                    </Col>
+                                    </Col>}
                                 </Row>
+
 
                                 <Row>
                                     <Col sm="6">
@@ -344,6 +331,21 @@ function EditVoucher({ history }) {
                                         </FormGroup>
                                     </Col>
                                 </Row>
+
+                                {formValues.couponType === 'Promo' && <Row>
+                                    <Col sm="6">
+                                        <FormGroup>
+                                            <label>{formValues.couponType === 'Referral' ? <span className="text-danger" >*</span> : null} Max Redeem </label>
+                                            <Input
+                                                placeholder="Max Redeem"
+                                                type="number"
+                                                value={formValues.maxRedeem}
+                                                onChange={(e) => setFormValues({ ...formValues, maxRedeem: e.target.value })}
+                                            />
+                                            {(notValid.error && notValid.type === 'maxRedeem') && <label className='ml-3 text-danger' >{notValid.message}</label>}
+                                        </FormGroup>
+                                    </Col>
+                                </Row>}
 
                                 <Row>
                                     <Col sm="6">

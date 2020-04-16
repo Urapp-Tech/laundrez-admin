@@ -2,7 +2,7 @@ import { CategoryTypes } from '../action-types/CategoryTypes';
 
 
 export class CategoryActions {
-    static getCategories(page = 1, pageSize = 5, search = '') {
+    static getCategories(page = 1, pageSize = 10, search = '') {
         return {
             type: CategoryTypes.GET_CATEGORIES_PROG,
             payload: { page, pageSize, search }
