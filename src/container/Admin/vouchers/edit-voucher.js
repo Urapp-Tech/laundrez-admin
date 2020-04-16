@@ -62,7 +62,7 @@ function EditVoucher({ history }) {
 
 
             setFormValues({
-                code,
+                code: code.trim(),
                 validFrom: moment(validFrom).format('YYYY-MM-DD'),
                 validTo: moment(validTo).format('YYYY-MM-DD'),
                 couponType,
@@ -97,25 +97,37 @@ function EditVoucher({ history }) {
                 setNotValid({ error: true, type: 'code', message: 'Coupon code is too short' });
                 return;
             }
-            else if (formValues.validFrom === '') {
+            if (formValues.code.length > 7) {
+                setNotValid({ error: true, type: 'code', message: 'Coupon code not greater than 7 characters' });
+                return;
+            }
+            if (formValues.validFrom === '') {
                 setNotValid({ error: true, type: 'validFrom', message: 'Please select valid date' });
                 return;
             }
-            else if (formValues.validTo === '') {
+            if (formValues.validTo === '') {
                 setNotValid({ error: true, type: 'validTo', message: 'Please select valid date' });
                 return;
             }
-            else if (new Date(formValues.validTo).getTime() < new Date(formValues.validFrom)) {
+            if (new Date(formValues.validTo).getTime() < new Date(formValues.validFrom)) {
                 setNotValid({ error: true, type: 'validTo', message: 'Valid till must be greater than valid from' });
                 return;
             }
         }
-        else if (!formValues.offerValue) {
+        if (!formValues.offerValue) {
             setNotValid({ error: true, type: 'offerValue', message: 'Please provide offer value' });
             return;
         }
-        else if (Number(formValues.offerValue) === 0) {
+        if (Number(formValues.offerValue) === 0) {
             setNotValid({ error: true, type: 'offerValue', message: 'Offer value  must be greater than 0' });
+            return;
+        }
+        if (Number(formValues.offerValue) < 0) {
+            setNotValid({ error: true, type: 'offerValue', message: 'Negative numbers not allow in offer value' });
+            return;
+        }
+        if (formValues.offerValue.length > 10) {
+            setNotValid({ error: true, type: 'offerValue', message: 'Offer value not exceed 10 characters' });
             return;
         }
         if (formValues.couponType === 'Referral') {
@@ -124,29 +136,33 @@ function EditVoucher({ history }) {
                 setNotValid({ error: true, type: 'maxRedeem', message: 'Please provide max redeem ' });
                 return;
             }
-            else if (Number(formValues.maxRedeem) === 0) {
+            if (Number(formValues.maxRedeem) === 0) {
                 setNotValid({ error: true, type: 'maxRedeem', message: 'Max redeem value  must be greater than 0' });
                 return;
             }
         }
 
-        // else if (!formValues.minProduct) {
-        //     setNotValid({ error: true, type: 'minProduct', message: 'Please provide min product' });
-        //     return;
-        // }
-        // else if (Number(formValues.minProduct) === 0) {
-        //     setNotValid({ error: true, type: 'minProduct', message: 'Min product value  must be greater than 0' });
-        //     return;
-        // }
+        if (Number(formValues.maxRedeem) < 0) {
+            setNotValid({ error: true, type: 'maxRedeem', message: 'Negative numbers not allowed in max redeem' });
+            return;
+        }
+        if (Number(formValues.numberRedeem) < 0) {
+            setNotValid({ error: true, type: 'numberRedeem', message: 'Negative numbers not allowed in  redeemed' });
+            return;
+        }
+        if (Number(formValues.minProduct) < 0) {
+            setNotValid({ error: true, type: 'minProduct', message: 'Negative numbers not allow in min product' });
+            return;
+        }
 
         // else if (!formValues.minAmount) {
         //     setNotValid({ error: true, type: 'minAmount', message: 'Please provide min amount' });
         //     return;
         // }
-        // else if (Number(formValues.minAmount) === 0) {
-        //     setNotValid({ error: true, type: 'minAmount', message: 'Min amount value  must be greater than 0' });
-        //     return;
-        // }
+        if (Number(formValues.minAmount) < 0) {
+            setNotValid({ error: true, type: 'minAmount', message: 'Negative numbers not allow in min amount' });
+            return;
+        }
         let body = {
             code: formValues.code,
             validFrom: new Date(formValues.validFrom).toISOString(),
@@ -164,6 +180,14 @@ function EditVoucher({ history }) {
         dispatch(VoucherActions.editVoucher(body, history));
 
     }, [formValues, dispatch, notValid, history]);
+
+    const onChangeCouponType = useCallback((e) => {
+        if (notValid.error) {
+            setNotValid({ error: false, type: '', message: '' });
+        }
+        setFormValues({ ...formValues, couponType: e.target.value });
+
+    }, [formValues, notValid]);
 
 
     return (
@@ -183,7 +207,7 @@ function EditVoucher({ history }) {
                                             <Input
                                                 type="select"
                                                 value={formValues.couponType}
-                                                onChange={(e) => setFormValues({ ...formValues, couponType: e.target.value })}
+                                                onChange={onChangeCouponType}
                                                 name="select"
                                                 id="coupon-type">
                                                 <option value={'Promo'} >Promo</option>
@@ -345,7 +369,7 @@ function EditVoucher({ history }) {
                                 </Row>
                                 <Row>
                                     <Col sm="6">
-                                        <Button className="btn-round btn-primary btn-add-modal" >
+                                        <Button className="btn-round btn-primary btn-add-modal"  >
 
                                             {
                                                 isProgress
