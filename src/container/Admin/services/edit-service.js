@@ -19,6 +19,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { CategoryActions } from '../../../store/actions/CategoryActions';
 import { ServiceActions } from '../../../store/actions/ServiceActions';
+import { API_URL } from '../../../store/services/Config';
 
 
 function EditSerivce({ history }) {
@@ -38,6 +39,8 @@ function EditSerivce({ history }) {
         isActive: true,
         categoryId: '',
         file: null,
+        image: '',
+        removeImage: false,
         id: 0,
 
     });
@@ -54,6 +57,8 @@ function EditSerivce({ history }) {
                 minQty,
                 isActive,
                 categoryId,
+                image,
+                removeImage,
                 id
             } = service;
 
@@ -66,6 +71,8 @@ function EditSerivce({ history }) {
                 minQty,
                 isActive,
                 categoryId,
+                image,
+                removeImage,
                 id
             });
 
@@ -182,6 +189,7 @@ function EditSerivce({ history }) {
         formData.append('minQty', Number(formValues.minQty));
         formData.append('price', parseFloat(formValues.price));
         formData.append('imageFile', formValues.file);
+        formData.append('removeImage', formValues.removeImage);
         formData.append('id', formValues.id);
         dispatch(ServiceActions.editService(formData, history));
 
@@ -321,6 +329,12 @@ function EditSerivce({ history }) {
                                         </FormGroup>
                                     </Col>
                                 </Row>
+                                {formValues.image && <Row  >
+                                    {!formValues.removeImage && <Col sm="2"  >
+                                        <button className="close mr-3" onClick={() => setFormValues({ ...formValues, removeImage: true })} >&times;</button>
+                                        <img src={`${API_URL}/${formValues.image}`} alt={'img'} className="img-thumbnail table-image" />
+                                    </Col>}
+                                </Row>}
                                 <Row className=" " >
                                     <Col sm="6" >
                                         <span className="text-danger" >*</span><span> Required fields</span>

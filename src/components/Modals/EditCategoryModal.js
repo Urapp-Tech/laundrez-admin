@@ -2,6 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, Row, Col, FormGroup, Input } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { CategoryActions } from '../../store/actions/CategoryActions';
+import { API_URL } from '../../store/services/Config';
 
 const EditCategoryModal = () => {
     const [title, setTitle] = useState('');
@@ -9,6 +10,8 @@ const EditCategoryModal = () => {
     // const [error, setError] = useState({ isError: false, message: '' });
     const [notValid, setNotValid] = useState({ error: false, type: '', message: '' });
     const [imageNotValid, setImageNotValid] = useState({ error: false, type: '', message: '' });
+    const [removeImage, setRemoveImage] = useState(false);
+    const [image, setImage] = useState('');
     const [file, setFile] = useState(null);
     const isOpen = useSelector(store => store?.category?.openEditModal);
     const category = useSelector(store => store?.category?.category);
@@ -23,6 +26,7 @@ const EditCategoryModal = () => {
     useEffect(() => {
         if (category) {
             setTitle(category.title);
+            setImage(category.image);
         }
     }, [category]);
 
@@ -64,7 +68,7 @@ const EditCategoryModal = () => {
         }
 
     }, [imageNotValid]);
-    
+
 
     const onEditClick = useCallback((e) => {
         e.preventDefault();
@@ -86,9 +90,10 @@ const EditCategoryModal = () => {
         formData.append('id', category.id);
         formData.append('title', title);
         formData.append('imageFile', file);
+        formData.append('removeImage', removeImage);
         dispatch(CategoryActions.editCategory(formData));
 
-    }, [dispatch, title, category, file, imageNotValid, notValid]);
+    }, [dispatch, title, category, file, imageNotValid, notValid, removeImage]);
 
 
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
@@ -124,6 +129,12 @@ const EditCategoryModal = () => {
                             </FormGroup>
                         </Col>
                     </Row>
+                    {image && <Row className=" " >
+                        {!removeImage && <Col sm="3" >
+                            <button className="close " type={'button'} onClick={() => setRemoveImage(true)} >&times;</button>
+                            <img src={`${API_URL}/${image}`} alt={'img'} className="img-thumbnail table-image" />
+                        </Col>}
+                    </Row>}
                     <Row className=" " >
                         <Col sm="6" className="py-0"  >
                             <span className="text-danger" >*</span><span> Required fields</span>
@@ -131,7 +142,7 @@ const EditCategoryModal = () => {
                     </Row>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" className="btn-round btn-add-modal">
+                    <Button color="primary" type={'submit'} className="btn-round btn-add-modal">
                         {
                             isProgress ?
                                 <div className="spinner" ></div>
