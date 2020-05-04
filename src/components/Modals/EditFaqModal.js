@@ -53,12 +53,20 @@ const EditFaqModal = () => {
             setNotValid({ error: true, type: 'question', message: 'Question is too short' });
             return;
         }
+        else if (formValues.question.length > 100) {
+            setNotValid({ error: true, type: 'question', message: 'Question character length should not exceed 100' });
+            return;
+        }
         else if (!formValues.answer) {
             setNotValid({ error: true, type: 'answer', message: 'Please provide descritpion' });
             return;
         }
         else if (formValues.answer.length < 10) {
             setNotValid({ error: true, type: 'answer', message: 'Description is too short' });
+            return;
+        }
+        else if (formValues.answer.length > 250) {
+            setNotValid({ error: true, type: 'answer', message: 'Description character length should not exceed 250' });
             return;
         }
         let body = {
