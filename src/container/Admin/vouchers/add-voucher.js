@@ -97,11 +97,15 @@ function AddVoucher({ history }) {
                 setNotValid({ error: true, type: 'maxRedeem', message: 'Max redeem value  must be greater than 0' });
                 return;
             }
-        }
+            if (Number(formValues.maxRedeem) < 0) {
+                setNotValid({ error: true, type: 'maxRedeem', message: 'Negative numbers not allowed in max redeem' });
+                return;
+            }
+            if (Number(formValues.maxRedeem) > 9999) {
+                setNotValid({ error: true, type: 'maxRedeem', message: 'Max redeem should not exceed 9999' });
+                return;
+            }
 
-        if (Number(formValues.maxRedeem) < 0) {
-            setNotValid({ error: true, type: 'maxRedeem', message: 'Negative numbers not allowed in max redeem' });
-            return;
         }
         // if (Number(formValues.numberRedeem) < 0) {
         //     setNotValid({ error: true, type: 'numberRedeem', message: 'Negative numbers not allowed in  redeemed' });
@@ -111,6 +115,10 @@ function AddVoucher({ history }) {
             setNotValid({ error: true, type: 'minProduct', message: 'Negative numbers not allow in min product' });
             return;
         }
+        if (Number(formValues.minProduct) > 9999) {
+            setNotValid({ error: true, type: 'minProduct', message: 'Min product should not exceed 9999' });
+            return;
+        }
 
         // else if (!formValues.minAmount) {
         //     setNotValid({ error: true, type: 'minAmount', message: 'Please provide min amount' });
@@ -118,6 +126,10 @@ function AddVoucher({ history }) {
         // }
         if (Number(formValues.minAmount) < 0) {
             setNotValid({ error: true, type: 'minAmount', message: 'Negative numbers not allow in min amount' });
+            return;
+        }
+        if (Number(formValues.minAmount) > 9999) {
+            setNotValid({ error: true, type: 'minAmount', message: 'Min amount should not exceed 9999' });
             return;
         }
         let body = {
