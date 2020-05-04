@@ -196,7 +196,7 @@ function AddVoucher({ history }) {
                                                 placeholder="Coupon Code"
                                                 type="text"
                                                 value={formValues.code}
-                                                onChange={(e) => setFormValues({ ...formValues, code: e.target.value })}
+                                                onChange={(e) => setFormValues({ ...formValues, code: e.target.value.split(' ').join('') })}
                                             />
                                             {(notValid.error && notValid.type === 'code') && <label className='ml-3 text-danger' >{notValid.message}</label>}
                                         </FormGroup>
