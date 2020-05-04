@@ -58,8 +58,8 @@ const AddCategoryModal = () => {
             setNotValid({ error: true, type: 'title', message: 'Please provide title' });
             return;
         }
-        if (title.length < 3) {
-            setNotValid({ error: true, type: 'title', message: 'Title is too short' });
+        if (title.length > 50) {
+            setNotValid({ error: true, type: 'title', message: 'Title exceed 50 characters' });
             return;
         }
         else if (file && imageNotValid.error) {
@@ -89,7 +89,7 @@ const AddCategoryModal = () => {
                     <Row className="justify-content-center" >
                         <Col sm="12">
                             <FormGroup>
-                                <label><span className="text-danger" >*</span> Title </label>
+                                <label><span className="text-danger" >*</span> Title <b><i> (Max 50 characters)</i></b> </label>
                                 <Input autoFocus placeholder="Title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
                             </FormGroup>
                             {notValid.error && notValid.type === 'title' &&

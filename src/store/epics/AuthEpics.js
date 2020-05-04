@@ -8,17 +8,24 @@ export class AuthEpics {
     static signin(action$, state$, { ajaxPost }) {
         return action$.pipe(ofType(AuthTypes.SIGNIN_PROG), switchMap(({ payload }) => {
             return ajaxPost('/User/signin/', payload.body).pipe(pluck('response'), map(obj => {
-                StorageService.setToken(obj?.token);
-                let { id, username, firstName, lastName } = obj;
-                let user = { id, username, firstName, lastName };
-                StorageService.setUser(user);
-                return {
-                    type: AuthTypes.SIGNIN_SUCC,
-                    payload: { user }
-                };
+                let { id, username, firstName, lastName, role } = obj;
+                if (role === 'Admin') {
+                    let user = { id, username, firstName, lastName, role };
+                    StorageService.setToken(obj?.token);
+                    StorageService.setUser(user);
+                    return {
+                        type: AuthTypes.SIGNIN_SUCC,
+                        payload: { user }
+                    };
+
+                }
+                else {
+                    let err = new Error('You donot have sufficient rights');
+                    throw err;
+                }
             })
                 , catchError((err) => {
-                    return of({ type: AuthTypes.SIGNIN_FAIL, payload: { message: err?.response?.message, status: err?.status } });
+                    return of({ type: AuthTypes.SIGNIN_FAIL, payload: { message: err?.response ? err?.response.message : err?.message, status: err?.status } });
                 }));
 
         }));

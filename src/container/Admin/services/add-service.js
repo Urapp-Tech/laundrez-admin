@@ -99,12 +99,20 @@ function AddService({ history }) {
             setNotValid({ error: true, type: 'description', message: 'Description is too short ' });
             return;
         }
+        if (formValues.description.length > 250) {
+            setNotValid({ error: true, type: 'description', message: 'Description exceed 250 characters ' });
+            return;
+        }
         if (!formValues.shortDescription) {
             setNotValid({ error: true, type: 'shortDescription', message: 'Please provide short description' });
             return;
         }
         if (formValues.shortDescription.length < 15) {
             setNotValid({ error: true, type: 'shortDescription', message: 'Short description is too short' });
+            return;
+        }
+        if (formValues.shortDescription.length > 25) {
+            setNotValid({ error: true, type: 'shortDescription', message: 'Short description exceed 25 characters' });
             return;
         }
         if (!formValues.minQty) {
@@ -205,9 +213,9 @@ function AddService({ history }) {
                                 <Row>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label><span className="text-danger" >*</span> Description </Label>
+                                            <Label><span className="text-danger" >*</span> Description <b><i> Write 25 - 250 Characters </i></b> </Label>
                                             <Input
-                                                placeholder="Service Description"
+                                                placeholder="Service Description ( Write 25 - 250 Characters )"
                                                 type="textarea"
                                                 value={formValues.description}
                                                 style={{ height: '10rem' }}
@@ -222,7 +230,7 @@ function AddService({ history }) {
                                         <FormGroup>
                                             <Label><span className="text-danger" >*</span> Short Description <b><i> Write 10-15 Characters</i> </b> </Label>
                                             <Input
-                                                placeholder="Service Description ( Write 10-15 Characters ) "
+                                                placeholder="Service Description ( Write 15 - 20 Characters ) "
                                                 type="text"
                                                 value={formValues.shortDescription}
                                                 onChange={(e) => setFormValues({ ...formValues, shortDescription: e.target.value })}
