@@ -39,7 +39,11 @@ export class VoucherEpics {
                 );
             })
                 , catchError((err) => {
-                    let message = err?.response?.Message;
+                    let message;
+                    if (err.status === 500)
+                        message = err?.response?.Message;
+                    else if (err.status === 400)
+                        message = err?.response?.errors[0]?.message;
                     toast.error(message ? message : ErrorMsg);
                     return of({ type: VoucherTypes.ADD_VOUCHER_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
                 }));
@@ -60,7 +64,11 @@ export class VoucherEpics {
                 );
             })
                 , catchError((err) => {
-                    let message = err?.response?.Message;
+                    let message;
+                    if (err.status === 500)
+                        message = err?.response?.Message;
+                    else if (err.status === 400)
+                        message = err?.response?.errors[0]?.message;
                     toast.error(message ? message : ErrorMsg);
                     return of({ type: VoucherTypes.EDIT_VOUCHER_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
                 }));

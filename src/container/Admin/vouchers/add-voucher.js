@@ -122,8 +122,8 @@ function AddVoucher({ history }) {
         }
         let body = {
             code: formValues.code,
-            validFrom: new Date(formValues.validFrom).toISOString(),
-            validTo: new Date(formValues.validTo).toISOString(),
+            validFrom: formValues.couponType === 'Promo' ? new Date(formValues.validFrom).toISOString() : '',
+            validTo: formValues.couponType === 'Promo' ? new Date(formValues.validTo).toISOString() : '',
             couponType: formValues.couponType,
             offerType: formValues.offerType,
             offerValue: Number(formValues.offerValue),
@@ -244,7 +244,7 @@ function AddVoucher({ history }) {
                                             {(notValid.error && notValid.type === 'offerValue') && <label className='ml-3 text-danger' >{notValid.message}</label>}
                                         </FormGroup>
                                     </Col>
-                                    {formValues.couponType === 'Referral' &&<Col sm="6">
+                                    {formValues.couponType === 'Referral' && <Col sm="6">
                                         <FormGroup>
                                             <label>{formValues.couponType === 'Referral' ? <span className="text-danger" >*</span> : null} Max Redeem </label>
                                             <Input

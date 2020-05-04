@@ -127,6 +127,10 @@ function AddService({ history }) {
             setNotValid({ error: true, type: 'minQty', message: 'Negative number not allow in min qty' });
             return;
         }
+        if (Number(formValues.minQty) > 9999) {
+            setNotValid({ error: true, type: 'minQty', message: 'minQty should not exceed 9999' });
+            return;
+        }
         if (!formValues.price) {
             setNotValid({ error: true, type: 'price', message: 'Please provide price' });
             return;
