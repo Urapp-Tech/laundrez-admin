@@ -96,7 +96,7 @@ function AddService({ history }) {
             return;
         }
         if (formValues.description.length < 25) {
-            setNotValid({ error: true, type: 'description', message: 'Description is too short ' });
+            setNotValid({ error: true, type: 'description', message: 'Description must contain min 25 characters' });
             return;
         }
         if (formValues.description.length > 250) {
@@ -108,7 +108,7 @@ function AddService({ history }) {
             return;
         }
         if (formValues.shortDescription.length < 15) {
-            setNotValid({ error: true, type: 'shortDescription', message: 'Short description is too short' });
+            setNotValid({ error: true, type: 'shortDescription', message: 'Short description must contain 15 characters' });
             return;
         }
         if (formValues.shortDescription.length > 25) {
@@ -232,9 +232,9 @@ function AddService({ history }) {
                                     </Col>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label><span className="text-danger" >*</span> Short Description <b><i> Write 10-15 Characters</i> </b> </Label>
+                                            <Label><span className="text-danger" >*</span> Short Description <b><i> Write 15-25 Characters</i> </b> </Label>
                                             <Input
-                                                placeholder="Service Description ( Write 15 - 20 Characters ) "
+                                                placeholder="Service Description ( Write 15 - 25 Characters ) "
                                                 type="text"
                                                 value={formValues.shortDescription}
                                                 onChange={(e) => setFormValues({ ...formValues, shortDescription: e.target.value })}
