@@ -97,15 +97,16 @@ function AddVoucher({ history }) {
                 setNotValid({ error: true, type: 'maxRedeem', message: 'Max redeem value  must be greater than 0' });
                 return;
             }
-            if (Number(formValues.maxRedeem) < 0) {
-                setNotValid({ error: true, type: 'maxRedeem', message: 'Negative numbers not allowed in max redeem' });
-                return;
-            }
-            if (Number(formValues.maxRedeem) > 9999) {
-                setNotValid({ error: true, type: 'maxRedeem', message: 'Max redeem should not exceed 9999' });
-                return;
-            }
+            
 
+        }
+        if (Number(formValues.maxRedeem) < 0) {
+            setNotValid({ error: true, type: 'maxRedeem', message: 'Negative numbers not allowed in max redeem' });
+            return;
+        }
+        if (Number(formValues.maxRedeem) > 9999) {
+            setNotValid({ error: true, type: 'maxRedeem', message: 'Max redeem should not exceed 9999' });
+            return;
         }
         // if (Number(formValues.numberRedeem) < 0) {
         //     setNotValid({ error: true, type: 'numberRedeem', message: 'Negative numbers not allowed in  redeemed' });
