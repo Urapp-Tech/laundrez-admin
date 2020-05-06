@@ -147,6 +147,10 @@ function AddService({ history }) {
             setNotValid({ error: true, type: 'price', message: 'Price must be a number with upto 2 decimal places' });
             return;
         }
+        if (Number(formValues.price) > 9999) {
+            setNotValid({ error: true, type: 'price', message: 'Price should not exceed 9999' });
+            return;
+        }
         if (formValues.file && imageNotValid.error) {
             return;
         }
