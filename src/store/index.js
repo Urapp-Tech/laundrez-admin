@@ -77,8 +77,9 @@ const epicMiddleware = createEpicMiddleware({
         ajaxDel: HttpService.delete,
     }
 });
-
-const createStoreWithMiddleware = applyMiddleware(epicMiddleware, loggerMiddleware);
+// eslint-disable-next-line no-undef
+let middlewares = process.env.NODE_ENV === 'production' ? applyMiddleware(epicMiddleware) : applyMiddleware(epicMiddleware, loggerMiddleware);
+const createStoreWithMiddleware = middlewares;
 
 export let store = createStore(
     rootReducer,
