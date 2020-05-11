@@ -75,7 +75,7 @@ const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
                     </Row>
                     <Row>
                         <Card>
-                            <CardHeader style={{backgroundColor: '#f1f1f1'}} className="d-flex flex-column">
+                            <CardHeader  className="d-flex flex-column bg-light">
                                 <h6>Detail</h6>
                             </CardHeader>
                             <CardBody>
@@ -94,16 +94,16 @@ const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
                                     </Col>
                                 </Row>
                                 <Row className="d-flex py-2 border-order-modal-solid">
-                                    <Col md={2}>
+                                    <Col md={3}>
                                         Shirt
                                     </Col>
-                                    <Col md={4}>
+                                    <Col md={3}>
                                         <Input value={2} type="number" onChange={()=>{}}/>
                                     </Col>
-                                    <Col md={4}>
+                                    <Col md={3}>
                                         <Input value={3} type="number" onChange={()=>{}}/>
                                     </Col>
-                                    <Col md={2} className="text-right">
+                                    <Col md={3} className="text-right">
                                         $6.78
                                     </Col>
                                 </Row>
