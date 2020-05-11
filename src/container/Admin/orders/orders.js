@@ -27,10 +27,12 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 
 import { ordersData } from '../../../variables/general';
 import AssignModal from '../../../components/Modals/AssignModal';
+import EditOrderModal from '../../../components/Modals/EditOrderDetailModal';
 
 function Orders() {
 
-    const [openModal, setOpenModal] = useState(false);
+    const [openAssignModal, setOpenAssignModal] = useState(false);
+    const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
     const dispatch = useDispatch();
     // const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
@@ -38,8 +40,13 @@ function Orders() {
     }, [dispatch]);
 
     const toggleAssignModal = useCallback(() => {
-        setOpenModal(!openModal);
-    }, [openModal]);
+        setOpenAssignModal(!openAssignModal);
+    }, [openAssignModal]);
+
+    const toggleEditOrderModal = useCallback(() => {
+        setOpenEditOrderModal(!openEditOrderModal);
+    }, [openEditOrderModal]);
+
     const remote = {
         filter: false,
         pagination: false,
@@ -103,6 +110,7 @@ function Orders() {
                             color="info"
                             id={`edit-order-${rowIndex}`}
                             type="button"
+                            onClick={toggleEditOrderModal}
                         >
                             <i className=" far fa-edit"></i>
                         </Button>
@@ -226,7 +234,8 @@ function Orders() {
                         </Card>
                     </Col>
                 </Row>
-                <AssignModal isOpen={openModal} toggle={toggleAssignModal} />
+                <AssignModal isOpen={openAssignModal} toggle={toggleAssignModal} />
+                <EditOrderModal isOpen={openEditOrderModal} toggle={toggleEditOrderModal} />
             </div>
         </>
     );
