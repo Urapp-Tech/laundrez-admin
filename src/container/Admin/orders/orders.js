@@ -21,6 +21,8 @@ import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
 import { useDispatch, /* useSelector  */ } from 'react-redux';
 
+import { PDFViewer } from '@react-pdf/renderer';
+
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
@@ -28,11 +30,13 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import { ordersData } from '../../../variables/general';
 import AssignModal from '../../../components/Modals/AssignModal';
 import EditOrderModal from '../../../components/Modals/EditOrderDetailModal';
+import PdfDocument from '../../../components/OrderPdf/OrderPdf';
 
 function Orders() {
 
     const [openAssignModal, setOpenAssignModal] = useState(false);
     const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
+    const [pdfView, setPdfView] =useState(false);
     const dispatch = useDispatch();
     // const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
@@ -46,6 +50,10 @@ function Orders() {
     const toggleEditOrderModal = useCallback(() => {
         setOpenEditOrderModal(!openEditOrderModal);
     }, [openEditOrderModal]);
+
+    const togglePdfView = useCallback(() => {
+        setPdfView(!pdfView);
+    }, [pdfView]);
 
     const remote = {
         filter: false,
@@ -125,6 +133,7 @@ function Orders() {
                             color="info"
                             id={`pdf-order-${rowIndex}`}
                             type="button"
+                            onClick={togglePdfView}
                         >
                             {/* <img className="now-ui-icons pdf-icon" alt={'pdf-icon'} src={pdf} /> */}
                             <i className=" fas fa-file-pdf"></i>
@@ -236,6 +245,7 @@ function Orders() {
                 </Row>
                 <AssignModal isOpen={openAssignModal} toggle={toggleAssignModal} />
                 <EditOrderModal isOpen={openEditOrderModal} toggle={toggleEditOrderModal} />
+                {pdfView ? <PDFViewer><PdfDocument data={{a:'b'}}/></PDFViewer>:/*console.log('heyyyy')*/''}
             </div>
         </>
     );
