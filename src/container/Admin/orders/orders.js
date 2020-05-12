@@ -21,7 +21,7 @@ import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
 import { useDispatch, /* useSelector  */ } from 'react-redux';
 
-import { PDFViewer } from '@react-pdf/renderer';
+import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
@@ -36,7 +36,7 @@ function Orders() {
 
     const [openAssignModal, setOpenAssignModal] = useState(false);
     const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
-    const [pdfView, setPdfView] =useState(false);
+    const [pdfView, setPdfView] = useState(false);
     const dispatch = useDispatch();
     // const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
@@ -245,7 +245,17 @@ function Orders() {
                 </Row>
                 <AssignModal isOpen={openAssignModal} toggle={toggleAssignModal} />
                 <EditOrderModal isOpen={openEditOrderModal} toggle={toggleEditOrderModal} />
-                {pdfView ? <PDFViewer><PdfDocument data={{a:'b'}}/></PDFViewer>:/*console.log('heyyyy')*/''}
+                <Row>
+                    <Col xs={12}>
+                        {pdfView ? <PDFDownloadLink document={<PdfDocument />} fileName="somename.pdf">
+                            {({ /* blob, url, */ loading,/*  error */ }) => (loading ? 'Loading document...' : 'Download now!')}
+                        </PDFDownloadLink> : ''}
+                    </Col>
+                    <Col xs={12}>
+
+                        {pdfView ? <PDFViewer className='w-100' style={{ height: '20rem' }} ><PdfDocument data={{ a: 'b' }} /></PDFViewer> :/*console.log('heyyyy')*/''}
+                    </Col>
+                </Row>
             </div>
         </>
     );

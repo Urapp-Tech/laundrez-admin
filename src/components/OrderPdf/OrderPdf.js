@@ -5,6 +5,7 @@ import {
     View,
     Document,
     StyleSheet,
+    
     // Image
 } from '@react-pdf/renderer';
 // import moment from 'moment';
@@ -14,20 +15,27 @@ import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
     page: {
-        backgroundColor: '#ffffff'
+        flexDirection: 'row',
+        backgroundColor: '#E4E4E4',
+        width:'100%'
     },
+    section: {
+        margin: 10,
+        padding: 10,
+        flexGrow: 1
+    }
 });
 
-function PdfDocument(props) {
+function PdfDocument(/* props */) {
     // console.log('pdf props', props.data);
     return (
-        <Document>
-            <Page style={styles.page}>
-                <View>
-                    <Text>
-                        Order Details:
-                        {props.data}
-                    </Text>
+        <Document  filename="somename.pdf" >
+            <Page size="A4" style={styles.page} >
+                <View style={styles.section}>
+                    <Text>Section #1</Text>
+                </View>
+                <View style={styles.section}>
+                    <Text>Section #2</Text>
                 </View>
             </Page>
         </Document>
@@ -35,6 +43,6 @@ function PdfDocument(props) {
 }
 PdfDocument.displayName = 'PdfDocument';
 PdfDocument.propTypes = {
-  data: PropTypes.object,
+    data: PropTypes.object,
 };
 export default PdfDocument;
