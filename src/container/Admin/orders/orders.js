@@ -28,11 +28,13 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import { ordersData } from '../../../variables/general';
 import AssignModal from '../../../components/Modals/AssignModal';
 import EditOrderModal from '../../../components/Modals/EditOrderDetailModal';
+import OrderPdfModal from '../../../components/Modals/OrderPdfModal';
 
 function Orders() {
 
     const [openAssignModal, setOpenAssignModal] = useState(false);
     const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
+    const [openOrderPdfModal, setOpenOrderPdfModal] = useState(false);
     const dispatch = useDispatch();
     // const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
@@ -46,6 +48,10 @@ function Orders() {
     const toggleEditOrderModal = useCallback(() => {
         setOpenEditOrderModal(!openEditOrderModal);
     }, [openEditOrderModal]);
+
+    const toggleOrderPdfModal = useCallback(() => {
+        setOpenOrderPdfModal(!openOrderPdfModal);
+    }, [openOrderPdfModal]);
 
     const remote = {
         filter: false,
@@ -125,6 +131,7 @@ function Orders() {
                             color="info"
                             id={`pdf-order-${rowIndex}`}
                             type="button"
+                            onClick={toggleOrderPdfModal}
                         >
                             {/* <img className="now-ui-icons pdf-icon" alt={'pdf-icon'} src={pdf} /> */}
                             <i className=" fas fa-file-pdf"></i>
@@ -236,6 +243,7 @@ function Orders() {
                 </Row>
                 <AssignModal isOpen={openAssignModal} toggle={toggleAssignModal} />
                 <EditOrderModal isOpen={openEditOrderModal} toggle={toggleEditOrderModal} />
+                <OrderPdfModal isOpen={openOrderPdfModal} toggle={toggleOrderPdfModal} style={{ maxWidth: '1600px', width: '80%' }} />
             </div>
         </>
     );
