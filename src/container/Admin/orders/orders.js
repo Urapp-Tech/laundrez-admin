@@ -21,8 +21,6 @@ import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
 import { useDispatch, /* useSelector  */ } from 'react-redux';
 
-import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
-
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
@@ -30,13 +28,13 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import { ordersData } from '../../../variables/general';
 import AssignModal from '../../../components/Modals/AssignModal';
 import EditOrderModal from '../../../components/Modals/EditOrderDetailModal';
-import PdfDocument from '../../../components/OrderPdf/OrderPdf';
+import OrderPdfModal from '../../../components/Modals/OrderPdfModal';
 
 function Orders() {
 
     const [openAssignModal, setOpenAssignModal] = useState(false);
     const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
-    const [pdfView, setPdfView] = useState(false);
+    const [openOrderPdfModal, setOpenOrderPdfModal] = useState(false);
     const dispatch = useDispatch();
     // const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
@@ -51,9 +49,9 @@ function Orders() {
         setOpenEditOrderModal(!openEditOrderModal);
     }, [openEditOrderModal]);
 
-    const togglePdfView = useCallback(() => {
-        setPdfView(!pdfView);
-    }, [pdfView]);
+    const toggleOrderPdfModal = useCallback(() => {
+        setOpenOrderPdfModal(!openOrderPdfModal);
+    }, [openOrderPdfModal]);
 
     const remote = {
         filter: false,
@@ -133,7 +131,7 @@ function Orders() {
                             color="info"
                             id={`pdf-order-${rowIndex}`}
                             type="button"
-                            onClick={togglePdfView}
+                            onClick={toggleOrderPdfModal}
                         >
                             {/* <img className="now-ui-icons pdf-icon" alt={'pdf-icon'} src={pdf} /> */}
                             <i className=" fas fa-file-pdf"></i>
@@ -245,17 +243,7 @@ function Orders() {
                 </Row>
                 <AssignModal isOpen={openAssignModal} toggle={toggleAssignModal} />
                 <EditOrderModal isOpen={openEditOrderModal} toggle={toggleEditOrderModal} />
-                <Row>
-                    <Col xs={12}>
-                        {pdfView ? <PDFDownloadLink document={<PdfDocument />} fileName="somename.pdf">
-                            {({ /* blob, url, */ loading,/*  error */ }) => (loading ? 'Loading document...' : 'Download now!')}
-                        </PDFDownloadLink> : ''}
-                    </Col>
-                    <Col xs={12}>
-
-                        {pdfView ? <PDFViewer className='w-100' style={{ height: '20rem' }} ><PdfDocument data={{ a: 'b' }} /></PDFViewer> :/*console.log('heyyyy')*/''}
-                    </Col>
-                </Row>
+                <OrderPdfModal isOpen={openOrderPdfModal} toggle={toggleOrderPdfModal} style={{ maxWidth: '1600px', width: '80%' }} />
             </div>
         </>
     );

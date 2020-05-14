@@ -3,9 +3,11 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Container
 import propTypes from 'prop-types';
 
 const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
+
+    const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
         <Modal isOpen={isOpen} centered={true} toggle={toggle} size={'lg'}>
-            <ModalHeader>Order Detail</ModalHeader>
+            <ModalHeader toggle={toggle} close={closeBtn}>Order Detail</ModalHeader>
             <ModalBody>
                 <Container>
                     <Row className="mb-4">
