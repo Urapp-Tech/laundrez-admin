@@ -40,15 +40,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#EB8725',
         color: 'white',
         paddingTop: 10,
-        paddingBottom: 10 
+        paddingBottom: 10
     },
     TableEntry: {
         fontSize: 12,
         borderRight: 2,
         padding: 5,
-        borderColor: '#EB8725' 
+        borderColor: '#EB8725',
+        width: '100%'
     },
-    Table : {
+    Table: {
         flexDirection: 'row',
         border: 2,
         borderColor: '#EB8725'
@@ -66,10 +67,10 @@ function PdfDocument(/* props */) {
                     <Text style={styles.title3}>Order Details:</Text>
                     <View style={styles.ColumnNames}>
                         <Text style={[styles.TableEntry, { flex: 2 }]}>Name</Text>
-                        <Text style={[styles.TableEntry, { flex: 2 }]}>Order#</Text>
+                        <Text style={[styles.TableEntry, { flex: 2, }]}>Order#</Text>
                         <Text style={[styles.TableEntry, { flex: 7 }]}>Address</Text>
-                        <Text style={[styles.TableEntry, { flex: 2 }]}>Order</Text>
-                        <Text style={[styles.TableEntry, { flex: 1 }]}>Qty</Text>
+                        <Text style={[styles.TableEntry, { flex: 1.65 }]}>Order</Text>
+                        <Text style={[styles.TableEntry, { flex: 0.7 }]}>Qty</Text>
                         <Text style={[styles.TableEntry, { flex: 2 }]}>PickUp</Text>
                         <Text style={[styles.TableEntry, { flex: 2 }]}>DropOff</Text>
                     </View>
