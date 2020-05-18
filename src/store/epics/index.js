@@ -3,9 +3,11 @@ import { AuthEpics } from './AuthEpics';
 import { ServiceEpics } from './ServiceEpics';
 import { FaqEpics } from './FaqEpics';
 import { VoucherEpics } from './VoucherEpics';
+import { LocationEpics } from './LocationEpics';
 
 export {
     CategoryEpics,
+    LocationEpics,
     AuthEpics,
     ServiceEpics,
     FaqEpics,

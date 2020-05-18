@@ -5,6 +5,7 @@ import { createLogger } from 'redux-logger';
 
 import {
     categoryReducer,
+    locationReducer,
     authReducer,
     serviceReducer,
     faqReducer,
@@ -18,6 +19,7 @@ import { AuthTypes } from './action-types/AuthTypes';
 // epics
 import {
     CategoryEpics,
+    LocationEpics,
     AuthEpics,
     ServiceEpics,
     FaqEpics,
@@ -28,6 +30,7 @@ const loggerMiddleware = createLogger();
 // Application Reducers
 const appReducer = combineReducers({
     category: categoryReducer,
+    location: locationReducer,
     auth: authReducer,
     service: serviceReducer,
     faq: faqReducer,
@@ -49,6 +52,11 @@ export const rootEpic = combineEpics(
     CategoryEpics.addCateogry,
     CategoryEpics.editCateogry,
     CategoryEpics.delCateogry,
+
+    LocationEpics.getLocations,
+    LocationEpics.addLocation,
+    LocationEpics.editLocation,
+    LocationEpics.delLocation,
 
     ServiceEpics.getServices,
     ServiceEpics.addService,
