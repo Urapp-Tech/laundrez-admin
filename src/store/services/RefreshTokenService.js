@@ -11,7 +11,7 @@ export class RefreshTokenService {
         let user = StorageService.getUser();
         let body = {
             token: StorageService.getRefreshToken(),
-            email: user?.email
+            email: user?.userName
         };
         let isProgressRefreshToken = state$?.value?.auth?.isProgressRefreshToken;
         return action$.pipe(
