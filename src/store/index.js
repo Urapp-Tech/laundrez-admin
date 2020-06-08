@@ -25,6 +25,7 @@ import {
     FaqEpics,
     VoucherEpics
 } from './epics';
+import { RefreshTokenService } from './services/RefreshTokenService';
 
 const loggerMiddleware = createLogger();
 // Application Reducers
@@ -46,6 +47,7 @@ const rootReducer = (state, action) => {
 export const rootEpic = combineEpics(
     // more epics functions go here
     AuthEpics.signin,
+    AuthEpics.getNewAccessToken,
 
 
     CategoryEpics.getCategories,
@@ -83,6 +85,7 @@ const epicMiddleware = createEpicMiddleware({
         ajaxPost: HttpService.post,
         ajaxPut: HttpService.put,
         ajaxDel: HttpService.delete,
+        getRefreshToken: RefreshTokenService.getRefreshToken
     }
 });
 // eslint-disable-next-line no-undef

@@ -5,6 +5,12 @@ export class StorageService {
     static setToken(token) {
         localStorage.setItem('token', token);
     }
+    static getRefreshToken() {
+        return localStorage.getItem('refreshToken');
+    }
+    static setRefreshToken(refreshToken) {
+        localStorage.setItem('refreshToken', refreshToken);
+    }
     static clearToken() {
         localStorage.removeItem('token');
     }

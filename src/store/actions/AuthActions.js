@@ -7,6 +7,12 @@ export class AuthActions {
             payload: { body }
         };
     }
+    static getNewAccessToken(body) {
+        return {
+            type: AuthTypes.GET_NEW_ACCESS_TOKEN_PROG,
+            payload: { body }
+        };
+    }
     static setUser(user) {
         return {
             type: AuthTypes.SET_USER,
