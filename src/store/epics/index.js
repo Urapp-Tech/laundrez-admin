@@ -4,6 +4,7 @@ import { ServiceEpics } from './ServiceEpics';
 import { FaqEpics } from './FaqEpics';
 import { VoucherEpics } from './VoucherEpics';
 import { LocationEpics } from './LocationEpics';
+import { OrderEpics } from './OrderEpics';
 
 export {
     CategoryEpics,
@@ -11,5 +12,6 @@ export {
     AuthEpics,
     ServiceEpics,
     FaqEpics,
-    VoucherEpics
+    VoucherEpics,
+    OrderEpics
 };

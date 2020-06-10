@@ -9,7 +9,8 @@ import {
     authReducer,
     serviceReducer,
     faqReducer,
-    voucherReducer
+    voucherReducer,
+    orderReducer
 } from './reducers';
 
 
@@ -23,7 +24,8 @@ import {
     AuthEpics,
     ServiceEpics,
     FaqEpics,
-    VoucherEpics
+    VoucherEpics,
+    OrderEpics
 } from './epics';
 import { RefreshTokenService } from './services/RefreshTokenService';
 
@@ -35,7 +37,8 @@ const appReducer = combineReducers({
     auth: authReducer,
     service: serviceReducer,
     faq: faqReducer,
-    voucher: voucherReducer
+    voucher: voucherReducer,
+    order: orderReducer
 });
 const rootReducer = (state, action) => {
     if (action.type === AuthTypes.SIGNOUT_USER) {
@@ -54,6 +57,8 @@ export const rootEpic = combineEpics(
     CategoryEpics.addCateogry,
     CategoryEpics.editCateogry,
     CategoryEpics.delCateogry,
+
+    OrderEpics.getOrders,
 
     LocationEpics.getLocations,
     LocationEpics.addLocation,

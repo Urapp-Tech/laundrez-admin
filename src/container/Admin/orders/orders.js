@@ -14,31 +14,41 @@ import {
     Input,
     UncontrolledTooltip,
     FormGroup,
-    Label
+    Label,
+    Badge
 } from 'reactstrap';
 import ToolkitProvider, { /* Search  */ } from 'react-bootstrap-table2-toolkit';
 import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
-import { useDispatch, /* useSelector  */ } from 'react-redux';
+import { useDispatch, useSelector, /* useSelector  */ } from 'react-redux';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
 
-import { ordersData } from '../../../variables/general';
+
 import AssignModal from '../../../components/Modals/AssignModal';
 import EditOrderModal from '../../../components/Modals/EditOrderDetailModal';
 import OrderPdfModal from '../../../components/Modals/OrderPdfModal';
+import { OrderActions } from '../../../store/actions/OrderActions';
+import { OrderStatus } from '../../../store/constants/OrderConstants';
+import moment from 'moment';
 
 function Orders() {
 
     const [openAssignModal, setOpenAssignModal] = useState(false);
     const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
     const [openOrderPdfModal, setOpenOrderPdfModal] = useState(false);
+    const [search, setSearch] = useState('');
+    const [isSearch, setIsSearch] = useState(false);
+
+    const isProgress = useSelector(store => store?.order?.isProgressList);
+    const orders = useSelector(store => store?.order?.orders);
+    const paging = useSelector(store => store?.order?.paging);
     const dispatch = useDispatch();
     // const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
-        // dispatch(SampleActions.sampleReq());
+        dispatch(OrderActions.getOrders());
     }, [dispatch]);
 
     const toggleAssignModal = useCallback(() => {
@@ -53,39 +63,72 @@ function Orders() {
         setOpenOrderPdfModal(!openOrderPdfModal);
     }, [openOrderPdfModal]);
 
+
+    const onTableChange = useCallback((type, newState) => {
+        if (type === 'pagination')
+            dispatch(OrderActions.getOrders(newState?.page));
+    }, [dispatch]);
+
+
+    const onSearch = useCallback((e) => {
+        e.preventDefault();
+        if (search) {
+            setIsSearch(true);
+            dispatch(OrderActions.getOrders(undefined, undefined, search));
+        }
+    }, [dispatch, search]);
+
+
+    useEffect(() => {
+        if (isSearch && search === '') {
+            setIsSearch(false);
+            dispatch(OrderActions.getOrders(undefined, undefined, search));
+        }
+    }, [search, onSearch, isSearch, dispatch]);
+
     const remote = {
         filter: false,
-        pagination: false,
+        pagination: true,
         sort: false,
         cellEdit: false
     };
     const columns = [
         {
-            dataField: 'id',
+            dataField: 'orderNumber',
             text: '#'
         },
         {
-            dataField: 'userId',
-            text: 'Ref'
+            dataField: 'pickupTime',
+            text: 'Pickup Time',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell, row) => {
+                return (
+                    <div className="d-flex flex-column" >
+                        <span> {cell}</span>
+                        <span> {row?.pickupDate && moment(row.pickupDate).format('DD-MM-YYYY')}</span>
+                    </div>
+                );
+            }
         },
         {
-            dataField: 'orderPickupTime',
-            text: 'Pickup Time'
-        },
-        {
-            dataField: 'OrderDropoffTime',
-            text: 'Drop off Time'
+            dataField: 'dropoffTime',
+            text: 'Dropoff Time',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell, row) => {
+                return (
+                    <div className="d-flex flex-column" >
+                        <span> {cell}</span>
+                        <span> {row?.dropoffDate && moment(row.dropoffDate).format('DD-MM-YYYY')}</span>
+                    </div>
+                );
+            }
         },
         {
             dataField: 'customer',
             text: 'Customer'
         },
         {
-            dataField: 'phone',
-            text: 'Phone'
-        },
-        {
-            dataField: 'amount',
+            dataField: 'totalAmount',
             text: 'Amount'
         },
         {
@@ -95,9 +138,16 @@ function Orders() {
             formatter: (cell) => {
                 return (
                     <div>
-                        {cell === 'placed' && <span className={'text-order-placed-color mt-1'}>Placed</span>}
-                        {cell === 'picked' && <Button size="sm" className={'btn-outline-order-picked btn-round mt-1 '} onClick={toggleAssignModal} >Picked</Button>}
-                        {cell === 'out' && <span className={'text-order-out-for-delivery-color mt-1 '}>Out For Delivery</span>}
+                        <FormGroup>
+                            <Input type="select" value={cell} name="select">
+                                <option value={OrderStatus.OrderPlaced} >OrderPlaced</option>
+                                <option value={OrderStatus.PickUp} >PickUp</option>
+                                <option value={OrderStatus.PickUp} >InProgress</option>
+                                <option value={OrderStatus.DropOff} >DropOff</option>
+                                <option value={OrderStatus.Delivered} >Delivered</option>
+                                <option value={OrderStatus.Cancelled} >Cancelled</option>
+                            </Input>
+                        </FormGroup>
 
                     </div>
 
@@ -186,16 +236,19 @@ function Orders() {
                                     </Col>
 
                                     <Col lg="4" className="mt-auto"  >
-                                        <FormGroup className=" col-md-12" >
+                                        <form onSubmit={onSearch} className=" col-md-12" >
                                             <InputGroup className=" no-border">
-                                                <Input className="" placeholder="Search..." />
-                                                <InputGroupAddon addonType="append">
+                                                <Input value={search}
+                                                    onChange={e => setSearch(e.target.value)}
+                                                    className=""
+                                                    placeholder="Search..." />
+                                                <InputGroupAddon addonType="append" onClick={onSearch}>
                                                     <InputGroupText>
                                                         <i className="now-ui-icons ui-1_zoom-bold" />
                                                     </InputGroupText>
                                                 </InputGroupAddon>
                                             </InputGroup>
-                                        </FormGroup>
+                                        </form>
                                     </Col>
                                     <Col lg="2" className="d-flex justify-content-center align-items-end" >
                                         <Button size={'md'} className=" btn-primary btn-round" >Export to CSV</Button>
@@ -203,40 +256,46 @@ function Orders() {
                                 </Row>
                             </CardHeader>
                             <CardBody>
-                                <ToolkitProvider
-                                    keyField='id'
-                                    data={ordersData}
-                                    columns={columns}
-                                    bootstrap4={true}
-                                    responsive
+                                {isProgress ?
+                                    <div className='spinner-lg' ></div>
+                                    :
+                                    <>
+                                        <Badge color="primary">{paging.totalCount} Orders</Badge>
+                                        <ToolkitProvider
+                                            keyField='id'
+                                            data={orders}
+                                            columns={columns}
+                                            bootstrap4={true}
+                                            responsive
 
-                                >{
-                                        props => (
-                                            <div>
-                                                {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
-                                                <BootstrapTable
-                                                    remote={remote}
-                                                    wrapperClasses={'table-responsive'}
-                                                    classes=""
-                                                    headerWrapperClasses="text-primary text-left"
-                                                    bordered={false}
-                                                    headerClasses=""
-                                                    bodyClasses="text-left"
-                                                    {...props.baseProps}
-                                                    // keyField='name'
-                                                    // data={products}
-                                                    // columns={columns}
-                                                    pagination={paginationFactory({
-                                                        page: 1,
-                                                        sizePerPage: 10,
-                                                        hideSizePerPage: true
-                                                    })}
-                                                />
-                                            </div>
-                                        )
+                                        >{
+                                                props => (
+                                                    <div>
+                                                        {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
+                                                        <BootstrapTable
+                                                            remote={remote}
+                                                            wrapperClasses={'table-responsive'}
+                                                            classes=""
+                                                            headerWrapperClasses="text-primary text-left"
+                                                            bordered={false}
+                                                            headerClasses=""
+                                                            bodyClasses="text-left"
+                                                            {...props.baseProps}
+                                                            onTableChange={onTableChange}
+                                                            pagination={paginationFactory({
+                                                                page: paging.pageNumber,
+                                                                sizePerPage: 10,
+                                                                totalSize: paging.totalCount,
+                                                                hideSizePerPage: true,
+                                                            })}
+                                                        />
+                                                    </div>
+                                                )
 
-                                    }
-                                </ToolkitProvider>
+                                            }
+                                        </ToolkitProvider>
+                                    </>
+                                }
                             </CardBody>
                         </Card>
                     </Col>
