@@ -8,6 +8,7 @@ let INITIAL_STATE = {
     errorText: '',
     errorStatus: 0,
     orders: [],
+    openStatusModal: false,
     openAddModal: false,
     openEditModal: false,
     openDelModal: false,
@@ -23,6 +24,8 @@ export function orderReducer(state = INITIAL_STATE, action) {
             return { ...state, isProgressList: false, orders: action.payload.result, paging: action.payload.paging };
         case OrderTypes.GET_ORDERS_FAIL:
             return { ...state, isProgressList: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+
+
 
 
         // case OrderTypes.ADD_CATEGORY_PROG:
@@ -52,8 +55,8 @@ export function orderReducer(state = INITIAL_STATE, action) {
         //     return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
 
-        // case OrderTypes.TOGGLE_ADD_CATEGORY_MODAL:
-        //     return { ...state, openAddModal: !state.openAddModal };
+        case OrderTypes.TOGGLE_STATUS_CONFIRMATION_MODAL:
+            return { ...state, openStatusModal: !state.openStatusModal };
 
         // case OrderTypes.TOGGLE_EDIT_CATEGORY_MODAL:
         //     return { ...state, openEditModal: !state.openEditModal, category: state.categories[action.payload.index] };

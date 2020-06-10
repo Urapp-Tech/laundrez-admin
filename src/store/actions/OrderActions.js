@@ -8,6 +8,11 @@ export class OrderActions {
             payload: { page, pageSize, search }
         };
     }
+    static toggleStatusModal() {
+        return {
+            type: OrderTypes.TOGGLE_STATUS_CONFIRMATION_MODAL
+        };
+    }
     static addOrder(body) {
         return {
             type: OrderTypes.ADD_CATEGORY_PROG,

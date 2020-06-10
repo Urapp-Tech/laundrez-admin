@@ -6,3 +6,12 @@ export const OrderStatus = {
     Delivered: 'Delivered',
     Cancelled: 'Cancelled'
 };
+
+export const OrderStatusArray = [
+    'OrderPlaced',
+    'PickUp',
+    'InProgress',
+    'DropOff',
+    'Delivered',
+    'Cancelled'
+];

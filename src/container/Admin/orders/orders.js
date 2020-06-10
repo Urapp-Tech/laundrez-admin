@@ -31,8 +31,9 @@ import AssignModal from '../../../components/Modals/AssignModal';
 import EditOrderModal from '../../../components/Modals/EditOrderDetailModal';
 import OrderPdfModal from '../../../components/Modals/OrderPdfModal';
 import { OrderActions } from '../../../store/actions/OrderActions';
-import { OrderStatus } from '../../../store/constants/OrderConstants';
+import {  OrderStatusArray } from '../../../store/constants/OrderConstants';
 import moment from 'moment';
+import StatusChangeConfModal from '../../../components/Modals/StatusChangeConfModal';
 
 function Orders() {
 
@@ -41,10 +42,12 @@ function Orders() {
     const [openOrderPdfModal, setOpenOrderPdfModal] = useState(false);
     const [search, setSearch] = useState('');
     const [isSearch, setIsSearch] = useState(false);
+    const [statusObj, setStatusObj] = useState({ newStatus: '', prevStatus: '' });
 
     const isProgress = useSelector(store => store?.order?.isProgressList);
     const orders = useSelector(store => store?.order?.orders);
     const paging = useSelector(store => store?.order?.paging);
+    const openStatusModal = useSelector(store => store?.order?.openStatusModal);
     const dispatch = useDispatch();
     // const users = useSelector(store => store?.sampleReducer.posts);
     useEffect(() => {
@@ -136,16 +139,24 @@ function Orders() {
             text: 'Status',
             // eslint-disable-next-line react/display-name
             formatter: (cell) => {
+                let statusIndex = OrderStatusArray.indexOf(cell);
+                let array = statusIndex > 0 ? OrderStatusArray.slice(statusIndex) : OrderStatusArray;
                 return (
                     <div>
                         <FormGroup>
-                            <Input type="select" value={cell} name="select">
-                                <option value={OrderStatus.OrderPlaced} >OrderPlaced</option>
-                                <option value={OrderStatus.PickUp} >PickUp</option>
-                                <option value={OrderStatus.PickUp} >InProgress</option>
-                                <option value={OrderStatus.DropOff} >DropOff</option>
-                                <option value={OrderStatus.Delivered} >Delivered</option>
-                                <option value={OrderStatus.Cancelled} >Cancelled</option>
+                            <Input type="select" value={cell} onChange={(e) => {
+                                setStatusObj({
+                                    newStatus: e.target.value,
+                                    prevStatus: cell
+                                });
+                                dispatch(OrderActions.toggleStatusModal());
+
+                            }} name="select">
+                                {
+                                    array.map((v, i) => {
+                                        return (<option key={i} value={v} >{v}</option>);
+                                    })
+                                }
                             </Input>
                         </FormGroup>
 
@@ -303,6 +314,17 @@ function Orders() {
                 <AssignModal isOpen={openAssignModal} toggle={toggleAssignModal} />
                 <EditOrderModal isOpen={openEditOrderModal} toggle={toggleEditOrderModal} />
                 <OrderPdfModal isOpen={openOrderPdfModal} toggle={toggleOrderPdfModal} style={{ maxWidth: '1600px', width: '80%' }} />
+
+
+
+                <StatusChangeConfModal
+                    isOpen={openStatusModal}
+                    toggle={() => dispatch(OrderActions.toggleStatusModal())}
+                    updateStatus={() => { }}
+                    isProgress={false}
+                    newStatus={statusObj.newStatus}
+                    prevStatus={statusObj.prevStatus}
+                />
             </div>
         </>
     );
