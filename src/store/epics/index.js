@@ -5,6 +5,7 @@ import { FaqEpics } from './FaqEpics';
 import { VoucherEpics } from './VoucherEpics';
 import { LocationEpics } from './LocationEpics';
 import { OrderEpics } from './OrderEpics';
+import { DriverEpics } from './DriverEpics ';
 
 export {
     CategoryEpics,
@@ -13,5 +14,6 @@ export {
     ServiceEpics,
     FaqEpics,
     VoucherEpics,
-    OrderEpics
+    OrderEpics,
+    DriverEpics,
 };

@@ -1,5 +1,6 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import defaultImage from '../../../assets/img/no-image.png';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -15,31 +16,67 @@ import {
     InputGroupAddon,
     InputGroupText,
     Input,
-    UncontrolledTooltip
+    UncontrolledTooltip,
+    Badge
 } from 'reactstrap';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
 
-import { driversData } from '../../../variables/general';
+// import { driversData } from '../../../variables/general';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import AddDriverModal from '../../../components/Modals/AddDriverModal';
-import EditDriverModal from '../../../components/Modals/EditDriverModal';
-import DleteModal from '../../../components/Modals/DeleteModal';
+// import AddDriverModal from '../../../components/Modals/AddDriverModal';
+// import EditDriverModal from '../../../components/Modals/EditDriverModal';
+// import DleteModal from '../../../components/Modals/DeleteModal';
+import { useSelector, useDispatch } from 'react-redux';
+// import DeleteModal from '../../../components/Modals/DeleteModal';
+import { DriverActions } from '../../../store/actions/DriverActions';
+import { API_URL } from '../../../store/services/Config';
 
 
 function Drivers({ history }) {
-    const [openAddDriverModal, toggleAddDriverModal] = useState(false);
-    const [openEditDriverModal, toggleEditDriverModal] = useState(false);
-    const [openDeleteModal, toggleDeleteModal] = useState(false);
+    const [search, setSearch] = useState('');
+    const [isSearch, setIsSearch] = useState(false);
+    // const openDeleteModal = useSelector(store => store?.driver?.openDelModal);
+    const isProgress = useSelector(store => store?.driver?.isProgressList);
+    // const driver = useSelector(store => store?.driver?.driver);
+    const drivers = useSelector(store => store?.driver?.drivers);
+    const paging = useSelector(store => store?.driver?.paging);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(DriverActions.getDrivers());
+    }, [dispatch]);
+
 
     const remote = {
         filter: false,
-        pagination: false,
+        pagination: true,
         sort: false,
         cellEdit: false
     };
+    const onTableChange = useCallback((type, newState) => {
+        if (type === 'pagination')
+            dispatch(DriverActions.getDrivers(newState?.page));
+    }, [dispatch]);
+
+
+    const onSearch = useCallback((e) => {
+        e.preventDefault();
+        if (search) {
+            setIsSearch(true);
+            dispatch(DriverActions.getDrivers(undefined, undefined, search));
+        }
+    }, [dispatch, search]);
+
+
+    useEffect(() => {
+        if (isSearch && search === '') {
+            setIsSearch(false);
+            dispatch(DriverActions.getDrivers(undefined, undefined, search));
+        }
+    }, [search, onSearch, isSearch, dispatch]);
     const columns = [
         {
             dataField: 'id',
@@ -50,11 +87,23 @@ function Drivers({ history }) {
             text: 'Name'
         },
         {
-            dataField: 'salesmanId',
-            text: 'SalesMan ID'
+            dataField: 'image',
+            text: 'Image',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell) => {
+                if (cell)
+                    return (
+                        <img src={`${API_URL}/${cell}`} alt={'img'} className="img-thumbnail table-image" />
+                    );
+                else {
+                    return (
+                        <img src={defaultImage} alt={'img'} className="img-thumbnail table-image" />
+                    );
+                }
+            }
         },
         {
-            dataField: 'contactNum',
+            dataField: 'contactNumber',
             text: 'Contact#',
         },
         {
@@ -73,7 +122,7 @@ function Drivers({ history }) {
                             color="info"
                             id={`edit-order-${rowIndex}`}
                             type="button"
-                            onClick={() => toggleEditDriverModal(!openEditDriverModal)}
+                            // onClick={() => toggleEditDriverModal(!openEditDriverModal)}
                         >
                             <i className=" fas fa-edit"></i>
                         </Button>
@@ -121,7 +170,7 @@ function Drivers({ history }) {
                             color="info"
                             id={`delete-${rowIndex}`}
                             type="button"
-                            onClick={() => toggleDeleteModal(!openDeleteModal)}
+                            // onClick={() => toggleDeleteModal(!openDeleteModal)}
                         >
                             <i className="fas fa-trash-alt" aria-hidden="true"></i>
                         </Button>
@@ -145,62 +194,73 @@ function Drivers({ history }) {
                             <CardTitle tag="h4">Drivers
                                 <Button
                                     className="btn-primary btn-add ml-2"
-                                    onClick={(e) => { e.preventDefault(); toggleAddDriverModal(!openAddDriverModal); }} >
+                                    onClick={(e) => { e.preventDefault(); }} >
                                     <i className="fas fa-plus"></i>
                                 </Button>
                             </CardTitle>
-                            <form className="col-md-8 align-self-center " >
-                                <InputGroup className=" no-border">
-                                    <Input className="" placeholder="Search..." />
-                                    <InputGroupAddon addonType="append">
-                                        <InputGroupText>
-                                            <i className="now-ui-icons ui-1_zoom-bold" />
+                            <form onSubmit={onSearch} className="col-md-8 align-self-center " >
+                                <InputGroup className="no-border ">
+                                    <Input
+                                        value={search}
+                                        onChange={e => setSearch(e.target.value)}
+                                        className=""
+                                        placeholder="Search..." />
+                                    <InputGroupAddon addonType="append" onClick={onSearch}   >
+                                        <InputGroupText  >
+                                            <i className="now-ui-icons ui-1_zoom-bold  " />
                                         </InputGroupText>
                                     </InputGroupAddon>
                                 </InputGroup>
                             </form>
                         </CardHeader>
                         <CardBody>
-                            <ToolkitProvider
-                                keyField='id'
-                                data={driversData}
-                                columns={columns}
-                                bootstrap4
+                            {isProgress ?
+                                <div className='spinner-lg' ></div>
+                                :
+                                <>
+                                    <Badge color="primary">{paging.totalCount} Categories</Badge>
+                                    <ToolkitProvider
+                                        keyField={'id'}
+                                        data={drivers}
+                                        columns={columns}
+                                        bootstrap4
 
-                            >{
-                                    props => (
-                                        <div>
-                                            {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
-                                            <BootstrapTable
-                                                remote={remote}
-                                                wrapperClasses={'table-responsive'}
-                                                classes=""
-                                                headerWrapperClasses="text-primary text-left"
-                                                bordered={false}
-                                                headerClasses=""
-                                                bodyClasses="text-left"
-                                                {...props.baseProps}
-                                                // keyField='name'
-                                                // data={products}
-                                                // columns={columns}
-                                                pagination={paginationFactory({
-                                                    page: 1,
-                                                    sizePerPage: 10,
-                                                    hideSizePerPage: true
-                                                })}
-                                            />
-                                        </div>
-                                    )
+                                    >{
+                                            props => (
+                                                <div>
+                                                    <BootstrapTable
+                                                        remote={remote}
+                                                        wrapperClasses={'table-responsive'}
+                                                        classes=""
+                                                        headerWrapperClasses="text-primary text-left"
+                                                        bordered={false}
+                                                        headerClasses=""
+                                                        bodyClasses="text-left"
+                                                        {...props.baseProps}
+                                                        onTableChange={onTableChange}
+                                                        noDataIndication={() => <div className="text-center" >{'No results found'}</div>}
+                                                        pagination={paginationFactory({
+                                                            page: paging.pageNumber,
+                                                            sizePerPage: 10,
+                                                            totalSize: paging.totalCount,
+                                                            hideSizePerPage: true,
 
-                                }
-                            </ToolkitProvider>
+                                                        })}
+                                                    />
+                                                </div>
+                                            )
+
+                                        }
+                                    </ToolkitProvider>
+                                </>
+                            }
                         </CardBody>
                     </Card>
                 </Col>
             </Row>
-            <AddDriverModal isOpen={openAddDriverModal} toggle={() => toggleAddDriverModal(!openAddDriverModal)} />
-            <EditDriverModal isOpen={openEditDriverModal} toggle={() => toggleEditDriverModal(!openEditDriverModal)} />
-            <DleteModal isOpen={openDeleteModal} toggle={() => toggleDeleteModal(!openDeleteModal)} />
+            {/* <AddDriverModal isOpen={openAddDriverModal} toggle={() => toggleAddDriverModal(!openAddDriverModal)} />
+            <EditDriverModal isOpen={openEditDriverModal} toggle={() => toggleEditDriverModal(!openEditDriverModal)} /> */}
+            {/* {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(DriverActions.toggleDelDriverModal())} isProgress={isProgress} delFunc={() => dispatch(DriverActions.delDriver(driver?.id))} />} */}
 
         </>
     );

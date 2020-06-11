@@ -10,7 +10,8 @@ import {
     serviceReducer,
     faqReducer,
     voucherReducer,
-    orderReducer
+    orderReducer,
+    driverReducer
 } from './reducers';
 
 
@@ -25,7 +26,8 @@ import {
     ServiceEpics,
     FaqEpics,
     VoucherEpics,
-    OrderEpics
+    OrderEpics,
+    DriverEpics
 } from './epics';
 import { RefreshTokenService } from './services/RefreshTokenService';
 
@@ -38,7 +40,8 @@ const appReducer = combineReducers({
     service: serviceReducer,
     faq: faqReducer,
     voucher: voucherReducer,
-    order: orderReducer
+    order: orderReducer,
+    driver: driverReducer
 });
 const rootReducer = (state, action) => {
     if (action.type === AuthTypes.SIGNOUT_USER) {
@@ -74,6 +77,12 @@ export const rootEpic = combineEpics(
     FaqEpics.addFaq,
     FaqEpics.editFaq,
     FaqEpics.delFaq,
+
+
+    DriverEpics.getDrivers,
+    DriverEpics.addDriver,
+    DriverEpics.editDriver,
+    DriverEpics.delDriver,
 
     VoucherEpics.getVouchers,
     VoucherEpics.addVoucher,
