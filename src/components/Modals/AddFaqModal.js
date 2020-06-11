@@ -35,10 +35,10 @@ const AddFaqModal = () => {
         if (notValid.error) {
             setNotValid({ error: false, type: '', message: '' });
         }
-        if (formValues.serviceId === '') {
-            setNotValid({ error: true, type: 'serviceId', message: 'Please select service' });
-            return;
-        }
+        // if (formValues.serviceId === '') {
+        //     setNotValid({ error: true, type: 'serviceId', message: 'Please select service' });
+        //     return;
+        // }
         else if (!formValues.question) {
             setNotValid({ error: true, type: 'question', message: 'Please provide question' });
             return;
@@ -82,7 +82,7 @@ const AddFaqModal = () => {
                     <Row className="justify-content-center" >
                         <Col sm="12">
                             <FormGroup>
-                                <Label for="exampleSelect"><span className="text-danger" >*</span> Services</Label>
+                                <Label for="exampleSelect"> Services</Label>
                                 <Input
                                     autoFocus
                                     type="select"

@@ -11,7 +11,7 @@ export class DriverEpics {
     static getDrivers(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(DriverTypes.GET_DRIVERS_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxGet(`/Driver/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[question]=${payload.search}`);
+                return ajaxGet(`/Driver/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[name]=${payload.search}`);
             })
                 .pipe(pluck('response'), map(obj => {
                     return {
@@ -36,15 +36,16 @@ export class DriverEpics {
     static addDriver(action$, state$, { ajaxPost, getRefreshToken }) {
         return action$.pipe(ofType(DriverTypes.ADD_DRIVER_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxPost('/Driver/', payload.body);
+                return ajaxPost('/Driver/', payload.body, null);
             }).pipe(pluck('response'), flatMap(obj => {
-                toast.success('faq added successfully');
+                toast.success('Driver added successfully');
+                if (payload?.history) {
+                    payload.history.goBack();
+                }
                 return of({
                     type: DriverTypes.ADD_DRIVER_SUCC,
                     payload: obj
                 },
-                    DriverActions.toggleAddDriverModal(),
-                    DriverActions.getDrivers()
                 );
             })
                 , catchError((err, source) => {
@@ -63,15 +64,17 @@ export class DriverEpics {
     static editDriver(action$, state$, { ajaxPut, getRefreshToken }) {
         return action$.pipe(ofType(DriverTypes.EDIT_DRIVER_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxPut('/Driver/', payload.body);
+                return ajaxPut('/Driver/', payload.body, null);
             }).pipe(pluck('response'), flatMap(obj => {
-                toast.success('faq edited successfully');
+                toast.success('Driver edited successfully');
+                if (payload?.history) {
+                    payload.history.goBack();
+                }
                 return of({
                     type: DriverTypes.EDIT_DRIVER_SUCC,
                     payload: obj
                 },
-                    DriverActions.toggleEditDriverModal(),
-                    DriverActions.getDrivers(state$.value.category.paging.pageNumber)
+
                 );
             })
                 , catchError((err, source) => {
@@ -92,7 +95,7 @@ export class DriverEpics {
             return defer(() => {
                 return ajaxDel(`/Driver/${payload.id}`);
             }).pipe(pluck('response'), flatMap(obj => {
-                toast.success('faq deleted successfully');
+                toast.success('Driver deleted successfully');
                 return of({
                     type: DriverTypes.DEL_DRIVER_SUCC,
                     payload: obj

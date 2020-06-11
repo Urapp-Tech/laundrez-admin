@@ -26,11 +26,8 @@ import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-// import AddDriverModal from '../../../components/Modals/AddDriverModal';
-// import EditDriverModal from '../../../components/Modals/EditDriverModal';
-// import DleteModal from '../../../components/Modals/DeleteModal';
 import { useSelector, useDispatch } from 'react-redux';
-// import DeleteModal from '../../../components/Modals/DeleteModal';
+import DeleteModal from '../../../components/Modals/DeleteModal';
 import { DriverActions } from '../../../store/actions/DriverActions';
 import { API_URL } from '../../../store/services/Config';
 
@@ -38,9 +35,9 @@ import { API_URL } from '../../../store/services/Config';
 function Drivers({ history }) {
     const [search, setSearch] = useState('');
     const [isSearch, setIsSearch] = useState(false);
-    // const openDeleteModal = useSelector(store => store?.driver?.openDelModal);
+    const openDeleteModal = useSelector(store => store?.driver?.openDelModal);
     const isProgress = useSelector(store => store?.driver?.isProgressList);
-    // const driver = useSelector(store => store?.driver?.driver);
+    const driver = useSelector(store => store?.driver?.driver);
     const drivers = useSelector(store => store?.driver?.drivers);
     const paging = useSelector(store => store?.driver?.paging);
     const dispatch = useDispatch();
@@ -122,7 +119,12 @@ function Drivers({ history }) {
                             color="info"
                             id={`edit-order-${rowIndex}`}
                             type="button"
-                            // onClick={() => toggleEditDriverModal(!openEditDriverModal)}
+                            onClick={() => history.push({
+                                pathname: '/admin/drivers/update',
+                                state: {
+                                    driver: row
+                                }
+                            })}
                         >
                             <i className=" fas fa-edit"></i>
                         </Button>
@@ -170,7 +172,7 @@ function Drivers({ history }) {
                             color="info"
                             id={`delete-${rowIndex}`}
                             type="button"
-                            // onClick={() => toggleDeleteModal(!openDeleteModal)}
+                            onClick={() => dispatch(DriverActions.toggleDelDriverModal(rowIndex))}
                         >
                             <i className="fas fa-trash-alt" aria-hidden="true"></i>
                         </Button>
@@ -194,7 +196,7 @@ function Drivers({ history }) {
                             <CardTitle tag="h4">Drivers
                                 <Button
                                     className="btn-primary btn-add ml-2"
-                                    onClick={(e) => { e.preventDefault(); }} >
+                                    onClick={() => history.push('/admin/drivers/add')} >
                                     <i className="fas fa-plus"></i>
                                 </Button>
                             </CardTitle>
@@ -218,7 +220,7 @@ function Drivers({ history }) {
                                 <div className='spinner-lg' ></div>
                                 :
                                 <>
-                                    <Badge color="primary">{paging.totalCount} Categories</Badge>
+                                    <Badge color="primary">{paging.totalCount} Drivers</Badge>
                                     <ToolkitProvider
                                         keyField={'id'}
                                         data={drivers}
@@ -260,7 +262,7 @@ function Drivers({ history }) {
             </Row>
             {/* <AddDriverModal isOpen={openAddDriverModal} toggle={() => toggleAddDriverModal(!openAddDriverModal)} />
             <EditDriverModal isOpen={openEditDriverModal} toggle={() => toggleEditDriverModal(!openEditDriverModal)} /> */}
-            {/* {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(DriverActions.toggleDelDriverModal())} isProgress={isProgress} delFunc={() => dispatch(DriverActions.delDriver(driver?.id))} />} */}
+            {openDeleteModal && <DeleteModal isOpen={openDeleteModal} toggle={() => dispatch(DriverActions.toggleDelDriverModal())} isProgress={isProgress} delFunc={() => dispatch(DriverActions.delDriver(driver?.id))} />}
 
         </>
     );

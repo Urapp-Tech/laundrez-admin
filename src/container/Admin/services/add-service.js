@@ -295,9 +295,6 @@ function AddService({ history }) {
                                             {imageNotValid.error &&
                                                 <label className=" ml-1 text-danger" >{imageNotValid.message}</label>
                                             }
-                                            {/* {notValid.error && notValid.type === 'shortDescription' &&
-                                                <label className=" ml-1 text-danger" >{notValid.message}</label>
-                                            } */}
                                         </FormGroup>
                                     </Col>
                                 </Row>

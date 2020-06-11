@@ -8,16 +8,16 @@ export class DriverActions {
             payload: { page, pageSize, search }
         };
     }
-    static addDriver(body) {
+    static addDriver(body, history) {
         return {
             type: DriverTypes.ADD_DRIVER_PROG,
-            payload: { body }
+            payload: { body, history }
         };
     }
-    static editDriver(body) {
+    static editDriver(body, history) {
         return {
             type: DriverTypes.EDIT_DRIVER_PROG,
-            payload: { body }
+            payload: { body, history }
         };
     }
     static delDriver(id) {
