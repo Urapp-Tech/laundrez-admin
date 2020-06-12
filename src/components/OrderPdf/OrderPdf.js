@@ -10,6 +10,7 @@ import {
 } from '@react-pdf/renderer';
 // import moment from 'moment';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 // const POSTER_PATH = 'https://image.tmdb.org/t/p/w154';
 
@@ -56,14 +57,17 @@ const styles = StyleSheet.create({
     }
 });
 
-function PdfDocument(/* props */) {
-    // console.log('pdf props', props.data);
+function PdfDocument({ order }) {
+    const listDetail = order?.listDetail;
+    const address = order?.deliveryAddress;
+    const orderNumber = order?.orderNumber;
+
     return (
-        <Document filename="somename.pdf" >
+        <Document filename={`${orderNumber}.pdf`} >
             <Page size="A3" style={styles.page} >
                 <View style={styles.section}>
                     <Text style={styles.title1}>LaundrEZ</Text>
-                    <Text style={styles.title2}>Date:12/12/2020</Text>
+                    <Text style={styles.title2}>Date:{moment(new Date(order?.orderDate)).format('DD-MM-YYYY')}</Text>
                     <Text style={styles.title3}>Order Details:</Text>
                     <View style={styles.ColumnNames}>
                         <Text style={[styles.TableEntry, { flex: 2 }]}>Name</Text>
@@ -76,24 +80,22 @@ function PdfDocument(/* props */) {
                     </View>
                     <View style={styles.Table}>
                         <Text style={[styles.TableEntry, { flex: 2 }]}>Evaristo Lucena</Text>
-                        <Text style={[styles.TableEntry, { flex: 2 }]}>EZ-588606</Text>
-                        <Text style={[styles.TableEntry, { flex: 7 }]}>Apt 922 388 Richmond Street West, Apt 922, Toronto, Ontario
-                        Instruction : 209
-                            209</Text>
+                        <Text style={[styles.TableEntry, { flex: 2 }]}>{orderNumber}</Text>
+                        <Text style={[styles.TableEntry, { flex: 7 }]}> {address} </Text>
                         <View style={{ flex: 3 }}>
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
-                                <Text style={[styles.TableEntry, { flex: 2 }]}>Wash & Fold 15 Lbs</Text>
-                                <Text style={[styles.TableEntry, { flex: 1 }]}>1</Text>
-                            </View>
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
-                                <Text style={[styles.TableEntry, { flex: 2 }]}>Bedsheets</Text>
-                                <Text style={[styles.TableEntry, { flex: 1 }]}>2</Text>
-                            </View>
+                            {
+                                listDetail?.map((detail, i) => {
+                                    return (
+                                        <View key={i} style={{ flex: 1, flexDirection: 'row' }}>
+                                            <Text style={[styles.TableEntry, { flex: 2 }]}>{detail?.service?.title}</Text>
+                                            <Text style={[styles.TableEntry, { flex: 1 }]}>{detail?.quantity}</Text>
+                                        </View>
+                                    );
+                                })
+                            }
                         </View>
-                        <Text style={[styles.TableEntry, { flex: 2 }]}>9:00 - 10:00AM
-                        12/05/2020</Text>
-                        <Text style={[styles.TableEntry, { flex: 2, borderRight: 0 }]}>9:00 - 10:00AM
-                        12/05/2020</Text>
+                        <Text style={[styles.TableEntry, { flex: 2 }]}> {order?.pickupTime} {moment(new Date(order?.pickupDate)).format('DD-MM-YYYY')} </Text>
+                        <Text style={[styles.TableEntry, { flex: 2, borderRight: 0 }]}> {order?.dropoffTime} {moment(new Date(order?.dropoffDate)).format('DD-MM-YYYY')} </Text>
                     </View>
                 </View>
             </Page>
@@ -102,6 +104,6 @@ function PdfDocument(/* props */) {
 }
 PdfDocument.displayName = 'PdfDocument';
 PdfDocument.propTypes = {
-    data: PropTypes.object,
+    order: PropTypes.object,
 };
 export default PdfDocument;

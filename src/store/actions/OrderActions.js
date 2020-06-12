@@ -9,10 +9,10 @@ export class OrderActions {
         };
     }
 
-    static getOrder(orderId) {
+    static getOrder(orderId, openPdf) {
         return {
             type: OrderTypes.GET_ORDER_PROG,
-            payload: { orderId }
+            payload: { orderId, openPdf }
         };
     }
 
@@ -49,6 +49,11 @@ export class OrderActions {
         return {
             type: OrderTypes.TOGGLE_DEL_ORDER_MODAL,
             payload: { index }
+        };
+    }
+    static togglePdfOrderModal() {
+        return {
+            type: OrderTypes.TOGGLE_PDF_ORDER_MODAL,
         };
     }
     static toggleStatusModal() {

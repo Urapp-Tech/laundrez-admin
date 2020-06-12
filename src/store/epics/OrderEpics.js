@@ -1,4 +1,4 @@
-import { of, defer } from 'rxjs';
+import { of, defer, iif } from 'rxjs';
 import { ofType, } from 'redux-observable';
 import { switchMap, pluck, catchError, map, flatMap } from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ export class OrderEpics {
     static getOrders(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(OrderTypes.GET_ORDERS_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxGet(`/Order/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[orderNumber]=${payload.search}&sort=orderDate`);
+                return ajaxGet(`/Order/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[orderNumber]=${payload.search}&sort=-orderDate`);
             }).pipe(pluck('response'), map(obj => {
                 return {
                     type: OrderTypes.GET_ORDERS_SUCC,
@@ -38,13 +38,24 @@ export class OrderEpics {
             return defer(() => {
                 return ajaxGet(`/Order/${payload.orderId}`);
             }).pipe(pluck('response'), flatMap(obj => {
-                return of(
-                    {
-                        type: OrderTypes.GET_ORDER_SUCC,
-                        payload: obj
-                    },
-                    OrderActions.toggleEditOrderModal()
+                return iif(
+                    () => payload?.openPdf,
+                    of(
+                        {
+                            type: OrderTypes.GET_ORDER_SUCC,
+                            payload: obj
+                        },
+                        OrderActions.togglePdfOrderModal()
+                    ),
+                    of(
+                        {
+                            type: OrderTypes.GET_ORDER_SUCC,
+                            payload: obj
+                        },
+                        OrderActions.toggleEditOrderModal()
+                    )
                 );
+
             })
                 , catchError((err, source) => {
                     if (err.status === 401) {

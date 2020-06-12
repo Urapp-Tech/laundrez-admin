@@ -14,6 +14,7 @@ let INITIAL_STATE = {
     openAddModal: false,
     openEditModal: false,
     openDelModal: false,
+    openPdfModal: false,
     paging: {}
 };
 
@@ -69,6 +70,10 @@ export function orderReducer(state = INITIAL_STATE, action) {
 
         case OrderTypes.TOGGLE_EDIT_ORDER_MODAL:
             return { ...state, openEditModal: !state.openEditModal, };
+
+
+        case OrderTypes.TOGGLE_PDF_ORDER_MODAL:
+            return { ...state, openPdfModal: !state.openPdfModal, };
 
         // case OrderTypes.TOGGLE_DEL_CATEGORY_MODAL:
         //     return { ...state, openDelModal: !state.openDelModal, category: state.categories[action.payload.index] };

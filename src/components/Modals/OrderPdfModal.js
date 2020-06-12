@@ -3,21 +3,23 @@ import { Modal, ModalBody, Row, Col, Container, ModalFooter, ModalHeader, Button
 import PropTypes from 'prop-types';
 import { PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
 import PdfDocument from '../OrderPdf/OrderPdf';
+import { useSelector } from 'react-redux';
 
 
 const OrderPdfModal = ({ isOpen, toggle }) => {
 
-    const [open, setOpen] = useState(false);
+    const [openPdf, setOpenPdf] = useState(false);
+    const order = useSelector(store => store?.order?.order);
 
     useEffect(() => {
 
         if (isOpen) {
             setTimeout(() => {
-                setOpen(true);
+                setOpenPdf(true);
             }, 100);
         }
         else {
-            setOpen(false);
+            setOpenPdf(false);
         }
     }, [isOpen]);
 
@@ -32,13 +34,13 @@ const OrderPdfModal = ({ isOpen, toggle }) => {
                 <Container>
                     <Row>
                         <Col md={12}>
-                            {open && <PDFViewer className='w-100' style={{ height: '30rem' }} ><PdfDocument data={{ a: 'b' }} /></PDFViewer>}
+                            {openPdf && <PDFViewer className='w-100' style={{ height: '30rem' }} ><PdfDocument order={order} /></PDFViewer>}
                         </Col>
                     </Row>
                 </Container>
             </ModalBody>
             <ModalFooter>
-                {open && <Button color='primary'><PDFDownloadLink document={<PdfDocument />} style={{color:'white'}} fileName="somename.pdf">
+                {openPdf && <Button color='primary'><PDFDownloadLink document={<PdfDocument order={order} />} style={{ color: 'white' }} fileName={`${order?.orderNumber}.pdf`}>
                     {({ /* blob, url, */ loading,/*  error */ }) => (loading ? 'Loading document...' : 'Download Pdf')}
                 </PDFDownloadLink></Button>}
                 <Button color="secondary" onClick={toggle}>Cancel</Button>

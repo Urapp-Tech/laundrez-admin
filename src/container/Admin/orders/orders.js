@@ -39,7 +39,6 @@ function Orders() {
 
     const [openAssignModal, setOpenAssignModal] = useState(false);
     // const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
-    const [openOrderPdfModal, setOpenOrderPdfModal] = useState(false);
     const [search, setSearch] = useState('');
     const [isSearch, setIsSearch] = useState(false);
     const [statusObj, setStatusObj] = useState({ newStatus: '', prevStatus: '' });
@@ -48,6 +47,7 @@ function Orders() {
     const orders = useSelector(store => store?.order?.orders);
     const paging = useSelector(store => store?.order?.paging);
     const openEditModal = useSelector(store => store?.order?.openEditModal);
+    const openPdfModal = useSelector(store => store?.order?.openPdfModal);
     const openStatusModal = useSelector(store => store?.order?.openStatusModal);
     const dispatch = useDispatch();
     // const users = useSelector(store => store?.sampleReducer.posts);
@@ -59,13 +59,13 @@ function Orders() {
         setOpenAssignModal(!openAssignModal);
     }, [openAssignModal]);
 
-    const getOrder = useCallback((orderId) => {
-        dispatch(OrderActions.getOrder(orderId));
+    const getOrder = useCallback((orderId, openPdf = false) => {
+        dispatch(OrderActions.getOrder(orderId, openPdf));
     }, [dispatch]);
 
     const toggleOrderPdfModal = useCallback(() => {
-        setOpenOrderPdfModal(!openOrderPdfModal);
-    }, [openOrderPdfModal]);
+        dispatch(OrderActions.togglePdfOrderModal());
+    }, [dispatch]);
 
 
     const onTableChange = useCallback((type, newState) => {
@@ -193,7 +193,7 @@ function Orders() {
                             color="info"
                             id={`pdf-order-${rowIndex}`}
                             type="button"
-                            onClick={toggleOrderPdfModal}
+                            onClick={() => getOrder(row?.id, true)}
                         >
                             {/* <img className="now-ui-icons pdf-icon" alt={'pdf-icon'} src={pdf} /> */}
                             <i className=" fas fa-file-pdf"></i>
@@ -314,7 +314,7 @@ function Orders() {
                 </Row>
                 <AssignModal isOpen={openAssignModal} toggle={toggleAssignModal} />
                 <EditOrderModal isOpen={openEditModal} toggle={() => dispatch(OrderActions.toggleEditOrderModal())} />
-                <OrderPdfModal isOpen={openOrderPdfModal} toggle={toggleOrderPdfModal} style={{ maxWidth: '1600px', width: '80%' }} />
+                <OrderPdfModal isOpen={openPdfModal} toggle={toggleOrderPdfModal} style={{ maxWidth: '1600px', width: '80%' }} />
 
 
 
