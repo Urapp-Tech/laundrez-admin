@@ -1,9 +1,118 @@
-import React, { memo } from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Container, Card, CardHeader, CardBody, Input} from 'reactstrap';
+import React, { memo, useState, useEffect, useCallback } from 'react';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Container, Card, CardHeader, CardBody, Input } from 'reactstrap';
 import propTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import moment from 'moment';
+import { OrderActions } from '../../store/actions/OrderActions';
 
-const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
+const EditOrderDetailModal = memo(({ isOpen, toggle }) => {
+    const dispatch = useDispatch();
+    const order = useSelector(store => store?.order?.order);
+    const isProgress = useSelector(store => store?.order?.isProgressEdit);
+    const [listDetail, setListDetail] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [totalHST, setTotalHST] = useState(0);
+    const [grandTotal, setGrandTotal] = useState(0);
+    const [discountAmount, setDiscountAmount] = useState(0);
+    useEffect(() => {
+        if (order) {
+            setListDetail(order?.listDetail);
+            setDiscountAmount(order?.discountAmount);
+        }
+    }, [order]);
 
+    const updateQty = useCallback((index, qty) => {
+        let array = [...listDetail];
+        let detail = array[index];
+        detail['quantity'] = Number(qty);
+        array[index] = { ...detail };
+        setListDetail(array);
+    }, [listDetail]);
+
+    const updateUnitPrice = useCallback((index, price) => {
+        let array = [...listDetail];
+        let detail = array[index];
+        detail['unitPrice'] = Number(price);
+        array[index] = { ...detail };
+        setListDetail(array);
+    }, [listDetail]);
+
+    const updateOrder = useCallback(() => {
+        let {
+            id,
+            orderDate,
+            pickupDate,
+            pickupTime,
+            dropoffDate,
+            dropoffTime,
+            addressId,
+            deliveryAddress,
+            description,
+            taxPercentage,
+            couponId,
+            couponCode,
+            couponType
+
+        } = order;
+        let body = {
+            id,
+            orderDate,
+            pickupDate,
+            pickupTime,
+            dropoffDate,
+            dropoffTime,
+            addressId,
+            deliveryAddress,
+            description,
+            taxPercentage,
+            couponId,
+            couponCode,
+            couponType,
+            orderAmount: Number(totalAmount),
+            discountAmount: Number(discountAmount),
+            totalAmount: Number(grandTotal),
+            listDetail: listDetail,
+        };
+        dispatch(OrderActions.editOrder(body));
+    }, [order, listDetail, dispatch, discountAmount, grandTotal, totalAmount]);
+
+    const calculateTotal = useCallback((accumulator, item) => {
+        let price = item.unitPrice;
+        let qty = item.quantity;
+        let amount = price * qty;
+        return accumulator + amount;
+    }, []);
+
+    const calculateDiscount = useCallback((totalAmount, discountAmount) => {
+        let _totalAmount = totalAmount - discountAmount;
+        return _totalAmount;
+    }, []);
+
+    const calculateAmount = useCallback(() => {
+        let amount = listDetail.reduce(calculateTotal, 0);
+        if (discountAmount > 0) {
+            amount = calculateDiscount(amount, discountAmount);
+        }
+        amount = Math.abs(amount).toFixed(2);
+        setTotalAmount(amount);
+    }, [listDetail, calculateTotal, discountAmount, calculateDiscount]);
+
+    const calculateHST = useCallback(() => {
+        let hst = Math.abs(totalAmount * (order?.taxPercentage / 100)).toFixed(2);
+        setTotalHST(hst);
+    }, [totalAmount, order]);
+
+    const calculateGrandTotal = useCallback(() => {
+        let grandTotal = Number(totalAmount) + Number(totalHST);
+        grandTotal = Math.abs(grandTotal).toFixed(2);
+        setGrandTotal(grandTotal);
+    }, [totalAmount, totalHST]);
+
+    useEffect(() => {
+        calculateAmount();
+        calculateHST();
+        calculateGrandTotal();
+    }, [listDetail, calculateAmount, discountAmount, calculateGrandTotal, calculateHST]);
     const closeBtn = <button className="close" onClick={toggle}>&times;</button>;
     return (
         <Modal isOpen={isOpen} centered={true} toggle={toggle} size={'lg'}>
@@ -26,7 +135,7 @@ const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
                                 <Col md={12}>
                                     <div className="d-flex flex-column">
                                         <span className="font-weight-bold">Status:</span>
-                                        <span>Pickup</span>
+                                        <span>{order?.status}</span>
                                     </div>
                                 </Col>
                             </Row>
@@ -34,8 +143,8 @@ const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
                                 <Col md={12}>
                                     <div className="d-flex flex-column">
                                         <span className="font-weight-bold">Address:</span>
-                                        <span>750 Bay Street, 2003, Toronto, Ontario</span>
-                                        <span>Instruction: 2020</span>
+                                        <span>{order?.address?.mainAddress},{order?.address?.postalCode}</span>
+                                        <span>{order?.address?.phone}</span>
                                     </div>
                                 </Col>
                             </Row>
@@ -45,7 +154,7 @@ const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
                                 <Col md={12}>
                                     <div className="d-flex flex-column align-items-end">
                                         <span className="font-weight-bold">Order Ref:</span>
-                                        <span>EZ-217515</span>
+                                        <span>{order?.orderNumber}</span>
                                     </div>
                                 </Col>
                             </Row>
@@ -53,7 +162,7 @@ const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
                                 <Col md={12}>
                                     <div className="d-flex flex-column align-items-end">
                                         <span className="font-weight-bold">Order Date:</span>
-                                        <span>2019-11-12 13:25:23</span>
+                                        <span>{moment(new Date(order?.orderDate)).format('DD-MM-YYYY')}</span>
                                     </div>
                                 </Col>
                             </Row>
@@ -61,15 +170,15 @@ const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
                                 <Col md={12}>
                                     <div className="d-flex flex-column align-items-end">
                                         <span className="font-weight-bold">Pickup:</span>
-                                        <span>9:00 - 10:00AM, Wed, 13 Nov 2019</span>
+                                        <span>{order?.pickupTime} {moment(new Date(order?.pickupDate)).format('DD-MM-YYYY')}</span>
                                     </div>
                                 </Col>
                             </Row>
                             <Row className="mb-4">
                                 <Col md={12}>
                                     <div className="d-flex flex-column align-items-end">
-                                    <span className="font-weight-bold">Drop Off:</span>
-                                        <span>9:00 - 10:00AM, Fri, 15 Nov 2019</span>
+                                        <span className="font-weight-bold">Drop Off:</span>
+                                        <span>{order?.dropoffTime} {moment(new Date(order?.dropoffDate)).format('DD-MM-YYYY')}</span>
                                     </div>
                                 </Col>
                             </Row>
@@ -77,7 +186,7 @@ const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
                     </Row>
                     <Row>
                         <Card>
-                            <CardHeader  className="d-flex flex-column bg-light">
+                            <CardHeader className="d-flex flex-column bg-light">
                                 <h6>Detail</h6>
                             </CardHeader>
                             <CardBody>
@@ -95,26 +204,54 @@ const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
                                         Totals
                                     </Col>
                                 </Row>
-                                <Row className="d-flex py-2 border-order-modal-solid">
-                                    <Col md={3}>
-                                        Shirt
-                                    </Col>
-                                    <Col md={3}>
-                                        <Input value={2} type="number" onChange={()=>{}}/>
-                                    </Col>
-                                    <Col md={3}>
-                                        <Input value={3} type="number" onChange={()=>{}}/>
-                                    </Col>
-                                    <Col md={3} className="text-right">
-                                        $6.78
-                                    </Col>
-                                </Row>
+                                {listDetail?.map((detail, index) => {
+
+                                    return (<Row key={index} className="d-flex py-2 border-bottom border-dark">
+                                        <Col md={3}>
+                                            {detail?.service?.title}
+                                        </Col>
+                                        <Col md={3}>
+                                            <Input value={detail?.quantity} type="number" onChange={(e) => updateQty(index, e.target.value)} />
+                                        </Col>
+                                        <Col md={3}>
+                                            <Input value={detail?.unitPrice} type="number" onChange={(e) => updateUnitPrice(index, e.target.value)} />
+                                        </Col>
+                                        <Col md={3} className="text-right">
+                                            ${detail?.quantity * detail?.unitPrice}
+                                        </Col>
+                                    </Row>);
+                                })
+                                }
                                 <Row className="d-flex justify-content-end py-2">
                                     <Col md={2} className="font-weight-bold">
                                         Total:
                                     </Col>
                                     <Col md={2} className="text-right">
-                                        $6.78
+                                        ${totalAmount}
+                                    </Col>
+                                </Row>
+                                <Row className="d-flex justify-content-end py-2">
+                                    <Col md={2} className="font-weight-bold">
+                                        Discount:
+                                    </Col>
+                                    <Col md={2} className="text-right">
+                                        ${discountAmount}
+                                    </Col>
+                                </Row>
+                                <Row className="d-flex justify-content-end py-2">
+                                    <Col md={2} className="font-weight-bold">
+                                        HST {order?.taxPercentage}%:
+                                    </Col>
+                                    <Col md={2} className="text-right">
+                                        ${totalHST}
+                                    </Col>
+                                </Row>
+                                <Row className="d-flex justify-content-end py-2">
+                                    <Col md={2} className="font-weight-bold">
+                                        Grand Total:
+                                    </Col>
+                                    <Col md={2} className="text-right">
+                                        ${grandTotal}
                                     </Col>
                                 </Row>
                                 <Row className="d-flex my-4">
@@ -122,7 +259,7 @@ const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
                                         Discount
                                     </Col>
                                     <Col md={2}>
-                                        <Input value={0.00} type="float" onChange={()=>{}}/>
+                                        <Input value={discountAmount} type="float" onChange={(e) => setDiscountAmount(e.target.value)} />
                                     </Col>
                                 </Row>
                             </CardBody>
@@ -131,13 +268,20 @@ const EditOrderDetailModal = memo(({ isOpen , toggle }) => {
                 </Container>
             </ModalBody>
             <ModalFooter>
-                <Button color="primary" onClick={toggle}>Do Something</Button>
-                <Button color="secondary" onClick={toggle}>Cancel</Button>
+                <Button color="primary" className="btn-round" onClick={updateOrder}>
+                    {
+                        isProgress ?
+                            <div className="spinner" ></div>
+                            :
+                            <span> Update </span>
+                    }
+                </Button>
+                <Button color="secondary" className="btn-round" onClick={toggle}>Cancel</Button>
             </ModalFooter>
         </Modal>
     );
 });
-EditOrderDetailModal.displayName= 'EditOrderDetailmodal';
+EditOrderDetailModal.displayName = 'EditOrderDetailmodal';
 EditOrderDetailModal.propTypes = {
     isOpen: propTypes.bool,
     toggle: propTypes.func

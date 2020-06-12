@@ -62,6 +62,8 @@ export const rootEpic = combineEpics(
     CategoryEpics.delCateogry,
 
     OrderEpics.getOrders,
+    OrderEpics.getOrder,
+    OrderEpics.editOrder,
 
     LocationEpics.getLocations,
     LocationEpics.addLocation,

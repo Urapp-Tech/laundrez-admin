@@ -8,49 +8,57 @@ export class OrderActions {
             payload: { page, pageSize, search }
         };
     }
-    static toggleStatusModal() {
+
+    static getOrder(orderId) {
         return {
-            type: OrderTypes.TOGGLE_STATUS_CONFIRMATION_MODAL
+            type: OrderTypes.GET_ORDER_PROG,
+            payload: { orderId }
         };
     }
+
+
     static addOrder(body) {
         return {
-            type: OrderTypes.ADD_CATEGORY_PROG,
+            type: OrderTypes.ADD_ORDER_PROG,
             payload: { body }
         };
     }
     static editOrder(body) {
         return {
-            type: OrderTypes.EDIT_CATEGORY_PROG,
+            type: OrderTypes.EDIT_ORDER_PROG,
             payload: { body }
         };
     }
     static delOrder(id) {
         return {
-            type: OrderTypes.DEL_CATEGORY_PROG,
+            type: OrderTypes.DEL_ORDER_PROG,
             payload: { id }
         };
     }
     static toggleAddOrderModal() {
         return {
-            type: OrderTypes.TOGGLE_ADD_CATEGORY_MODAL
+            type: OrderTypes.TOGGLE_ADD_ORDER_MODAL
         };
     }
-    static toggleEditOrderModal(index = -1) {
+    static toggleEditOrderModal() {
         return {
-            type: OrderTypes.TOGGLE_EDIT_CATEGORY_MODAL,
-            payload: { index }
+            type: OrderTypes.TOGGLE_EDIT_ORDER_MODAL
         };
     }
     static toggleDelOrderModal(index = -1) {
         return {
-            type: OrderTypes.TOGGLE_DEL_CATEGORY_MODAL,
+            type: OrderTypes.TOGGLE_DEL_ORDER_MODAL,
             payload: { index }
+        };
+    }
+    static toggleStatusModal() {
+        return {
+            type: OrderTypes.TOGGLE_STATUS_CONFIRMATION_MODAL
         };
     }
     // static clearOrder() {
     //     return {
-    //         type: OrderTypes.CLEAR_CATEGORY
+    //         type: OrderTypes.CLEAR_ORDER
     //     };
     // }
 }

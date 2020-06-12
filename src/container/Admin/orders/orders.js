@@ -31,14 +31,14 @@ import AssignModal from '../../../components/Modals/AssignModal';
 import EditOrderModal from '../../../components/Modals/EditOrderDetailModal';
 import OrderPdfModal from '../../../components/Modals/OrderPdfModal';
 import { OrderActions } from '../../../store/actions/OrderActions';
-import {  OrderStatusArray } from '../../../store/constants/OrderConstants';
+import { OrderStatusArray } from '../../../store/constants/OrderConstants';
 import moment from 'moment';
 import StatusChangeConfModal from '../../../components/Modals/StatusChangeConfModal';
 
 function Orders() {
 
     const [openAssignModal, setOpenAssignModal] = useState(false);
-    const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
+    // const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
     const [openOrderPdfModal, setOpenOrderPdfModal] = useState(false);
     const [search, setSearch] = useState('');
     const [isSearch, setIsSearch] = useState(false);
@@ -47,6 +47,7 @@ function Orders() {
     const isProgress = useSelector(store => store?.order?.isProgressList);
     const orders = useSelector(store => store?.order?.orders);
     const paging = useSelector(store => store?.order?.paging);
+    const openEditModal = useSelector(store => store?.order?.openEditModal);
     const openStatusModal = useSelector(store => store?.order?.openStatusModal);
     const dispatch = useDispatch();
     // const users = useSelector(store => store?.sampleReducer.posts);
@@ -58,9 +59,9 @@ function Orders() {
         setOpenAssignModal(!openAssignModal);
     }, [openAssignModal]);
 
-    const toggleEditOrderModal = useCallback(() => {
-        setOpenEditOrderModal(!openEditOrderModal);
-    }, [openEditOrderModal]);
+    const getOrder = useCallback((orderId) => {
+        dispatch(OrderActions.getOrder(orderId));
+    }, [dispatch]);
 
     const toggleOrderPdfModal = useCallback(() => {
         setOpenOrderPdfModal(!openOrderPdfModal);
@@ -177,7 +178,7 @@ function Orders() {
                             color="info"
                             id={`edit-order-${rowIndex}`}
                             type="button"
-                            onClick={toggleEditOrderModal}
+                            onClick={() => getOrder(row?.id)}
                         >
                             <i className=" far fa-edit"></i>
                         </Button>
@@ -312,7 +313,7 @@ function Orders() {
                     </Col>
                 </Row>
                 <AssignModal isOpen={openAssignModal} toggle={toggleAssignModal} />
-                <EditOrderModal isOpen={openEditOrderModal} toggle={toggleEditOrderModal} />
+                <EditOrderModal isOpen={openEditModal} toggle={() => dispatch(OrderActions.toggleEditOrderModal())} />
                 <OrderPdfModal isOpen={openOrderPdfModal} toggle={toggleOrderPdfModal} style={{ maxWidth: '1600px', width: '80%' }} />
 
 

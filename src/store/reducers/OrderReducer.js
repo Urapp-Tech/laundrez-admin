@@ -4,15 +4,16 @@ import { OrderTypes } from '../action-types/OrderTypes';
 let INITIAL_STATE = {
     isProgressList: false,
     isProgress: false,
+    isProgressEdit: false,
     isError: false,
     errorText: '',
     errorStatus: 0,
     orders: [],
+    order: undefined,
     openStatusModal: false,
     openAddModal: false,
     openEditModal: false,
     openDelModal: false,
-    category: undefined,
     paging: {}
 };
 
@@ -27,6 +28,14 @@ export function orderReducer(state = INITIAL_STATE, action) {
 
 
 
+        case OrderTypes.GET_ORDER_PROG:
+            return { ...state, isProgress: true, order: undefined };
+        case OrderTypes.GET_ORDER_SUCC:
+            return { ...state, isProgress: false, order: action.payload.result, };
+        case OrderTypes.GET_ORDER_FAIL:
+            return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+
+
 
         // case OrderTypes.ADD_CATEGORY_PROG:
         //     return { ...state, isProgress: true };
@@ -37,12 +46,12 @@ export function orderReducer(state = INITIAL_STATE, action) {
 
 
 
-        // case OrderTypes.EDIT_CATEGORY_PROG:
-        //     return { ...state, isProgress: true };
-        // case OrderTypes.EDIT_CATEGORY_SUCC:
-        //     return { ...state, isProgress: false, };
-        // case OrderTypes.EDIT_CATEGORY_FAIL:
-        //     return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+        case OrderTypes.EDIT_ORDER_PROG:
+            return { ...state, isProgressEdit: true };
+        case OrderTypes.EDIT_ORDER_SUCC:
+            return { ...state, isProgressEdit: false, };
+        case OrderTypes.EDIT_ORDER_FAIL:
+            return { ...state, isProgressEdit: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
 
 
@@ -58,8 +67,8 @@ export function orderReducer(state = INITIAL_STATE, action) {
         case OrderTypes.TOGGLE_STATUS_CONFIRMATION_MODAL:
             return { ...state, openStatusModal: !state.openStatusModal };
 
-        // case OrderTypes.TOGGLE_EDIT_CATEGORY_MODAL:
-        //     return { ...state, openEditModal: !state.openEditModal, category: state.categories[action.payload.index] };
+        case OrderTypes.TOGGLE_EDIT_ORDER_MODAL:
+            return { ...state, openEditModal: !state.openEditModal, };
 
         // case OrderTypes.TOGGLE_DEL_CATEGORY_MODAL:
         //     return { ...state, openDelModal: !state.openDelModal, category: state.categories[action.payload.index] };
