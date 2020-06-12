@@ -11,7 +11,7 @@ export class OrderEpics {
     static getOrders(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(OrderTypes.GET_ORDERS_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxGet(`/Order/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[orderNumber]=${payload.search}&sort=-orderDate`);
+                return ajaxGet(`/Order/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[status]=${payload.status}&filters[orderdate]=${payload.orderDate}&filters[orderNumber]=${payload.search}&sort=-orderDate`);
             }).pipe(pluck('response'), map(obj => {
                 return {
                     type: OrderTypes.GET_ORDERS_SUCC,

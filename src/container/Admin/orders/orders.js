@@ -42,6 +42,8 @@ function Orders() {
     const [search, setSearch] = useState('');
     const [isSearch, setIsSearch] = useState(false);
     const [statusObj, setStatusObj] = useState({ newStatus: '', prevStatus: '' });
+    const [filterStatus, setFilterStatus] = useState('');
+    const [filterDate, setFilterDate] = useState('');
 
     const isProgress = useSelector(store => store?.order?.isProgressList);
     const orders = useSelector(store => store?.order?.orders);
@@ -70,8 +72,8 @@ function Orders() {
 
     const onTableChange = useCallback((type, newState) => {
         if (type === 'pagination')
-            dispatch(OrderActions.getOrders(newState?.page));
-    }, [dispatch]);
+            dispatch(OrderActions.getOrders(newState?.page, undefined, undefined, filterStatus));
+    }, [dispatch, filterStatus]);
 
 
     const onSearch = useCallback((e) => {
@@ -89,6 +91,20 @@ function Orders() {
             dispatch(OrderActions.getOrders(undefined, undefined, search));
         }
     }, [search, onSearch, isSearch, dispatch]);
+
+    const getOrderByStatus = useCallback((value) => {
+        setFilterStatus(value);
+        dispatch(OrderActions.getOrders(undefined, undefined, undefined, value));
+    }, [dispatch]);
+
+    const getOrderByDate = useCallback((value) => {
+        setFilterDate(value);
+        let date = '';
+        if (value === 'Today') {
+            date = moment(new Date()).format('YYYY-MM-DD');
+        }
+        dispatch(OrderActions.getOrders(undefined, undefined, undefined, filterStatus, date));
+    }, [dispatch, filterStatus]);
 
     const remote = {
         filter: false,
@@ -195,7 +211,6 @@ function Orders() {
                             type="button"
                             onClick={() => getOrder(row?.id, true)}
                         >
-                            {/* <img className="now-ui-icons pdf-icon" alt={'pdf-icon'} src={pdf} /> */}
                             <i className=" fas fa-file-pdf"></i>
                         </Button>
                         <UncontrolledTooltip
@@ -224,25 +239,24 @@ function Orders() {
                                     <Col lg="2" >
                                         <FormGroup className="col-md-12" >
                                             <Label for="exampleSelect">Status</Label>
-                                            <Input type="select" name="select" id="exampleSelect">
-                                                <option>All</option>
-                                                <option>Ordered</option>
-                                                <option>Pickedup</option>
-                                                <option>InProgress</option>
-                                                <option>DropOffs</option>
-                                                <option>Delivered</option>
-                                                <option>Cancelled</option>
+                                            <Input type="select" value={filterStatus} onChange={(e) => getOrderByStatus(e.target.value)} name="select" id="exampleSelect">
+                                                <option value={''} >All</option>
+                                                {
+                                                    OrderStatusArray.map((v, i) => {
+                                                        return (<option key={i} value={v} >{v}</option>);
+                                                    })
+                                                }
                                             </Input>
                                         </FormGroup>
                                     </Col>
                                     <Col lg="2" >
                                         <FormGroup className="col-md-12" >
                                             <Label for="exampleSelect">Time</Label>
-                                            <Input type="select" name="select" id="exampleSelect">
-                                                <option>All</option>
-                                                <option>Today</option>
-                                                <option>Tomorrow</option>
-                                                <option>This Week</option>
+                                            <Input type="select" value={filterDate} onChange={(e) => getOrderByDate(e.target.value)} name="select" id="exampleSelect">
+                                                <option value={''} >All</option>
+                                                <option value='Today' >Today</option>
+                                                <option value={'Tomorrow'} >Tomorrow</option>
+                                                <option value={'This Week'} >This Week</option>
                                             </Input>
                                         </FormGroup>
                                     </Col>
