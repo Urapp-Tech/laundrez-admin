@@ -75,10 +75,10 @@ function Drivers({ history }) {
         }
     }, [search, onSearch, isSearch, dispatch]);
     const columns = [
-        {
-            dataField: 'id',
-            text: '#'
-        },
+        // {
+        //     dataField: 'id',
+        //     text: '#'
+        // },
         {
             dataField: 'name',
             text: 'Name'
@@ -155,7 +155,7 @@ function Drivers({ history }) {
                             color="info"
                             id={`history-${rowIndex}`}
                             type="button"
-                            onClick={() => history.push(`/admin/drivers/history/${13}`)}
+                            onClick={() => history.push(`/admin/drivers/history/${row?.id}`)}
 
                         >
                             <i className="fas fa-eye"></i>

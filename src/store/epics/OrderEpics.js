@@ -11,7 +11,7 @@ export class OrderEpics {
     static getOrders(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(OrderTypes.GET_ORDERS_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxGet(`/Order/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[status]=${payload.status}&filters[orderdate]=${payload.orderDate}&filters[orderNumber]=${payload.search}&sort=-orderDate`);
+                return ajaxGet(`/Order/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[status]=${payload.status}&filters[orderDate]=${payload.orderDate}&filters[orderNumber]=${payload.search}&sort=-orderDate`);
             }).pipe(pluck('response'), map(obj => {
                 return {
                     type: OrderTypes.GET_ORDERS_SUCC,
@@ -105,7 +105,7 @@ export class OrderEpics {
     static editOrder(action$, state$, { ajaxPut, getRefreshToken }) {
         return action$.pipe(ofType(OrderTypes.EDIT_ORDER_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxPut('/Order/', payload.body, null);
+                return ajaxPut('/Order/', payload.body);
             }).pipe(pluck('response'), flatMap(obj => {
                 toast.success('Order updated successfully');
                 return of({
@@ -122,10 +122,7 @@ export class OrderEpics {
                     }
                     else {
                         let message;
-                        if (err.status === 500)
-                            message = err?.response?.Message;
-                        else if (err.status === 400)
-                            message = err?.response?.errors[0]?.message;
+                        message = err?.response?.Message;
                         toast.error(message ? message : ErrorMsg);
                         return of({ type: OrderTypes.EDIT_ORDER_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
                     }

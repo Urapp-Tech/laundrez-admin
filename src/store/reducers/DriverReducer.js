@@ -8,6 +8,7 @@ let INITIAL_STATE = {
     errorText: '',
     errorStatus: 0,
     drivers: [],
+    driverHistory: [],
     openAddModal: false,
     openEditModal: false,
     openDelModal: false,
@@ -23,6 +24,16 @@ export function driverReducer(state = INITIAL_STATE, action) {
             return { ...state, isProgressList: false, drivers: action.payload.result, paging: action.payload.paging };
         case DriverTypes.GET_DRIVERS_FAIL:
             return { ...state, isProgressList: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+
+
+
+        case DriverTypes.GET_DRIVER_HISTORY_PROG:
+            return { ...state, isProgressList: true, driverHistory: [] };
+        case DriverTypes.GET_DRIVER_HISTORY_SUCC:
+            return { ...state, isProgressList: false, driverHistory: action.payload.result, paging: action.payload.paging };
+        case DriverTypes.GET_DRIVER_HISTORY_FAIL:
+            return { ...state, isProgressList: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+
 
 
         case DriverTypes.ADD_DRIVER_PROG:

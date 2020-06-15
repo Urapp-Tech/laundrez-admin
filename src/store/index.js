@@ -86,6 +86,7 @@ export const rootEpic = combineEpics(
     DriverEpics.addDriver,
     DriverEpics.editDriver,
     DriverEpics.delDriver,
+    DriverEpics.getDriverHistory,
 
     VoucherEpics.getVouchers,
     VoucherEpics.addVoucher,

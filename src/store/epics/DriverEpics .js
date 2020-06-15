@@ -33,6 +33,30 @@ export class DriverEpics {
         }));
     }
 
+    static getDriverHistory(action$, state$, { ajaxGet, getRefreshToken }) {
+        return action$.pipe(ofType(DriverTypes.GET_DRIVER_HISTORY_PROG), switchMap(({ payload }) => {
+            return defer(() => {
+                return ajaxGet(`/driver/${payload.driverId}/orders?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[name]=${payload.search}`);
+            }).pipe(pluck('response'), map(obj => {
+                return {
+                    type: DriverTypes.GET_DRIVER_HISTORY_SUCC,
+                    payload: obj
+                };
+            })
+                , catchError((err, source) => {
+                    if (err.status === 401) {
+                        return getRefreshToken(action$, state$, source);
+                    }
+                    else {
+                        let message = err?.response?.Message;
+                        toast.error(message ? message : ErrorMsg);
+                        return of({ type: DriverTypes.GET_DRIVER_HISTORY_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
+                    }
+                }));
+
+        }));
+    }
+
     static addDriver(action$, state$, { ajaxPost, getRefreshToken }) {
         return action$.pipe(ofType(DriverTypes.ADD_DRIVER_PROG), switchMap(({ payload }) => {
             return defer(() => {

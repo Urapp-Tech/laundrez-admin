@@ -8,6 +8,13 @@ export class DriverActions {
             payload: { page, pageSize, search }
         };
     }
+
+    static getDriverHistory(driverId, page = 1, pageSize = 10, search = '') {
+        return {
+            type: DriverTypes.GET_DRIVER_HISTORY_PROG,
+            payload: { driverId, page, pageSize, search }
+        };
+    }
     static addDriver(body, history) {
         return {
             type: DriverTypes.ADD_DRIVER_PROG,
