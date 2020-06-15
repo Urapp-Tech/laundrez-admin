@@ -98,23 +98,26 @@ const EditOrderDetailModal = memo(({ isOpen, toggle }) => {
 
     const calculateAmount = useCallback(() => {
         let amount = listDetail.reduce(calculateTotal, 0);
-        if (discountAmount > 0) {
-            amount = calculateDiscount(amount, discountAmount);
-        }
         amount = Math.abs(amount).toFixed(2);
         setTotalAmount(amount);
-    }, [listDetail, calculateTotal, discountAmount, calculateDiscount]);
+    }, [listDetail, calculateTotal,]);
 
-    const calculateHST = useCallback(() => {
+    const calculateHST = useCallback((totalAmount) => {
         let hst = Math.abs(totalAmount * (order?.taxPercentage / 100)).toFixed(2);
         setTotalHST(hst);
-    }, [totalAmount, order]);
+        return hst;
+    }, [order]);
 
     const calculateGrandTotal = useCallback(() => {
-        let grandTotal = Number(totalAmount) + Number(totalHST);
+        let _totalAmount = Number(totalAmount);
+        if (discountAmount > 0) {
+            _totalAmount = calculateDiscount(_totalAmount, discountAmount);
+        }
+        let hst = calculateHST(_totalAmount);
+        let grandTotal = Number(_totalAmount) + Number(hst);
         grandTotal = Math.abs(grandTotal).toFixed(2);
         setGrandTotal(grandTotal);
-    }, [totalAmount, totalHST]);
+    }, [totalAmount, discountAmount, calculateDiscount, calculateHST]);
 
     useEffect(() => {
         calculateAmount();
