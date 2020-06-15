@@ -103,10 +103,10 @@ function Drivers({ history }) {
             dataField: 'contactNumber',
             text: 'Contact#',
         },
-        {
-            dataField: 'orders',
-            text: 'Orders For Today'
-        },
+        // {
+        //     dataField: 'orders',
+        //     text: 'Orders For Today'
+        // },
         {
             dataField: 'action',
             text: 'Action',

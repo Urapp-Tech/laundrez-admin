@@ -133,9 +133,9 @@ const EditOrderDetailModal = memo(({ isOpen, toggle }) => {
                                 <Col md={12}>
                                     <div className="d-flex flex-column">
                                         <span className="font-weight-bold">Customer Details:</span>
-                                        <span>Tayub Bilwani</span>
-                                        <span>tayubbilwani@gmail.com</span>
-                                        <span>+11234567890</span>
+                                        <span>{order?.firstName} {order?.lastName}</span>
+                                        <span>{order?.email}</span>
+                                        <span>{order?.phoneNo}</span>
                                     </div>
                                 </Col>
                             </Row>

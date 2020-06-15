@@ -49,6 +49,7 @@ function Orders() {
 
     const isProgressList = useSelector(store => store?.order?.isProgressList);
     const isProgress = useSelector(store => store?.order?.isProgress);
+    const isProgressCSV = useSelector(store => store?.order?.isProgressCSV);
     const orders = useSelector(store => store?.order?.orders);
     const csvData = useSelector(store => store?.order?.csvData);
     const paging = useSelector(store => store?.order?.paging);
@@ -119,7 +120,7 @@ function Orders() {
             return;
         }
         dispatch(OrderActions.getCSVData(filterStatus));
-    }, [dispatch, filterStatus,notValid]);
+    }, [dispatch, filterStatus, notValid]);
 
     useEffect(() => {
         if (csvData) {
@@ -178,10 +179,6 @@ function Orders() {
                     </div>
                 );
             }
-        },
-        {
-            dataField: 'customer',
-            text: 'Customer'
         },
         {
             dataField: 'totalAmount',
@@ -316,7 +313,12 @@ function Orders() {
                                         </form>
                                     </Col>
                                     <Col lg="2" className="d-flex justify-content-center align-items-start mt-2" >
-                                        <Button size={'md'} onClick={onClickExportToCSV} type={'button'} className=" btn-primary btn-round" >Export to CSV</Button>
+                                        <Button size={'md'} onClick={onClickExportToCSV} type={'button'} className=" btn-primary btn-round" >{
+                                            isProgressCSV ?
+                                                <div className="spinner spinner-danger" ></div>
+                                                :
+                                                'Export to CSV'
+                                        }</Button>
                                     </Col>
                                 </Row>
                             </CardHeader>

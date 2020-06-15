@@ -61,6 +61,8 @@ function PdfDocument({ order }) {
     const listDetail = order?.listDetail;
     const address = order?.deliveryAddress;
     const orderNumber = order?.orderNumber;
+    const firstName = order?.firstName;
+    const lastName = order?.lastName;
 
     return (
         <Document filename={`${orderNumber}.pdf`} >
@@ -79,7 +81,7 @@ function PdfDocument({ order }) {
                         <Text style={[styles.TableEntry, { flex: 2 }]}>DropOff</Text>
                     </View>
                     <View style={styles.Table}>
-                        <Text style={[styles.TableEntry, { flex: 2 }]}>Evaristo Lucena</Text>
+                        <Text style={[styles.TableEntry, { flex: 2 }]}>{firstName} {lastName}</Text>
                         <Text style={[styles.TableEntry, { flex: 2 }]}>{orderNumber}</Text>
                         <Text style={[styles.TableEntry, { flex: 7 }]}> {address} </Text>
                         <View style={{ flex: 3 }}>

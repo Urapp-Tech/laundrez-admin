@@ -111,8 +111,8 @@ function AddService({ history }) {
             setNotValid({ error: true, type: 'shortDescription', message: 'Short description must contain 15 characters' });
             return;
         }
-        if (formValues.shortDescription.length > 25) {
-            setNotValid({ error: true, type: 'shortDescription', message: 'Short description exceed 25 characters' });
+        if (formValues.shortDescription.length > 20) {
+            setNotValid({ error: true, type: 'shortDescription', message: 'Short description exceed 20 characters' });
             return;
         }
         if (!formValues.minQty) {
@@ -236,9 +236,9 @@ function AddService({ history }) {
                                     </Col>
                                     <Col sm="6">
                                         <FormGroup>
-                                            <Label><span className="text-danger" >*</span> Short Description <b><i> Write 15-25 Characters</i> </b> </Label>
+                                            <Label><span className="text-danger" >*</span> Short Description <b><i> Write 15-20 Characters</i> </b> </Label>
                                             <Input
-                                                placeholder="Service Description ( Write 15 - 25 Characters ) "
+                                                placeholder="Service Description ( Write 15 - 20 Characters ) "
                                                 type="text"
                                                 value={formValues.shortDescription}
                                                 onChange={(e) => setFormValues({ ...formValues, shortDescription: e.target.value })}
