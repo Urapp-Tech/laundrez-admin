@@ -24,6 +24,7 @@ import { useDispatch, useSelector, /* useSelector  */ } from 'react-redux';
 
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import { ExportToCsv } from 'export-to-csv';
 
 
 
@@ -44,10 +45,12 @@ function Orders() {
     const [statusObj, setStatusObj] = useState({ newStatus: '', prevStatus: '' });
     const [filterStatus, setFilterStatus] = useState('');
     const [filterDate, setFilterDate] = useState('');
+    const [notValid, setNotValid] = useState({ error: false, type: '', message: '' });
 
     const isProgressList = useSelector(store => store?.order?.isProgressList);
     const isProgress = useSelector(store => store?.order?.isProgress);
     const orders = useSelector(store => store?.order?.orders);
+    const csvData = useSelector(store => store?.order?.csvData);
     const paging = useSelector(store => store?.order?.paging);
     const openEditModal = useSelector(store => store?.order?.openEditModal);
     const openPdfModal = useSelector(store => store?.order?.openPdfModal);
@@ -106,6 +109,38 @@ function Orders() {
         }
         dispatch(OrderActions.getOrders(undefined, undefined, undefined, filterStatus, date));
     }, [dispatch, filterStatus]);
+
+    const onClickExportToCSV = useCallback(() => {
+        if (notValid.error) {
+            setNotValid({ error: false, type: '', message: '' });
+        }
+        if (!filterStatus) {
+            setNotValid({ error: true, type: 'orderStatus', message: 'Please select status to export the csv file' });
+            return;
+        }
+        dispatch(OrderActions.getCSVData(filterStatus));
+    }, [dispatch, filterStatus,notValid]);
+
+    useEffect(() => {
+        if (csvData) {
+            const options = {
+                fieldSeparator: ',',
+                quoteStrings: '"',
+                decimalSeparator: '.',
+                showLabels: true,
+                showTitle: true,
+                title: 'Orders',
+                useTextFile: false,
+                useBom: true,
+                useKeysAsHeaders: true,
+                filename: 'orders'
+            };
+
+            const csvExporter = new ExportToCsv(options);
+
+            csvExporter.generateCsv(csvData);
+        }
+    }, [csvData]);
 
     const remote = {
         filter: false,
@@ -249,6 +284,9 @@ function Orders() {
                                                 }
                                             </Input>
                                         </FormGroup>
+                                        {notValid.error && notValid.type === 'orderStatus' &&
+                                            <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                        }
                                     </Col>
                                     <Col lg="2" >
                                         <FormGroup className="col-md-12" >
@@ -262,8 +300,8 @@ function Orders() {
                                         </FormGroup>
                                     </Col>
 
-                                    <Col lg="4" className="mt-auto"  >
-                                        <form onSubmit={onSearch} className=" col-md-12" >
+                                    <Col lg="4" className=""  >
+                                        <form onSubmit={onSearch} className=" col-md-12 mt-3" >
                                             <InputGroup className=" no-border">
                                                 <Input value={search}
                                                     onChange={e => setSearch(e.target.value)}
@@ -277,8 +315,8 @@ function Orders() {
                                             </InputGroup>
                                         </form>
                                     </Col>
-                                    <Col lg="2" className="d-flex justify-content-center align-items-end" >
-                                        <Button size={'md'} className=" btn-primary btn-round" >Export to CSV</Button>
+                                    <Col lg="2" className="d-flex justify-content-center align-items-start mt-2" >
+                                        <Button size={'md'} onClick={onClickExportToCSV} type={'button'} className=" btn-primary btn-round" >Export to CSV</Button>
                                     </Col>
                                 </Row>
                             </CardHeader>

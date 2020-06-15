@@ -41,6 +41,12 @@ export class OrderActions {
             payload: { body }
         };
     }
+    static getCSVData(status) {
+        return {
+            type: OrderTypes.GET_CSV_DATA_PROG,
+            payload: { status }
+        };
+    }
     static toggleAddOrderModal() {
         return {
             type: OrderTypes.TOGGLE_ADD_ORDER_MODAL
@@ -68,9 +74,4 @@ export class OrderActions {
             payload: { index }
         };
     }
-    // static clearOrder() {
-    //     return {
-    //         type: OrderTypes.CLEAR_ORDER
-    //     };
-    // }
 }

@@ -5,10 +5,12 @@ let INITIAL_STATE = {
     isProgressList: false,
     isProgress: false,
     isProgressEdit: false,
+    isProgressCSV: false,
     isError: false,
     errorText: '',
     errorStatus: 0,
     orders: [],
+    csvData: undefined,
     order: undefined,
     openStatusModal: false,
     openAddModal: false,
@@ -57,12 +59,12 @@ export function orderReducer(state = INITIAL_STATE, action) {
 
 
 
-        // case OrderTypes.DEL_CATEGORY_PROG:
-        //     return { ...state, isProgress: true };
-        // case OrderTypes.DEL_CATEGORY_SUCC:
-        //     return { ...state, isProgress: false, };
-        // case OrderTypes.DEL_CATEGORY_FAIL:
-        //     return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+        case OrderTypes.GET_CSV_DATA_PROG:
+            return { ...state, isProgressCSV: true };
+        case OrderTypes.GET_CSV_DATA_SUCC:
+            return { ...state, isProgressCSV: false, csvData: action.payload.result };
+        case OrderTypes.GET_CSV_DATA_FAIL:
+            return { ...state, isProgressCSV: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
 
         case OrderTypes.TOGGLE_STATUS_CONFIRMATION_MODAL:

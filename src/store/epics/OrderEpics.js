@@ -33,6 +33,31 @@ export class OrderEpics {
     }
 
 
+    static getCSVData(action$, state$, { ajaxGet, getRefreshToken }) {
+        return action$.pipe(ofType(OrderTypes.GET_CSV_DATA_PROG), switchMap(({ payload }) => {
+            return defer(() => {
+                return ajaxGet(`/Order/all?page[number]=1&page[size]=5000&filters[status]=${payload.status}&sort=-orderDate`);
+            }).pipe(pluck('response'), map(obj => {
+                return {
+                    type: OrderTypes.GET_CSV_DATA_SUCC,
+                    payload: obj
+                };
+            })
+                , catchError((err, source) => {
+                    if (err.status === 401) {
+                        return getRefreshToken(action$, state$, source);
+                    }
+                    else {
+                        let message = err?.response?.Message;
+                        toast.error(message ? message : ErrorMsg);
+                        return of({ type: OrderTypes.GET_CSV_DATA_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
+                    }
+                }));
+
+        }));
+    }
+
+
     static getOrder(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(OrderTypes.GET_ORDER_PROG), switchMap(({ payload }) => {
             return defer(() => {
