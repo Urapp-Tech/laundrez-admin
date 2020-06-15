@@ -19,6 +19,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { DriverActions } from '../../../store/actions/DriverActions';
 import Map from '../../../components/Map/Map';
+import { API_URL } from '../../../store/services/Config';
 
 
 function EditDriver({ history }) {
@@ -34,7 +35,9 @@ function EditDriver({ history }) {
         lat: '',
         lng: '',
         file: '',
-        id: ''
+        id: '',
+        image: '',
+        removeImage: false,
     });
 
     useEffect(() => {
@@ -48,7 +51,9 @@ function EditDriver({ history }) {
                 licence,
                 lng,
                 name,
-                id
+                id,
+                removeImage,
+                image
             } = driver;
             setFormValues({
                 contactNumber,
@@ -57,7 +62,9 @@ function EditDriver({ history }) {
                 licence,
                 lng,
                 name,
-                id
+                id,
+                removeImage,
+                image
             });
         }
         else {
@@ -153,6 +160,7 @@ function EditDriver({ history }) {
         formData.append('lat', formValues.lat);
         formData.append('lng', formValues.lng);
         formData.append('profilePicture', formValues.file);
+        formData.append('removeImage', formValues.removeImage);
         dispatch(DriverActions.editDriver(formData, history));
 
 
@@ -284,6 +292,12 @@ function EditDriver({ history }) {
                                                 </FormGroup>
                                             </Col>
                                         </Row>
+                                        {formValues.image && <Row  >
+                                            {!formValues.removeImage && <Col sm="4"  >
+                                                <button className="close mr-3" onClick={() => setFormValues({ ...formValues, removeImage: true })} >&times;</button>
+                                                <img src={`${API_URL}/${formValues.image}`} alt={'img'} className="img-thumbnail table-image" />
+                                            </Col>}
+                                        </Row>}
                                         <Col sm="12" className="pl-0" >
                                             <Button type={'submit'} disabled={isProgress} className="btn-round btn-primary btn-add-modal" >
                                                 {
