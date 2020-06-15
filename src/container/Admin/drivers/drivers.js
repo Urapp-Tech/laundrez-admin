@@ -55,8 +55,8 @@ function Drivers({ history }) {
     };
     const onTableChange = useCallback((type, newState) => {
         if (type === 'pagination')
-            dispatch(DriverActions.getDrivers(newState?.page));
-    }, [dispatch]);
+            dispatch(DriverActions.getDrivers(newState?.page, undefined, search));
+    }, [dispatch, search]);
 
 
     const onSearch = useCallback((e) => {

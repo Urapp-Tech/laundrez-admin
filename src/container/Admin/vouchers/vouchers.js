@@ -50,8 +50,8 @@ function Vouchers({ history }) {
 
     const onTableChange = useCallback((type, newState) => {
         if (type === 'pagination')
-            dispatch(VoucherActions.getVouchers(newState?.page));
-    }, [dispatch]);
+            dispatch(VoucherActions.getVouchers(newState?.page, undefined, search));
+    }, [dispatch, search]);
 
     const onSearch = useCallback((e) => {
         e.preventDefault();

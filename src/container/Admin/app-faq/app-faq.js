@@ -56,8 +56,8 @@ function AppFaq() {
     };
     const onTableChange = useCallback((type, newState) => {
         if (type === 'pagination')
-            dispatch(FaqActions.getFaqs(newState?.page));
-    }, [dispatch]);
+            dispatch(FaqActions.getFaqs(newState?.page, undefined, search));
+    }, [dispatch, search]);
 
 
     const onSearch = useCallback((e) => {

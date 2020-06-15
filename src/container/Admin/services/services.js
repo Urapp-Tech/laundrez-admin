@@ -50,8 +50,8 @@ function Services({ history }) {
 
     const onTableChange = useCallback((type, newState) => {
         if (type === 'pagination')
-            dispatch(ServiceActions.getServices(newState?.page));
-    }, [dispatch]);
+            dispatch(ServiceActions.getServices(newState?.page, undefined, search));
+    }, [dispatch, search]);
 
 
     const onSearch = useCallback((e) => {

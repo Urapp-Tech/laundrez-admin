@@ -1,5 +1,5 @@
 
-import React, {useEffect, useCallback, useState} from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 
 // reactstrap components
@@ -55,13 +55,13 @@ function Locations() {
 
     const onTableChange = useCallback((type, newState) => {
         if (type === 'pagination')
-            dispatch(LocationActions.getLocations(newState?.page));
-    }, [dispatch]);
+            dispatch(LocationActions.getLocations(newState?.page, undefined, search));
+    }, [dispatch, search]);
 
 
     const onSearch = useCallback((e) => {
         e.preventDefault();
-        if(search) {
+        if (search) {
             setIsSearch(true);
             dispatch(LocationActions.getLocations(undefined, undefined, search));
         }
@@ -155,7 +155,7 @@ function Locations() {
                                         <Input
                                             value={search}
                                             onChange={e => setSearch(e.target.value)}
-                                            className="" 
+                                            className=""
                                             placeholder="Search..." />
                                         <InputGroupAddon addonType="append" onClick={onSearch} >
                                             <InputGroupText>

@@ -57,8 +57,8 @@ function Categories() {
     };
     const onTableChange = useCallback((type, newState) => {
         if (type === 'pagination')
-            dispatch(CategoryActions.getCategories(newState?.page));
-    }, [dispatch]);
+            dispatch(CategoryActions.getCategories(newState?.page, undefined, search));
+    }, [dispatch, search]);
 
 
     const onSearch = useCallback((e) => {
@@ -195,7 +195,6 @@ function Categories() {
                                         >{
                                                 props => (
                                                     <div>
-                                                        {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
                                                         <BootstrapTable
                                                             remote={remote}
                                                             wrapperClasses={'table-responsive'}

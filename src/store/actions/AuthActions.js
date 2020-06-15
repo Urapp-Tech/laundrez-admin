@@ -13,6 +13,12 @@ export class AuthActions {
             payload: { body }
         };
     }
+    static getAllUsers(page = 1, pageSize = 10, search = '') {
+        return {
+            type: AuthTypes.GET_ALL_USERS_PROG,
+            payload: { page, pageSize, search }
+        };
+    }
     static setUser(user) {
         return {
             type: AuthTypes.SET_USER,

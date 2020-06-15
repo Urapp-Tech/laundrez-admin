@@ -3,11 +3,14 @@ import { AuthTypes } from '../action-types/AuthTypes';
 
 let INITIAL_STATE = {
     isProgress: false,
+    isProgressList: false,
     isProgressRefreshToken: false,
     isError: false,
     errorText: '',
     errorStatus: 0,
-    user: {}
+    user: {},
+    users: [],
+    paging: {}
 };
 
 export function authReducer(state = INITIAL_STATE, action) {
@@ -21,7 +24,20 @@ export function authReducer(state = INITIAL_STATE, action) {
         case AuthTypes.SIGNIN_FAIL:
             return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
-    
+
+
+        case AuthTypes.GET_ALL_USERS_PROG:
+            return { ...state, isProgressList: true };
+
+        case AuthTypes.GET_ALL_USERS_SUCC:
+            return { ...state, isProgressList: false, users: action.payload.result, paging: action.payload.paging };
+
+        case AuthTypes.GET_ALL_USERS_FAIL:
+            return { ...state, isProgressList: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+
+
+
+
         case AuthTypes.GET_NEW_ACCESS_TOKEN_PROG:
             return { ...state, isProgressRefreshToken: true };
 

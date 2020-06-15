@@ -1,14 +1,15 @@
-import { of } from 'rxjs';
+import { of, defer } from 'rxjs';
 import { ofType, } from 'redux-observable';
 import { switchMap, pluck, catchError, map, mergeMap } from 'rxjs/operators';
 import { AuthTypes } from '../action-types/AuthTypes';
 import { StorageService } from '../services/StorageService';
-
+import { toast } from 'react-toastify';
+const ErrorMsg = 'something went wrong !';
 export class AuthEpics {
     static signin(action$, state$, { ajaxPost }) {
         return action$.pipe(ofType(AuthTypes.SIGNIN_PROG), switchMap(({ payload }) => {
             return ajaxPost('/User/signin/', payload.body).pipe(pluck('response'), map(obj => {
-                let { id, userName, firstName, lastName, role,token,refreshToken } = obj;
+                let { id, userName, firstName, lastName, role, token, refreshToken } = obj;
                 if (role === 'Admin') {
                     let user = { id, userName, firstName, lastName, role };
                     StorageService.setToken(token);
@@ -31,6 +32,33 @@ export class AuthEpics {
 
         }));
     }
+
+
+    static getAllUsers(action$, state$, { ajaxGet, getRefreshToken }) {
+        return action$.pipe(ofType(AuthTypes.GET_ALL_USERS_PROG), switchMap(({ payload }) => {
+            return defer(() => {
+                return ajaxGet(`/User/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[Email]=${payload.search}`);
+            }).pipe(pluck('response'), map(obj => {
+                return {
+                    type: AuthTypes.GET_ALL_USERS_SUCC,
+                    payload: obj
+                };
+            })
+                , catchError((err, source) => {
+                    if (err.status === 401) {
+                        return getRefreshToken(action$, state$, source);
+                    }
+                    else {
+                        let message = err?.response?.Message;
+                        toast.error(message ? message : ErrorMsg);
+                        return of({ type: AuthTypes.GET_ALL_USERS_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
+                    }
+                }));
+
+        }));
+    }
+
+
     static getNewAccessToken(action$, state$, { ajaxPost }) {
         return action$.pipe(ofType(AuthTypes.GET_NEW_ACCESS_TOKEN_PROG), mergeMap(({ payload }) => {
             return ajaxPost('/user/refreshtoken', payload.body).pipe(pluck('response'), map((obj) => {
@@ -45,4 +73,5 @@ export class AuthEpics {
             }));
         }));
     }
+
 }

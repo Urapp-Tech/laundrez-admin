@@ -72,8 +72,8 @@ function Orders() {
 
     const onTableChange = useCallback((type, newState) => {
         if (type === 'pagination')
-            dispatch(OrderActions.getOrders(newState?.page, undefined, undefined, filterStatus));
-    }, [dispatch, filterStatus]);
+            dispatch(OrderActions.getOrders(newState?.page, undefined, search, filterStatus));
+    }, [dispatch, filterStatus, search]);
 
 
     const onSearch = useCallback((e) => {
