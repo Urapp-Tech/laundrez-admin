@@ -45,7 +45,8 @@ function Orders() {
     const [filterStatus, setFilterStatus] = useState('');
     const [filterDate, setFilterDate] = useState('');
 
-    const isProgress = useSelector(store => store?.order?.isProgressList);
+    const isProgressList = useSelector(store => store?.order?.isProgressList);
+    const isProgress = useSelector(store => store?.order?.isProgress);
     const orders = useSelector(store => store?.order?.orders);
     const paging = useSelector(store => store?.order?.paging);
     const openEditModal = useSelector(store => store?.order?.openEditModal);
@@ -155,7 +156,7 @@ function Orders() {
             dataField: 'status',
             text: 'Status',
             // eslint-disable-next-line react/display-name
-            formatter: (cell) => {
+            formatter: (cell, row, rowIndex) => {
                 let statusIndex = OrderStatusArray.indexOf(cell);
                 let array = statusIndex > 0 ? OrderStatusArray.slice(statusIndex) : OrderStatusArray;
                 return (
@@ -166,7 +167,7 @@ function Orders() {
                                     newStatus: e.target.value,
                                     prevStatus: cell
                                 });
-                                dispatch(OrderActions.toggleStatusModal());
+                                dispatch(OrderActions.toggleStatusModal(rowIndex));
 
                             }} name="select">
                                 {
@@ -282,7 +283,7 @@ function Orders() {
                                 </Row>
                             </CardHeader>
                             <CardBody>
-                                {isProgress ?
+                                {isProgressList ?
                                     <div className='spinner-lg' ></div>
                                     :
                                     <>
@@ -335,8 +336,7 @@ function Orders() {
                 <StatusChangeConfModal
                     isOpen={openStatusModal}
                     toggle={() => dispatch(OrderActions.toggleStatusModal())}
-                    updateStatus={() => { }}
-                    isProgress={false}
+                    isProgress={isProgress}
                     newStatus={statusObj.newStatus}
                     prevStatus={statusObj.prevStatus}
                 />

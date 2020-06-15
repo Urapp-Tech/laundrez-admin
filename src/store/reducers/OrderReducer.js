@@ -38,12 +38,12 @@ export function orderReducer(state = INITIAL_STATE, action) {
 
 
 
-        // case OrderTypes.ADD_CATEGORY_PROG:
-        //     return { ...state, isProgress: true };
-        // case OrderTypes.ADD_CATEGORY_SUCC:
-        //     return { ...state, isProgress: false, };
-        // case OrderTypes.ADD_CATEGORY_FAIL:
-        //     return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+        case OrderTypes.UPDATE_ORDER_STATUS_PROG:
+            return { ...state, isProgress: true };
+        case OrderTypes.UPDATE_ORDER_STATUS_SUCC:
+            return { ...state, isProgress: false, };
+        case OrderTypes.UPDATE_ORDER_STATUS_FAIL:
+            return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
 
 
@@ -66,7 +66,7 @@ export function orderReducer(state = INITIAL_STATE, action) {
 
 
         case OrderTypes.TOGGLE_STATUS_CONFIRMATION_MODAL:
-            return { ...state, openStatusModal: !state.openStatusModal };
+            return { ...state, openStatusModal: !state.openStatusModal, order: state.orders[action.payload.index] };
 
         case OrderTypes.TOGGLE_EDIT_ORDER_MODAL:
             return { ...state, openEditModal: !state.openEditModal, };

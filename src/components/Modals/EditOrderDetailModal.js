@@ -16,7 +16,15 @@ const EditOrderDetailModal = memo(({ isOpen, toggle }) => {
     const [discountAmount, setDiscountAmount] = useState(0);
     useEffect(() => {
         if (order) {
-            setListDetail(order?.listDetail);
+            let array = order?.listDetail?.map((v) => {
+                let obj = v;
+                obj['id'] = undefined;
+                return (
+                    obj
+                );
+            });
+            // setListDetail(order?.listDetail);
+            setListDetail(array);
             setDiscountAmount(order?.discountAmount);
         }
     }, [order]);

@@ -35,6 +35,12 @@ export class OrderActions {
             payload: { id }
         };
     }
+    static updateOrderStatus(body) {
+        return {
+            type: OrderTypes.UPDATE_ORDER_STATUS_PROG,
+            payload: { body }
+        };
+    }
     static toggleAddOrderModal() {
         return {
             type: OrderTypes.TOGGLE_ADD_ORDER_MODAL
@@ -56,9 +62,10 @@ export class OrderActions {
             type: OrderTypes.TOGGLE_PDF_ORDER_MODAL,
         };
     }
-    static toggleStatusModal() {
+    static toggleStatusModal(index = -1) {
         return {
-            type: OrderTypes.TOGGLE_STATUS_CONFIRMATION_MODAL
+            type: OrderTypes.TOGGLE_STATUS_CONFIRMATION_MODAL,
+            payload: { index }
         };
     }
     // static clearOrder() {

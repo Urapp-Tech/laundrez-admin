@@ -71,37 +71,35 @@ export class OrderEpics {
         }));
     }
 
-    // static addCateogry(action$, state$, { ajaxPost, getRefreshToken }) {
-    //     return action$.pipe(ofType(OrderTypes.ADD_CATEGORY_PROG), switchMap(({ payload }) => {
-    //         return defer(() => {
-    //             return ajaxPost('/Order/', payload.body, null);
-    //         }).pipe(pluck('response'), flatMap(obj => {
-    //             toast.success('category added successfully');
-    //             return of({
-    //                 type: OrderTypes.ADD_CATEGORY_SUCC,
-    //                 payload: obj
-    //             },
-    //                 OrderActions.toggleAddOrderModal(),
-    //                 OrderActions.getCategories()
-    //             );
-    //         })
-    //             , catchError((err, source) => {
-    //                 if (err.status === 401) {
-    //                     return getRefreshToken(action$, state$, source);
-    //                 }
-    //                 else {
-    //                     let message;
-    //                     if (err.status === 500)
-    //                         message = err?.response?.Message;
-    //                     else if (err.status === 400)
-    //                         message = err?.response?.errors[0]?.message;
-    //                     toast.error(message ? message : ErrorMsg);
-    //                     return of({ type: OrderTypes.ADD_CATEGORY_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
-    //                 }
-    //             }));
+    static updateOrderStatus(action$, state$, { ajaxPut, getRefreshToken }) {
+        return action$.pipe(ofType(OrderTypes.UPDATE_ORDER_STATUS_PROG), switchMap(({ payload }) => {
+            return defer(() => {
+                return ajaxPut('/Order/status', payload.body);
+            }).pipe(pluck('response'), flatMap(obj => {
+                toast.success('status updated successfully');
+                return of({
+                    type: OrderTypes.UPDATE_ORDER_STATUS_SUCC,
+                    payload: obj
+                },
+                    OrderActions.toggleStatusModal(),
+                    OrderActions.getOrders(state$?.value?.order?.paging?.pageNumber)
+                );
+            })
+                , catchError((err, source) => {
+                    if (err.status === 401) {
+                        return getRefreshToken(action$, state$, source);
+                    }
+                    else {
+                        let message = err?.response?.Message;
+                        toast.error(message ? message : ErrorMsg);
+                        return of({ type: OrderTypes.UPDATE_ORDER_STATUS_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
+                    }
+                }));
 
-    //     }));
-    // }
+        }));
+    }
+
+
     static editOrder(action$, state$, { ajaxPut, getRefreshToken }) {
         return action$.pipe(ofType(OrderTypes.EDIT_ORDER_PROG), switchMap(({ payload }) => {
             return defer(() => {
