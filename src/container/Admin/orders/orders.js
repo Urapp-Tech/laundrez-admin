@@ -45,6 +45,7 @@ function Orders() {
     const [statusObj, setStatusObj] = useState({ newStatus: '', prevStatus: '' });
     const [filterStatus, setFilterStatus] = useState('');
     const [filterDate, setFilterDate] = useState('');
+    const [orderDate, setOrderDate] = useState(null);
     const [notValid, setNotValid] = useState({ error: false, type: '', message: '' });
 
     const isProgressList = useSelector(store => store?.order?.isProgressList);
@@ -99,16 +100,33 @@ function Orders() {
 
     const getOrderByStatus = useCallback((value) => {
         setFilterStatus(value);
-        dispatch(OrderActions.getOrders(undefined, undefined, undefined, value));
-    }, [dispatch]);
+        dispatch(OrderActions.getOrders(undefined, undefined, undefined, value, orderDate));
+    }, [dispatch, orderDate]);
 
     const getOrderByDate = useCallback((value) => {
         setFilterDate(value);
-        let date = '';
+        let orderDate = {
+            startDate: '',
+            endDate: ''
+        };
         if (value === 'Today') {
-            date = moment(new Date()).format('YYYY-MM-DD');
+            orderDate['startDate'] = `${moment(new Date()).format('YYYY-MM-DD')} T00:00`;
+            orderDate['endDate'] = `${moment(new Date()).format('YYYY-MM-DD')} T23:59`;
         }
-        dispatch(OrderActions.getOrders(undefined, undefined, undefined, filterStatus, date));
+        else if (value === 'Tomorrow') {
+            orderDate['startDate'] = `${moment(new Date()).add(1, 'day').format('YYYY-MM-DD')} T00:00`;
+            orderDate['endDate'] = `${moment(new Date()).add(1, 'day').format('YYYY-MM-DD')} T23:59`;
+        }
+        else if (value === 'This Week') {
+            const today = moment();
+            orderDate['startDate'] = `${today.startOf('week').format('YYYY-MM-DD')} T00:00`;
+            orderDate['endDate'] = `${today.endOf('week').format('YYYY-MM-DD')} T23:59`;
+        }
+        else {
+            orderDate = null;
+        }
+        setOrderDate(orderDate);
+        dispatch(OrderActions.getOrders(undefined, undefined, undefined, filterStatus, orderDate));
     }, [dispatch, filterStatus]);
 
     const onClickExportToCSV = useCallback(() => {

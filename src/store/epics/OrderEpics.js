@@ -11,7 +11,12 @@ export class OrderEpics {
     static getOrders(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(OrderTypes.GET_ORDERS_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxGet(`/Order/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[status]=${payload.status}&filters[orderDate]=${payload.orderDate}&filters[orderNumber]=${payload.search}&sort=-orderDate`);
+                let url = `/Order/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[status]=${payload.status}&filters[orderNumber]=${payload.search}&sort=-orderDate`;
+                if (payload.orderDate) {
+                    let dateFilter = `&filters[>%3DpickupDate]=${payload.orderDate['startDate']}&filters[<%3DpickupDate]=${payload.orderDate['endDate']}`;
+                    url = url.concat(dateFilter);
+                }
+                return ajaxGet(url);
             }).pipe(pluck('response'), map(obj => {
                 return {
                     type: OrderTypes.GET_ORDERS_SUCC,

@@ -2,7 +2,7 @@ import { OrderTypes } from '../action-types/OrderTypes';
 
 
 export class OrderActions {
-    static getOrders(page = 1, pageSize = 10, search = '', status = '', orderDate = '') {
+    static getOrders(page = 1, pageSize = 10, search = '', status = '', orderDate = null) {
         return {
             type: OrderTypes.GET_ORDERS_PROG,
             payload: { page, pageSize, search, status, orderDate }
