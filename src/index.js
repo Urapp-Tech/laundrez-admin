@@ -1,7 +1,6 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createBrowserHistory } from 'history';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -17,8 +16,7 @@ import { store } from './store/index';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-const hist = createBrowserHistory();
+import { hist } from './routes';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -33,3 +31,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
+export { hist };

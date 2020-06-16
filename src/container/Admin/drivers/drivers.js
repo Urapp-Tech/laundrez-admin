@@ -135,7 +135,7 @@ function Drivers({ history }) {
                             Edit
                          </UncontrolledTooltip>
 
-                        <Button
+                        {/* <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"
                             color="info"
                             id={`location-${rowIndex}`}
@@ -148,7 +148,7 @@ function Drivers({ history }) {
                             target={`location-${rowIndex}`}
                         >
                             Location
-                        </UncontrolledTooltip>
+                        </UncontrolledTooltip> */}
 
                         <Button
                             className="btn-round btn-icon btn-icon-mini btn-neutral"

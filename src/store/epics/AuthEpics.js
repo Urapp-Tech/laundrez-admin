@@ -4,6 +4,7 @@ import { switchMap, pluck, catchError, map, mergeMap } from 'rxjs/operators';
 import { AuthTypes } from '../action-types/AuthTypes';
 import { StorageService } from '../services/StorageService';
 import { toast } from 'react-toastify';
+import { AuthActions } from '../actions/AuthActions';
 const ErrorMsg = 'something went wrong !';
 export class AuthEpics {
     static signin(action$, state$, { ajaxPost }) {
@@ -59,7 +60,7 @@ export class AuthEpics {
     }
 
 
-    static getNewAccessToken(action$, state$, { ajaxPost }) {
+    static getNewAccessToken(action$, state$, { ajaxPost, history }) {
         return action$.pipe(ofType(AuthTypes.GET_NEW_ACCESS_TOKEN_PROG), mergeMap(({ payload }) => {
             return ajaxPost('/user/refreshtoken', payload.body).pipe(pluck('response'), map((obj) => {
                 StorageService.setToken(obj?.token);
@@ -68,8 +69,16 @@ export class AuthEpics {
                     type: AuthTypes.GET_NEW_ACCESS_TOKEN_SUCC,
 
                 };
-            }), catchError(err => {
-                return of({ type: AuthTypes.GET_NEW_ACCESS_TOKEN_FAIL, payload: { err, message: err?.response?.message, status: err?.status } });
+            }), catchError((err) => {
+                StorageService.clearStorage();
+                history.replace('/admin/auth/login');
+                return of(
+                    AuthActions.signout(),
+                    {
+                        type: AuthTypes.GET_NEW_ACCESS_TOKEN_FAIL,
+                        payload: { err, message: err?.response?.message, status: err?.status }
+                    }
+                );
             }));
         }));
     }

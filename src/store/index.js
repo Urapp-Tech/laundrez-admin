@@ -30,6 +30,8 @@ import {
     DriverEpics
 } from './epics';
 import { RefreshTokenService } from './services/RefreshTokenService';
+import { hist } from '../routes';
+
 
 const loggerMiddleware = createLogger();
 // Application Reducers
@@ -105,7 +107,8 @@ const epicMiddleware = createEpicMiddleware({
         ajaxPost: HttpService.post,
         ajaxPut: HttpService.put,
         ajaxDel: HttpService.delete,
-        getRefreshToken: RefreshTokenService.getRefreshToken
+        getRefreshToken: RefreshTokenService.getRefreshToken,
+        history: hist
     }
 });
 // eslint-disable-next-line no-undef

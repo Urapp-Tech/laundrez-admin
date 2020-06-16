@@ -32,15 +32,15 @@ export class ServiceEpics {
         }));
     }
 
-    static addService(action$, state$, { ajaxPost, getRefreshToken }) {
+    static addService(action$, state$, { ajaxPost, getRefreshToken, history }) {
         return action$.pipe(ofType(ServiceTypes.ADD_SERVICE_PROG), switchMap(({ payload }) => {
             return defer(() => {
                 return ajaxPost('/Service/', payload.body, null);
             }).pipe(pluck('response'), flatMap(obj => {
                 toast.success('service added successfully');
-                if (payload?.history) {
-                    payload.history.goBack();
-                }
+
+                history.goBack();
+
                 return of({
                     type: ServiceTypes.ADD_SERVICE_SUCC,
                     payload: obj
@@ -60,15 +60,15 @@ export class ServiceEpics {
 
         }));
     }
-    static editService(action$, state$, { ajaxPut, getRefreshToken }) {
+    static editService(action$, state$, { ajaxPut, getRefreshToken, history }) {
         return action$.pipe(ofType(ServiceTypes.EDIT_SERVICE_PROG), switchMap(({ payload }) => {
             return defer(() => {
                 return ajaxPut('/Service/', payload.body, null);
             }).pipe(pluck('response'), flatMap(obj => {
                 toast.success('service edited successfully');
-                if (payload?.history) {
-                    payload.history.goBack();
-                }
+
+                history.goBack();
+
                 return of({
                     type: ServiceTypes.EDIT_SERVICE_SUCC,
                     payload: obj

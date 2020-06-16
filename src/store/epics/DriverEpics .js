@@ -57,15 +57,15 @@ export class DriverEpics {
         }));
     }
 
-    static addDriver(action$, state$, { ajaxPost, getRefreshToken }) {
+    static addDriver(action$, state$, { ajaxPost, getRefreshToken, history }) {
         return action$.pipe(ofType(DriverTypes.ADD_DRIVER_PROG), switchMap(({ payload }) => {
             return defer(() => {
                 return ajaxPost('/Driver/', payload.body, null);
             }).pipe(pluck('response'), flatMap(obj => {
                 toast.success('Driver added successfully');
-                if (payload?.history) {
-                    payload.history.goBack();
-                }
+
+                history.goBack();
+
                 return of({
                     type: DriverTypes.ADD_DRIVER_SUCC,
                     payload: obj
@@ -85,15 +85,15 @@ export class DriverEpics {
 
         }));
     }
-    static editDriver(action$, state$, { ajaxPut, getRefreshToken }) {
+    static editDriver(action$, state$, { ajaxPut, getRefreshToken, history }) {
         return action$.pipe(ofType(DriverTypes.EDIT_DRIVER_PROG), switchMap(({ payload }) => {
             return defer(() => {
                 return ajaxPut('/Driver/', payload.body, null);
             }).pipe(pluck('response'), flatMap(obj => {
                 toast.success('Driver edited successfully');
-                if (payload?.history) {
-                    payload.history.goBack();
-                }
+
+                history.goBack();
+
                 return of({
                     type: DriverTypes.EDIT_DRIVER_SUCC,
                     payload: obj

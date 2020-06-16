@@ -8,6 +8,10 @@ import ServicesContainer from './container/Admin/services';
 import VouchersContainer from './container/Admin/vouchers';
 import Locations from './container/Admin/locations/locations';
 
+import { createBrowserHistory } from 'history';
+const hist = createBrowserHistory();
+export { hist };
+
 var dashRoutes = [
   {
     path: '/orders',
