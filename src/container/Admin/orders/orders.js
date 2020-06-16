@@ -160,7 +160,7 @@ function Orders() {
             csvExporter.generateCsv(csvData);
             dispatch(OrderActions.clearCSVData());
         }
-    }, [csvData]);
+    }, [csvData, dispatch]);
 
     const remote = {
         filter: false,
