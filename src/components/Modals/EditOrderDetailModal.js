@@ -4,6 +4,7 @@ import propTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { OrderActions } from '../../store/actions/OrderActions';
+import { OrderStatus } from '../../store/constants/OrderConstants';
 
 const EditOrderDetailModal = memo(({ isOpen, toggle }) => {
     const dispatch = useDispatch();
@@ -45,7 +46,8 @@ const EditOrderDetailModal = memo(({ isOpen, toggle }) => {
         setListDetail(array);
     }, [listDetail]);
 
-    const updateOrder = useCallback(() => {
+    const updateOrder = useCallback((e) => {
+        e.preventDefault();
         let {
             id,
             orderDate,
@@ -98,12 +100,12 @@ const EditOrderDetailModal = memo(({ isOpen, toggle }) => {
 
     const calculateAmount = useCallback(() => {
         let amount = listDetail.reduce(calculateTotal, 0);
-        amount = Math.abs(amount).toFixed(2);
+        amount = Number(amount).toFixed(2);
         setTotalAmount(amount);
     }, [listDetail, calculateTotal,]);
 
     const calculateHST = useCallback((totalAmount) => {
-        let hst = Math.abs(totalAmount * (order?.taxPercentage / 100)).toFixed(2);
+        let hst = Number(totalAmount * (order?.taxPercentage / 100)).toFixed(2);
         setTotalHST(hst);
         return hst;
     }, [order]);
@@ -115,7 +117,7 @@ const EditOrderDetailModal = memo(({ isOpen, toggle }) => {
         }
         let hst = calculateHST(_totalAmount);
         let grandTotal = Number(_totalAmount) + Number(hst);
-        grandTotal = Math.abs(grandTotal).toFixed(2);
+        grandTotal = Number(grandTotal).toFixed(2);
         setGrandTotal(grandTotal);
     }, [totalAmount, discountAmount, calculateDiscount, calculateHST]);
 
@@ -128,174 +130,176 @@ const EditOrderDetailModal = memo(({ isOpen, toggle }) => {
     return (
         <Modal isOpen={isOpen} centered={true} toggle={toggle} size={'lg'}>
             <ModalHeader toggle={toggle} close={closeBtn}>Order Detail</ModalHeader>
-            <ModalBody>
-                <Container>
-                    <Row className="mb-4">
-                        <Col md={6}>
-                            <Row className="mb-4">
-                                <Col md={12}>
-                                    <div className="d-flex flex-column">
-                                        <span className="font-weight-bold">Customer Details:</span>
-                                        <span>{order?.firstName} {order?.lastName}</span>
-                                        <span>{order?.email}</span>
-                                        <span>{order?.phoneNo}</span>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row className="mb-4">
-                                <Col md={12}>
-                                    <div className="d-flex flex-column">
-                                        <span className="font-weight-bold">Status:</span>
-                                        <span>{order?.status}</span>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row className="mb-4">
-                                <Col md={12}>
-                                    <div className="d-flex flex-column">
-                                        <span className="font-weight-bold">Address:</span>
-                                        <span>{order?.address?.mainAddress},{order?.address?.postalCode}</span>
-                                        <span>{order?.address?.phone}</span>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col md={6}>
-                            <Row className="mb-4">
-                                <Col md={12}>
-                                    <div className="d-flex flex-column align-items-end">
-                                        <span className="font-weight-bold">Order Ref:</span>
-                                        <span>{order?.orderNumber}</span>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row className="mb-4">
-                                <Col md={12}>
-                                    <div className="d-flex flex-column align-items-end">
-                                        <span className="font-weight-bold">Order Date:</span>
-                                        <span>{moment(new Date(order?.orderDate)).format('DD-MM-YYYY')}</span>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row className="mb-4">
-                                <Col md={12}>
-                                    <div className="d-flex flex-column align-items-end">
-                                        <span className="font-weight-bold">Pickup:</span>
-                                        <span>{order?.pickupTime} {moment(new Date(order?.pickupDate)).format('DD-MM-YYYY')}</span>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row className="mb-4">
-                                <Col md={12}>
-                                    <div className="d-flex flex-column align-items-end">
-                                        <span className="font-weight-bold">Drop Off:</span>
-                                        <span>{order?.dropoffTime} {moment(new Date(order?.dropoffDate)).format('DD-MM-YYYY')}</span>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Card>
-                            <CardHeader className="d-flex flex-column bg-light">
-                                <h6>Detail</h6>
-                            </CardHeader>
-                            <CardBody>
-                                <Row className="d-flex font-weight-bold border-order-modal-light">
-                                    <Col md={3}>
-                                        Service
-                                    </Col>
-                                    <Col md={3}>
-                                        QTY
-                                    </Col>
-                                    <Col md={3}>
-                                        Unit Price
-                                    </Col>
-                                    <Col md={3} className="text-right">
-                                        Totals
+            <form onSubmit={updateOrder} >
+                <ModalBody>
+                    <Container>
+                        <Row className="mb-4">
+                            <Col md={6}>
+                                <Row className="mb-4">
+                                    <Col md={12}>
+                                        <div className="d-flex flex-column">
+                                            <span className="font-weight-bold">Customer Details:</span>
+                                            <span>{order?.firstName} {order?.lastName}</span>
+                                            <span>{order?.email}</span>
+                                            <span>{order?.phoneNo}</span>
+                                        </div>
                                     </Col>
                                 </Row>
-                                {listDetail?.map((detail, index) => {
-
-                                    return (<Row key={index} className="d-flex py-2 border-bottom border-dark">
+                                <Row className="mb-4">
+                                    <Col md={12}>
+                                        <div className="d-flex flex-column">
+                                            <span className="font-weight-bold">Status:</span>
+                                            <span>{order?.status}</span>
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <Row className="mb-4">
+                                    <Col md={12}>
+                                        <div className="d-flex flex-column">
+                                            <span className="font-weight-bold">Address:</span>
+                                            <span>{order?.address?.mainAddress},{order?.address?.postalCode}</span>
+                                            <span>{order?.address?.phone}</span>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            <Col md={6}>
+                                <Row className="mb-4">
+                                    <Col md={12}>
+                                        <div className="d-flex flex-column align-items-end">
+                                            <span className="font-weight-bold">Order Ref:</span>
+                                            <span>{order?.orderNumber}</span>
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <Row className="mb-4">
+                                    <Col md={12}>
+                                        <div className="d-flex flex-column align-items-end">
+                                            <span className="font-weight-bold">Order Date:</span>
+                                            <span>{moment(new Date(order?.orderDate)).format('DD-MM-YYYY')}</span>
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <Row className="mb-4">
+                                    <Col md={12}>
+                                        <div className="d-flex flex-column align-items-end">
+                                            <span className="font-weight-bold">Pickup:</span>
+                                            <span>{order?.pickupTime} {moment(new Date(order?.pickupDate)).format('DD-MM-YYYY')}</span>
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <Row className="mb-4">
+                                    <Col md={12}>
+                                        <div className="d-flex flex-column align-items-end">
+                                            <span className="font-weight-bold">Drop Off:</span>
+                                            <span>{order?.dropoffTime} {moment(new Date(order?.dropoffDate)).format('DD-MM-YYYY')}</span>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Card>
+                                <CardHeader className="d-flex flex-column bg-light">
+                                    <h6>Detail</h6>
+                                </CardHeader>
+                                <CardBody>
+                                    <Row className="d-flex font-weight-bold border-order-modal-light">
                                         <Col md={3}>
-                                            {detail?.service?.title}
-                                        </Col>
+                                            Service
+                                    </Col>
                                         <Col md={3}>
-                                            <Input value={detail?.quantity} type="number" onChange={(e) => updateQty(index, e.target.value)} />
-                                        </Col>
+                                            QTY
+                                    </Col>
                                         <Col md={3}>
-                                            <Input value={detail?.unitPrice} type="number" onChange={(e) => updateUnitPrice(index, e.target.value)} />
-                                        </Col>
+                                            Unit Price
+                                    </Col>
                                         <Col md={3} className="text-right">
-                                            ${detail?.quantity * detail?.unitPrice}
+                                            Totals
+                                    </Col>
+                                    </Row>
+                                    {listDetail?.map((detail, index) => {
+
+                                        return (<Row key={index} className="d-flex py-2 border-bottom border-dark">
+                                            <Col md={3}>
+                                                {detail?.service?.title}
+                                            </Col>
+                                            <Col md={3}>
+                                                <Input value={detail?.quantity} min={1} type="number" onChange={(e) => updateQty(index, e.target.value)} />
+                                            </Col>
+                                            <Col md={3}>
+                                                <Input value={detail?.unitPrice} min={1} type="number" onChange={(e) => updateUnitPrice(index, e.target.value)} />
+                                            </Col>
+                                            <Col md={3} className="text-right">
+                                                ${detail?.quantity * detail?.unitPrice}
+                                            </Col>
+                                        </Row>);
+                                    })
+                                    }
+                                    <Row className="d-flex justify-content-end py-2">
+                                        <Col md={2} className="font-weight-bold">
+                                            Total:
+                                    </Col>
+                                        <Col md={2} className="text-right">
+                                            ${totalAmount}
                                         </Col>
-                                    </Row>);
-                                })
-                                }
-                                <Row className="d-flex justify-content-end py-2">
-                                    <Col md={2} className="font-weight-bold">
-                                        Total:
+                                    </Row>
+                                    <Row className="d-flex justify-content-end py-2">
+                                        <Col md={2} className="font-weight-bold">
+                                            Discount:
                                     </Col>
-                                    <Col md={2} className="text-right">
-                                        ${totalAmount}
+                                        <Col md={2} className="text-right">
+                                            ${discountAmount}
+                                        </Col>
+                                    </Row>
+                                    <Row className="d-flex justify-content-end py-2">
+                                        <Col md={2} className="font-weight-bold">
+                                            HST {order?.taxPercentage}%:
                                     </Col>
-                                </Row>
-                                <Row className="d-flex justify-content-end py-2">
-                                    <Col md={2} className="font-weight-bold">
-                                        Discount:
+                                        <Col md={2} className="text-right">
+                                            ${totalHST}
+                                        </Col>
+                                    </Row>
+                                    <Row className="d-flex justify-content-end py-2">
+                                        <Col md={2} className="font-weight-bold">
+                                            Grand Total:
                                     </Col>
-                                    <Col md={2} className="text-right">
-                                        ${discountAmount}
+                                        <Col md={2} className="text-right">
+                                            ${grandTotal}
+                                        </Col>
+                                    </Row>
+                                    <Row className="d-flex my-4">
+                                        <Col md={2}>
+                                            Discount
                                     </Col>
-                                </Row>
-                                <Row className="d-flex justify-content-end py-2">
-                                    <Col md={2} className="font-weight-bold">
-                                        HST {order?.taxPercentage}%:
-                                    </Col>
-                                    <Col md={2} className="text-right">
-                                        ${totalHST}
-                                    </Col>
-                                </Row>
-                                <Row className="d-flex justify-content-end py-2">
-                                    <Col md={2} className="font-weight-bold">
-                                        Grand Total:
-                                    </Col>
-                                    <Col md={2} className="text-right">
-                                        ${grandTotal}
-                                    </Col>
-                                </Row>
-                                <Row className="d-flex my-4">
-                                    <Col md={2}>
-                                        Discount
-                                    </Col>
-                                    <Col md={2}>
-                                        <Input value={discountAmount} type="float" onChange={(e) => setDiscountAmount(e.target.value)} />
-                                    </Col>
-                                    <Col md={2}>
-                                        <Input type="select" value={''} onChange={() =>{}} name="select" id="exampleSelect">
+                                        <Col md={2}>
+                                            <Input value={discountAmount} type="float" onChange={(e) => setDiscountAmount(e.target.value)} />
+                                        </Col>
+                                        {/* <Col md={2}>
+                                        <Input type="select" id={'discount-unit'}   name="select" >
                                            
                                             <option value={'Tomorrow'} >%</option>
                                             <option value={'This Week'} >$</option>
                                         </Input>
-                                    </Col>
-                                </Row>
-                            </CardBody>
-                        </Card>
-                    </Row>
-                </Container>
-            </ModalBody>
-            <ModalFooter>
-                <Button color="primary" className="btn-round" onClick={updateOrder}>
-                    {
-                        isProgress ?
-                            <div className="spinner" ></div>
-                            :
-                            <span> Update </span>
-                    }
-                </Button>
-                <Button color="secondary" className="btn-round" onClick={toggle}>Cancel</Button>
-            </ModalFooter>
+                                    </Col> */}
+                                    </Row>
+                                </CardBody>
+                            </Card>
+                        </Row>
+                    </Container>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" className="btn-round" type={'submit'} disabled={order?.status === OrderStatus.Cancelled} >
+                        {
+                            isProgress ?
+                                <div className="spinner" ></div>
+                                :
+                                <span> Update </span>
+                        }
+                    </Button>
+                    <Button color="secondary" className="btn-round" onClick={toggle}>Cancel</Button>
+                </ModalFooter>
+            </form>
         </Modal>
     );
 });

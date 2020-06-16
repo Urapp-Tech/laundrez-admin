@@ -147,7 +147,7 @@
   .form-control + .input-group-append .input-group-text {
     // background-color: $opacity-gray-3;
     // border: medium none;
-    border:1px solid $opacity-gray-5;
+    border: 1px solid $opacity-gray-5;
     &:focus,
     &:active,
     &:active {
@@ -398,4 +398,7 @@ select {
   -webkit-appearance: none;
   appearance: none;
   padding: 4px 20px;
+}
+select#discount-unit {
+  background-position: right 20px top 10px;
 }

@@ -47,6 +47,11 @@ export class OrderActions {
             payload: { status }
         };
     }
+    static clearCSVData() {
+        return {
+            type: OrderTypes.CLEAR_CSV_DATA
+        };
+    }
     static toggleAddOrderModal() {
         return {
             type: OrderTypes.TOGGLE_ADD_ORDER_MODAL

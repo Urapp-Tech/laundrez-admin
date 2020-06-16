@@ -66,6 +66,9 @@ export function orderReducer(state = INITIAL_STATE, action) {
         case OrderTypes.GET_CSV_DATA_FAIL:
             return { ...state, isProgressCSV: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
+        case OrderTypes.CLEAR_CSV_DATA:
+            return { ...state, csvData: undefined };
+
 
         case OrderTypes.TOGGLE_STATUS_CONFIRMATION_MODAL:
             return { ...state, openStatusModal: !state.openStatusModal, order: state.orders[action.payload.index] };

@@ -158,6 +158,7 @@ function Orders() {
             const csvExporter = new ExportToCsv(options);
 
             csvExporter.generateCsv(csvData);
+            dispatch(OrderActions.clearCSVData());
         }
     }, [csvData]);
 
