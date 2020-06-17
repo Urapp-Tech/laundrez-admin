@@ -273,7 +273,7 @@ const EditOrderDetailModal = memo(({ isOpen, toggle }) => {
                                             Discount
                                     </Col>
                                         <Col md={2}>
-                                            <Input value={discountAmount} type="float" onChange={(e) => setDiscountAmount(e.target.value)} />
+                                            <Input value={discountAmount} min={0} type="number" onChange={(e) => setDiscountAmount(e.target.value)} />
                                         </Col>
                                         {/* <Col md={2}>
                                         <Input type="select" id={'discount-unit'}   name="select" >
