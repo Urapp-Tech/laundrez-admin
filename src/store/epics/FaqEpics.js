@@ -11,7 +11,7 @@ export class FaqEpics {
     static getFaqs(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(FaqTypes.GET_FAQS_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxGet(`/FAQ/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[question]=${payload.search}`);
+                return ajaxGet(`/FAQ/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[question%2Banswer]=${payload.search}`);
             })
                 .pipe(pluck('response'), map(obj => {
                     return {

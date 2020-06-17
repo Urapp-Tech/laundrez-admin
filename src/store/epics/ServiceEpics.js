@@ -11,7 +11,7 @@ export class ServiceEpics {
     static getServices(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(ServiceTypes.GET_SERVICES_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxGet(`/Service/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[title]=${payload.search}`);
+                return ajaxGet(`/Service/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[title%2Bdescription]=${payload.search}`);
             }).pipe(pluck('response'), map(obj => {
                 return {
                     type: ServiceTypes.GET_SERVICES_SUCC,

@@ -92,11 +92,14 @@ function AppFaq() {
         },
         {
             dataField: 'question',
-            text: 'Title'
+            text: 'Title',
+            classes: 'w-25'
         },
         {
             dataField: 'answer',
-            text: 'Description'
+            text: 'Description',
+            classes: 'w-50'
+
         },
         {
             dataField: 'action',

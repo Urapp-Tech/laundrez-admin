@@ -11,7 +11,7 @@ export class OrderEpics {
     static getOrders(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(OrderTypes.GET_ORDERS_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                let url = `/Order/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[status]=${payload.status}&filters[orderNumber]=${payload.search}&sort=-orderDate`;
+                let url = `/Order/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[status]=${payload.status}&filters[orderNumber%2BdeliveryAddress%2BfirstName%2BlastName%2Bemail]=${payload.search}&sort=-orderDate`;
                 if (payload.orderDate) {
                     let dateFilter = `&filters[>%3DpickupDate]=${payload.orderDate['startDate']}&filters[<%3DpickupDate]=${payload.orderDate['endDate']}`;
                     url = url.concat(dateFilter);

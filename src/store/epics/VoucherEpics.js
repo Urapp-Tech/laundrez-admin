@@ -11,7 +11,7 @@ export class VoucherEpics {
     static getVouchers(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(VoucherTypes.GET_VOUCHERS_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxGet(`/Coupon/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[code]=${payload.search}`);
+                return ajaxGet(`/Coupon/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[code%2BcouponType%2BofferType]=${payload.search}`);
             }).pipe(pluck('response'), map(obj => {
                 return {
                     type: VoucherTypes.GET_VOUCHERS_SUCC,

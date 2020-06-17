@@ -38,7 +38,7 @@ export class AuthEpics {
     static getAllUsers(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(AuthTypes.GET_ALL_USERS_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxGet(`/User/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[Email]=${payload.search}`);
+                return ajaxGet(`/User/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[Email%2BfirstName%2BlastName%2BphoneNo%2BpostalCode]=${payload.search}`);
             }).pipe(pluck('response'), map(obj => {
                 return {
                     type: AuthTypes.GET_ALL_USERS_SUCC,

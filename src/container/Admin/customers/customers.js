@@ -71,6 +71,14 @@ function Customers() {
 
     const columns = [
         {
+            dataField: 'firstName',
+            text: 'First Name'
+        },
+        {
+            dataField: 'lastName',
+            text: 'Last Name'
+        },
+        {
             dataField: 'email',
             text: 'Email'
         },
