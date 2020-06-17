@@ -174,6 +174,21 @@ function Orders() {
             text: '#'
         },
         {
+            dataField: '',
+            text: 'Customer',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell, row) => {
+                return (
+                    <div className="d-flex flex-column" >
+                        <span>{row?.firstName} {row?.lastName} </span>
+                        <span>{row?.email}</span>
+                        <span>{row?.deliveryAddress}</span>
+                    </div>
+                );
+            },
+            classes: 'w-25'
+        },
+        {
             dataField: 'pickupTime',
             text: 'Pickup Time',
             // eslint-disable-next-line react/display-name

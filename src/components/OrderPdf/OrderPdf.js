@@ -54,6 +54,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         border: 2,
         borderColor: '#EB8725'
+    },
+    driverInstruction: {
+        flex: 1,
+        marginTop: 25
     }
 });
 
@@ -98,6 +102,10 @@ function PdfDocument({ order }) {
                         </View>
                         <Text style={[styles.TableEntry, { flex: 2 }]}> {order?.pickupTime} {moment(new Date(order?.pickupDate)).format('DD-MM-YYYY')} </Text>
                         <Text style={[styles.TableEntry, { flex: 2, borderRight: 0 }]}> {order?.dropoffTime} {moment(new Date(order?.dropoffDate)).format('DD-MM-YYYY')} </Text>
+                    </View>
+                    <View style={styles.driverInstruction} >
+                        <Text>Driver Instruction:</Text>
+                        <Text>{order?.description}</Text>
                     </View>
                 </View>
             </Page>

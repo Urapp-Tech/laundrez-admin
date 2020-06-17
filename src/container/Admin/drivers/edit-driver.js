@@ -182,7 +182,7 @@ function EditDriver({ history }) {
                                             <Col sm="12">
                                                 <FormGroup>
                                                     <label>
-                                                        Name
+                                                        <span className="text-danger" >* </span>Name
                           </label>
                                                     <Input
                                                         autoFocus
@@ -201,7 +201,7 @@ function EditDriver({ history }) {
                                             <Col sm="12">
                                                 <FormGroup>
                                                     <label>
-                                                        Email address
+                                                        <span className="text-danger" >* </span>Email address
                           </label>
                                                     <Input
                                                         placeholder="Email"
@@ -217,7 +217,7 @@ function EditDriver({ history }) {
                                         <Row className="justify-content-center" >
                                             <Col sm="12">
                                                 <FormGroup>
-                                                    <label>Contact Number</label>
+                                                    <label><span className="text-danger" >* </span>Contact Number</label>
                                                     <Input
                                                         placeholder="Contact Number"
                                                         type="tel"
@@ -233,7 +233,7 @@ function EditDriver({ history }) {
                                         <Row className="justify-content-center" >
                                             <Col sm="12">
                                                 <FormGroup>
-                                                    <label>License Number <i>Driver will Use This Number To Login At App</i> </label>
+                                                    <label><span className="text-danger" >* </span>License Number <i>Driver will Use This Number To Login At App</i> </label>
                                                     <Input
                                                         placeholder="License Number"
                                                         type="text"
@@ -249,7 +249,7 @@ function EditDriver({ history }) {
                                         <Row className="justify-content-center" >
                                             <Col sm="6">
                                                 <FormGroup>
-                                                    <label>Latitude </label>
+                                                    <label><span className="text-danger" >* </span>Latitude </label>
                                                     <Input
                                                         placeholder="Latitude"
                                                         type="text"
@@ -261,7 +261,7 @@ function EditDriver({ history }) {
                                             </Col>
                                             <Col sm="6">
                                                 <FormGroup>
-                                                    <label>Longitude</label>
+                                                    <label><span className="text-danger" >* </span>Longitude</label>
                                                     <Input
                                                         placeholder="Longitude"
                                                         type="text"
@@ -298,6 +298,11 @@ function EditDriver({ history }) {
                                                 <img src={`${API_URL}/${formValues.image}`} alt={'img'} className="img-thumbnail table-image" />
                                             </Col>}
                                         </Row>}
+                                        <Row className="" >
+                                            <Col sm="12" >
+                                                <span className="text-danger" >*</span><span> Required fields</span>
+                                            </Col>
+                                        </Row>
                                         <Col sm="12" className="pl-0" >
                                             <Button type={'submit'} disabled={isProgress} className="btn-round btn-primary btn-add-modal" >
                                                 {
