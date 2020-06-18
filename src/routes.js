@@ -1,7 +1,7 @@
 
 import Orders from './container/Admin/orders/orders';
 import Categories from './container/Admin/categories/categories';
-import Customers from './container/Admin/customers/customers';
+import CustomersContainer from './container/Admin/customers';
 import AppFaq from './container/Admin/app-faq/app-faq';
 import DriverContainer from './container/Admin/drivers';
 import ServicesContainer from './container/Admin/services';
@@ -52,7 +52,7 @@ var dashRoutes = [
     path: '/customers',
     name: 'Customers',
     icon: 'fas fa-users',
-    component: Customers,
+    component: CustomersContainer,
     layout: '/admin'
   },
   {

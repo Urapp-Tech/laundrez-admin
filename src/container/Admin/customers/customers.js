@@ -14,11 +14,11 @@ import {
     InputGroupAddon,
     InputGroupText,
     Input,
-    Badge
+    Badge,
+    Button
 } from 'reactstrap';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 // core components
-import PanelHeader from '../../../components/PanelHeader/PanelHeader';
 
 
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AuthActions } from '../../../store/actions/AuthActions';
 
 
-function Customers() {
+function Customers({ history }) {
 
     const [search, setSearch] = useState('');
     const [isSearch, setIsSearch] = useState(false);
@@ -90,85 +90,99 @@ function Customers() {
             dataField: 'postalCode',
             text: 'Postal Code'
         },
+        {
+            dataField: '',
+            text: 'Action',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell, row) => {
+                return (
+                    <Button
+                        className="btn-primary btn-sm"
+                        onClick={() => history.push(`/admin/customers/createorder/${row?.id}`)}
+                    >
+                        Create Order
+                    </Button >
+                );
+            }
+        },
 
     ];
     return (
         <>
-            <PanelHeader size="sm" />
-            <div className="content">
-                <Row>
-                    <Col xs={12}>
-                        <Card>
-                            <CardHeader className="d-flex justify-content-between" >
-                                <CardTitle tag="h4">Customers
+
+            <Row>
+                <Col xs={12}>
+                    <Card>
+                        <CardHeader className="d-flex justify-content-between" >
+                            <CardTitle tag="h4">Customers
                                 </CardTitle>
-                                <form onSubmit={onSearch} className="col-md-8 align-self-center " >
-                                    <InputGroup className="no-border ">
-                                        <Input
-                                            value={search}
-                                            onChange={e => setSearch(e.target.value)}
-                                            className=""
-                                            placeholder="Search..." />
-                                        <InputGroupAddon addonType="append" onClick={onSearch}   >
-                                            <InputGroupText  >
-                                                <i className="now-ui-icons ui-1_zoom-bold  " />
-                                            </InputGroupText>
-                                        </InputGroupAddon>
-                                    </InputGroup>
-                                </form>
-                            </CardHeader>
-                            <CardBody>
-                                {isProgress ?
-                                    <div className='spinner-lg' ></div>
-                                    :
-                                    <>
-                                        <Badge color="primary">{paging.totalCount} Customers</Badge>
-                                        <ToolkitProvider
-                                            keyField={'id'}
-                                            data={users}
-                                            columns={columns}
-                                            bootstrap4
+                            <form onSubmit={onSearch} className="col-md-8 align-self-center " >
+                                <InputGroup className="no-border ">
+                                    <Input
+                                        value={search}
+                                        onChange={e => setSearch(e.target.value)}
+                                        className=""
+                                        placeholder="Search..." />
+                                    <InputGroupAddon addonType="append" onClick={onSearch}   >
+                                        <InputGroupText  >
+                                            <i className="now-ui-icons ui-1_zoom-bold  " />
+                                        </InputGroupText>
+                                    </InputGroupAddon>
+                                </InputGroup>
+                            </form>
+                        </CardHeader>
+                        <CardBody>
+                            {isProgress ?
+                                <div className='spinner-lg' ></div>
+                                :
+                                <>
+                                    <Badge color="primary">{paging.totalCount} Customers</Badge>
+                                    <ToolkitProvider
+                                        keyField={'id'}
+                                        data={users}
+                                        columns={columns}
+                                        bootstrap4
 
-                                        >{
-                                                props => (
-                                                    <div>
-                                                        <BootstrapTable
-                                                            remote={remote}
-                                                            wrapperClasses={'table-responsive'}
-                                                            classes=""
-                                                            headerWrapperClasses="text-primary text-left"
-                                                            bordered={false}
-                                                            headerClasses=""
-                                                            bodyClasses="text-left"
-                                                            {...props.baseProps}
-                                                            onTableChange={onTableChange}
-                                                            noDataIndication={() => <div className="text-center" >{'No results found'}</div>}
-                                                            pagination={paginationFactory({
-                                                                page: paging.pageNumber,
-                                                                sizePerPage: 10,
-                                                                totalSize: paging.totalCount,
-                                                                hideSizePerPage: true,
+                                    >{
+                                            props => (
+                                                <div>
+                                                    <BootstrapTable
+                                                        remote={remote}
+                                                        wrapperClasses={'table-responsive'}
+                                                        classes=""
+                                                        headerWrapperClasses="text-primary text-left"
+                                                        bordered={false}
+                                                        headerClasses=""
+                                                        bodyClasses="text-left"
+                                                        {...props.baseProps}
+                                                        onTableChange={onTableChange}
+                                                        noDataIndication={() => <div className="text-center" >{'No results found'}</div>}
+                                                        pagination={paginationFactory({
+                                                            page: paging.pageNumber,
+                                                            sizePerPage: 10,
+                                                            totalSize: paging.totalCount,
+                                                            hideSizePerPage: true,
 
-                                                            })}
-                                                        />
-                                                    </div>
-                                                )
+                                                        })}
+                                                    />
+                                                </div>
+                                            )
 
-                                            }
-                                        </ToolkitProvider>
-                                    </>
-                                }
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-            </div>
+                                        }
+                                    </ToolkitProvider>
+                                </>
+                            }
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
         </>
     );
 }
 
 Customers.propTypes = {
-    baseProps: PropTypes.object
+    baseProps: PropTypes.object,
+    history: PropTypes.object
 };
 
 export default Customers;

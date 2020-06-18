@@ -36,10 +36,9 @@ import { OrderStatusArray } from '../../../store/constants/OrderConstants';
 import moment from 'moment';
 import StatusChangeConfModal from '../../../components/Modals/StatusChangeConfModal';
 
-function Orders() {
+function Orders({ history }) {
 
     const [openAssignModal, setOpenAssignModal] = useState(false);
-    // const [openEditOrderModal, setOpenEditOrderModal] = useState(false);
     const [search, setSearch] = useState('');
     const [isSearch, setIsSearch] = useState(false);
     const [statusObj, setStatusObj] = useState({ newStatus: '', prevStatus: '' });
@@ -301,7 +300,14 @@ function Orders() {
                             <CardHeader className="" >
                                 <Row>
                                     <Col lg="2" >
-                                        <CardTitle tag="h4">Orders</CardTitle>
+                                        <CardTitle tag="h4">Orders
+                                        <Button
+                                                className="btn-primary btn-add ml-2"
+                                                onClick={() => history.push('/admin/customers')}
+                                            >
+                                                <i className="fas fa-plus"></i>
+                                            </Button>
+                                        </CardTitle>
                                     </Col>
                                     <Col lg="2" >
                                         <FormGroup className="col-md-12" >
@@ -372,7 +378,6 @@ function Orders() {
                                         >{
                                                 props => (
                                                     <div>
-                                                        {/* <SearchBar className={"float-right col-md-4 p-3"} {...props.searchProps} /> */}
                                                         <BootstrapTable
                                                             remote={remote}
                                                             wrapperClasses={'table-responsive'}
@@ -419,7 +424,8 @@ function Orders() {
     );
 }
 Orders.propTypes = {
-    baseProps: PropTypes.object
+    baseProps: PropTypes.object,
+    history: PropTypes.func
 };
 
 export default Orders;
