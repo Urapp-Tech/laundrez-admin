@@ -58,6 +58,7 @@ export class OrderEpics {
                         return getRefreshToken(action$, state$, source);
                     }
                     else {
+                        toast.error(err?.message || err?.Message || ErrorMsg);
                         window.scrollTo(0, 0);
                         return of(
                             { type: OrderTypes.POST_ORDER_FAIL, payload: { err, message: err?.response?.message, status: err?.status } },
