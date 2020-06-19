@@ -17,7 +17,12 @@ let INITIAL_STATE = {
     openEditModal: false,
     openDelModal: false,
     openPdfModal: false,
-    paging: {}
+    paging: {},
+    addresses: [],
+    config: {
+        system: {},
+        timeSlots: []
+    },
 };
 
 export function orderReducer(state = INITIAL_STATE, action) {
@@ -68,6 +73,23 @@ export function orderReducer(state = INITIAL_STATE, action) {
 
         case OrderTypes.CLEAR_CSV_DATA:
             return { ...state, csvData: undefined };
+
+
+        case OrderTypes.GET_LOV_PROG:
+            return { ...state, isProgress: true };
+        case OrderTypes.GET_LOV_SUCC:
+            return { ...state, isProgress: false, config: action.payload.config };
+        case OrderTypes.GET_LOV_FAIL:
+            return { ...state, isProgress: false, isError: true, errorMsg: action.payload.message, errorStatus: action.payload.status };
+
+        case OrderTypes.GET_ADDRESSES_PROG:
+            return { ...state };
+
+        case OrderTypes.GET_ADDRESSES_SUCC:
+            return { ...state, addresses: action.payload.addresses };
+
+        case OrderTypes.GET_ADDRESSES_FAIL:
+            return { ...state, isError: true, errorMsg: action.payload.message, errorStatus: action.payload.status };
 
 
         case OrderTypes.TOGGLE_STATUS_CONFIRMATION_MODAL:

@@ -16,6 +16,21 @@ export class OrderActions {
         };
     }
 
+    static getLov() {
+        return {
+            type: OrderTypes.GET_LOV_PROG
+        };
+    }
+
+    static getAddresses(userId) {
+        return {
+            type: OrderTypes.GET_ADDRESSES_PROG,
+            payload: { userId }
+
+        };
+    }
+
+
 
     static addOrder(body) {
         return {

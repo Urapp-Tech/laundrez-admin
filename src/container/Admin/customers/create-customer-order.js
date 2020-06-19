@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     Card,
     CardBody,
@@ -16,7 +16,186 @@ import {
 import Pin from '../../../assets/img/pin.svg';
 import Plus from '../../../assets/img/plus.svg';
 import Minus from '../../../assets/img/minus.svg';
+import ReactDatePicker from 'react-datepicker';
+import moment from 'moment';
+import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { OrderActions } from '../../../store/actions/OrderActions';
+import { CategoryActions } from '../../../store/actions/CategoryActions';
+import { ServiceActions } from '../../../store/actions/ServiceActions';
 export default function CreateCustomerOrder() {
+
+    const dispatch = useDispatch();
+    const { id } = useParams();
+    const [formValues, setFormValues] = useState({
+        pickupDate: '',
+        pickupTime: '',
+        dropoffDate: '',
+        dropoffTime: '',
+        driverInstruction: ''
+    });
+    const [categoryId, setCategoryId] = useState(0);
+    const [selectedService, setSelectedService] = useState({ id: 0, index: -1 });
+    const [notValid, setNotValid] = useState({ error: false, type: '', message: '' });
+    const [pickupTime, setPickupTime] = useState([]);
+    const [dropoffTime, setDropoffTime] = useState([]);
+    const [selectedAddress, setSelectedAddress] = useState(undefined);
+    const [items, setItems] = useState([]);
+    const [totalAmount, setTotalAmount] = useState(0);
+    const [totalHST, setTotalHST] = useState(0);
+    const [grandTotal, setGrandTotal] = useState(0);
+
+
+    const addresses = useSelector(store => store?.order?.addresses);
+    const timeSlots = useSelector(store => store?.order?.config?.timeSlots);
+    const dropOfThreshold = useSelector(store => store?.order?.config?.system.DropOfThreshold);
+    const categories = useSelector(store => store?.category?.categories);
+    const services = useSelector(store => store?.service?.servicesByCategory);
+    const HSTPercentage = useSelector(store => store?.order?.config?.system?.HSTPercentage);
+
+    useEffect(() => {
+        dispatch(OrderActions.getAddresses(id));
+        dispatch(OrderActions.getLov());
+        dispatch(CategoryActions.getCategories(1, 1000));
+    }, [id, dispatch]);
+
+    const isSunday = date => {
+        const day = new Date(date).getDay();
+        return day !== 0;
+    };
+
+    const availableDropOffTime = useCallback((selectedPickupTimeIndex) => {
+        let _dropoffTime = [...timeSlots];
+        _dropoffTime = _dropoffTime.slice(selectedPickupTimeIndex - 1);
+        setDropoffTime(_dropoffTime);
+
+    }, [timeSlots]);
+
+    useEffect(() => {
+        if (timeSlots.length) {
+            setPickupTime(timeSlots);
+            setDropoffTime(timeSlots);
+        }
+    }, [timeSlots]);
+
+    const getPrimaryAddressLatLng = useCallback(() => {
+        if (addresses.length) {
+            let selectedAddress = addresses.find((v) => v.isPrimary);
+            setSelectedAddress(selectedAddress);
+        }
+    }, [addresses]);
+
+    const addItem = useCallback(() => {
+        if (notValid.error) {
+            setNotValid({ error: false, type: '', message: '' });
+        }
+        if (Number(categoryId) === 0) {
+            setNotValid({ error: true, type: 'categoryId', message: 'Please select category' });
+            return;
+        }
+        if (Number(selectedService?.id) === 0) {
+            setNotValid({ error: true, type: 'serviceId', message: 'Please select service' });
+            return;
+        }
+        let item = services[selectedService?.index];
+        let _items = [...items];
+        let obj = {
+            serviceId: item.id,
+            minQty: item.minQty,
+            quantity: item.minQty,
+            unitPrice: item.price,
+            amount: item.price * item.minQty,
+            title: item?.title
+        };
+        _items.push(obj);
+        setCategoryId(0);
+        setSelectedService({ id: 0, index: -1 });
+        setItems(_items);
+    }, [items, services, selectedService, notValid, categoryId]);
+
+    useEffect(() => {
+        getPrimaryAddressLatLng();
+    }, [addresses, getPrimaryAddressLatLng]);
+
+    useEffect(() => {
+        if (categoryId) {
+            dispatch(ServiceActions.getServicesByCategory(categoryId));
+        }
+    }, [categoryId, dispatch]);
+
+    const incrementQty = useCallback((index) => {
+        let _items = [...items];
+        let _item = _items[index];
+        _item.quantity++;
+        _item.amount = _item.quantity * _item.unitPrice;
+        _items[index] = _item;
+        setItems(_items);
+    }, [items]);
+
+    const decrementQty = useCallback((index) => {
+        if (items[index].quantity > items[index].minQty) {
+            let _items = [...items];
+            let _item = _items[index];
+            _item.quantity--;
+            _item.amount = _item.quantity * _item.unitPrice;
+            _items[index] = _item;
+            setItems(_items);
+        }
+
+    }, [items]);
+
+    const removeFromBasket = useCallback((index) => {
+        let _items = [...items];
+        _items.splice(index, 1);
+        setItems(_items);
+    }, [items]);
+
+    const calculateTotal = useCallback((accumulator, item) => {
+        let price = item.unitPrice;
+        let qty = item.quantity;
+        let amount = price * qty;
+        return accumulator + amount;
+    }, []);
+
+
+    const calculateAmount = useCallback(() => {
+        let amount = items.reduce(calculateTotal, 0);
+        amount = Number(amount).toFixed(2);
+        setTotalAmount(amount);
+    }, [items, calculateTotal,]);
+
+    const calculateHST = useCallback((totalAmount) => {
+        let hst = Number(totalAmount * (HSTPercentage / 100)).toFixed(2);
+        setTotalHST(hst);
+        return hst;
+    }, [HSTPercentage]);
+
+    const calculateGrandTotal = useCallback(() => {
+        let _totalAmount = Number(totalAmount);
+        let hst = calculateHST(_totalAmount);
+        let grandTotal = Number(_totalAmount) + Number(hst);
+        grandTotal = Number(grandTotal).toFixed(2);
+        setGrandTotal(grandTotal);
+    }, [totalAmount, calculateHST]);
+
+    useEffect(() => {
+        if (items.length) {
+
+            calculateAmount();
+            calculateHST();
+            calculateGrandTotal();
+        }
+    }, [items, calculateAmount, calculateGrandTotal, calculateHST]);
+
+    const today = 24;
+    const dropoffStartHours = Number(dropOfThreshold) + today;
+    const dropoffStartDays = Math.ceil(dropoffStartHours / 24);
+    const allowedDaysThreshold = 7;
+    const pickupMinDate = moment(new Date()).add(today, 'hours').toDate();
+    const pickupMaxDate = moment(new Date(), 'DD-MM-YYYY').add(allowedDaysThreshold, 'days').toDate();
+    const dropOffMinDate = moment(formValues.pickupDate, 'DD-MM-YYYY').add(dropoffStartHours, 'hours').toDate();
+    const dropOffMaxDate = moment(formValues.pickupDate, 'DD-MM-YYYY').add(allowedDaysThreshold + dropoffStartDays, 'days').toDate();
+
     return (
         <>
             <Row>
@@ -27,7 +206,7 @@ export default function CreateCustomerOrder() {
                         </CardHeader>
                         <CardBody>
                             <Row>
-                                <Col md={7} className="border-right" >
+                                <Col md={6} className="border-right" >
                                     <Row>
                                         <Col sm="5">
                                             <FormGroup>
@@ -35,22 +214,20 @@ export default function CreateCustomerOrder() {
                                                 <Input type="select"
                                                     name="select"
                                                     id="exampleSelect"
-                                                // value={formValues.categoryId}
-                                                // onChange={(e) => setFormValues({ ...formValues, categoryId: Number(e.target.value) })}
+                                                    value={categoryId}
+                                                    onChange={(e) => setCategoryId(Number(e.target.value))} >
+                                                    <option value={0} >Select Category</option>
+                                                    {
+                                                        categories.map((v, i) => {
+                                                            return (<option key={i} value={v.id} >{v.title}</option>);
 
-                                                >
-                                                    <option value={''} >Select Category</option>
-                                                    {/* {
-                                                    categories.map((v, i) => {
-                                                        return (<option key={i} value={v.id} >{v.title}</option>);
-
-                                                    })
-                                                } */}
+                                                        })
+                                                    }
 
                                                 </Input>
-                                                {/* {notValid.error && notValid.type === 'categoryId' &&
-                                                <label className=" ml-3 text-danger" >{notValid.message}</label>
-                                            } */}
+                                                {notValid.error && notValid.type === 'categoryId' &&
+                                                    <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                                }
                                             </FormGroup>
                                         </Col>
                                         <Col sm="5">
@@ -59,27 +236,27 @@ export default function CreateCustomerOrder() {
                                                 <Input type="select"
                                                     name="select"
                                                     id="exampleSelect"
-                                                // value={formValues.categoryId}
-                                                // onChange={(e) => setFormValues({ ...formValues, categoryId: Number(e.target.value) })}
+                                                    value={selectedService?.id}
+                                                    onChange={(e) => setSelectedService({ id: e.target.value, index: e.target.selectedIndex - 1 })}
 
                                                 >
-                                                    <option value={''} >Select Service</option>
-                                                    {/* {
-                                                    categories.map((v, i) => {
-                                                        return (<option key={i} value={v.id} >{v.title}</option>);
+                                                    <option value={0} >Select Service</option>
+                                                    {
+                                                        services.map((v, i) => {
+                                                            return (<option key={i} value={v.id} >{v.title}</option>);
 
-                                                    })
-                                                } */}
+                                                        })
+                                                    }
 
                                                 </Input>
-                                                {/* {notValid.error && notValid.type === 'categoryId' &&
-                                                <label className=" ml-3 text-danger" >{notValid.message}</label>
-                                            } */}
+                                                {notValid.error && notValid.type === 'serviceId' &&
+                                                    <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                                }
                                             </FormGroup>
                                         </Col>
                                         <Col sm="2">
                                             <FormGroup className="mt-2" >
-                                                <Button color="primary" type={'button'} className="btn-round btn-add mt-3"><i className="fas fa-plus"></i></Button>
+                                                <Button color="primary" type={'button'} onClick={addItem} className="btn-round btn-add mt-3"><i className="fas fa-plus"></i></Button>
                                             </FormGroup>
                                         </Col>
                                     </Row>
@@ -96,132 +273,33 @@ export default function CreateCustomerOrder() {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <h6  ><i className="font-weight-bold fa fa-times" aria-hidden="true"></i></h6>
-                                                        </td>
-                                                        <td>Mark</td>
-                                                        <td>$10</td>
-                                                        <td>
-                                                            <div className=" quantity d-flex  align-items-center" >
+                                                    {items.map((item, index) => {
+                                                        return (
 
-                                                                <img className="mr-3 cursor-pointer " alt="img" /* onClick={incrementQty}  */ src={Plus} />
+                                                            < tr key={index} >
+                                                                <td>
+                                                                    <h6  >
+                                                                        <i className="font-weight-bold fa fa-times cursor-pointer" onClick={() => removeFromBasket(index)} ></i>
+                                                                    </h6>
+                                                                </td>
+                                                                <td>{item?.title}</td>
+                                                                <td>${item?.unitPrice} </td>
+                                                                <td>
+                                                                    <div className=" quantity d-flex  align-items-center" >
 
-                                                                <span className="">{1}</span>
+                                                                        <img className="mr-3 cursor-pointer " alt="img" onClick={() => incrementQty(index)} src={Plus} />
 
-                                                                <img className="ml-3 cursor-pointer " alt="img" /* onClick={decrementQty} */ src={Minus} />
+                                                                        <span className="">{item?.quantity}</span>
 
-                                                            </div></td>
-                                                        <td>$10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h6  ><i className="font-weight-bold fa fa-times" aria-hidden="true"></i></h6>
-                                                        </td>
-                                                        <td>Mark</td>
-                                                        <td>$10</td>
-                                                        <td>
-                                                            <div className=" quantity d-flex  align-items-center" >
+                                                                        <img className="ml-3 cursor-pointer " alt="img" onClick={() => decrementQty(index)} src={Minus} />
 
-                                                                <img className="mr-3 cursor-pointer " alt="img" /* onClick={incrementQty}  */ src={Plus} />
+                                                                    </div></td>
+                                                                <td>${item?.amount} </td>
+                                                            </tr>
+                                                        );
+                                                    })
+                                                    }
 
-                                                                <span className="">{1}</span>
-
-                                                                <img className="ml-3 cursor-pointer " alt="img" /* onClick={decrementQty} */ src={Minus} />
-
-                                                            </div></td>
-                                                        <td>$10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h6  ><i className="font-weight-bold fa fa-times" aria-hidden="true"></i></h6>
-                                                        </td>
-                                                        <td>Mark</td>
-                                                        <td>$10</td>
-                                                        <td>
-                                                            <div className=" quantity d-flex  align-items-center" >
-
-                                                                <img className="mr-3 cursor-pointer " alt="img" /* onClick={incrementQty}  */ src={Plus} />
-
-                                                                <span className="">{1}</span>
-
-                                                                <img className="ml-3 cursor-pointer " alt="img" /* onClick={decrementQty} */ src={Minus} />
-
-                                                            </div></td>
-                                                        <td>$10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h6  ><i className="font-weight-bold fa fa-times" aria-hidden="true"></i></h6>
-                                                        </td>
-                                                        <td>Mark</td>
-                                                        <td>$10</td>
-                                                        <td>
-                                                            <div className=" quantity d-flex  align-items-center" >
-
-                                                                <img className="mr-3 cursor-pointer " alt="img" /* onClick={incrementQty}  */ src={Plus} />
-
-                                                                <span className="">{1}</span>
-
-                                                                <img className="ml-3 cursor-pointer " alt="img" /* onClick={decrementQty} */ src={Minus} />
-
-                                                            </div></td>
-                                                        <td>$10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h6  ><i className="font-weight-bold fa fa-times" aria-hidden="true"></i></h6>
-                                                        </td>
-                                                        <td>Mark</td>
-                                                        <td>$10</td>
-                                                        <td>
-                                                            <div className=" quantity d-flex  align-items-center" >
-
-                                                                <img className="mr-3 cursor-pointer " alt="img" /* onClick={incrementQty}  */ src={Plus} />
-
-                                                                <span className="">{1}</span>
-
-                                                                <img className="ml-3 cursor-pointer " alt="img" /* onClick={decrementQty} */ src={Minus} />
-
-                                                            </div></td>
-                                                        <td>$10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h6  ><i className="font-weight-bold fa fa-times" aria-hidden="true"></i></h6>
-                                                        </td>
-                                                        <td>Mark</td>
-                                                        <td>$10</td>
-                                                        <td>
-                                                            <div className=" quantity d-flex  align-items-center" >
-
-                                                                <img className="mr-3 cursor-pointer " alt="img" /* onClick={incrementQty}  */ src={Plus} />
-
-                                                                <span className="">{1}</span>
-
-                                                                <img className="ml-3 cursor-pointer " alt="img" /* onClick={decrementQty} */ src={Minus} />
-
-                                                            </div></td>
-                                                        <td>$10</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <h6  ><i className="font-weight-bold fa fa-times" aria-hidden="true"></i></h6>
-                                                        </td>
-                                                        <td>Mark</td>
-                                                        <td>$10</td>
-                                                        <td>
-                                                            <div className=" quantity d-flex  align-items-center" >
-
-                                                                <img className="mr-3 cursor-pointer " alt="img" /* onClick={incrementQty}  */ src={Plus} />
-
-                                                                <span className="">{1}</span>
-
-                                                                <img className="ml-3 cursor-pointer " alt="img" /* onClick={decrementQty} */ src={Minus} />
-
-                                                            </div></td>
-                                                        <td>$10</td>
-                                                    </tr>
 
                                                 </tbody>
                                             </Table>
@@ -229,27 +307,40 @@ export default function CreateCustomerOrder() {
                                     </Row>
                                     <div className="d-flex align-items-center w-100 ">
                                         <span className="d-flex font-weight-bold justify-content-end mr-5 w-75" >Total</span>
-                                        <span className="font-weight-bold ml-5 w-25" >$10</span>
+                                        <span className="font-weight-bold ml-5 w-25" >${totalAmount}  </span>
 
                                     </div>
                                     <div className="d-flex align-items-center  w-100">
-                                        <span className="d-flex font-weight-bold justify-content-end mr-5 w-75" >HST</span>
-                                        <span className="font-weight-bold ml-5 w-25" >13%</span>
+                                        <span className="d-flex font-weight-bold justify-content-end mr-5 w-75" >HST {HSTPercentage}% </span>
+                                        <span className="font-weight-bold ml-5 w-25" > ${totalHST} </span>
 
                                     </div>
                                     <div className="d-flex align-items-center  w-100">
                                         <span className="d-flex font-weight-bold justify-content-end mr-5 w-75" >Grand Total</span>
-                                        <span className="font-weight-bold ml-5 w-25" >$11.3</span>
+                                        <span className="font-weight-bold ml-5 w-25" >${grandTotal}  </span>
 
                                     </div>
                                 </Col>
-                                <Col md={5}>
+                                <Col md={6}>
                                     <Row>
                                         <Col md={6}>
 
                                             <FormGroup>
-                                                <Label for="exampleEmail"><span className="text-danger" >* </span>Pickup Date</Label>
-                                                <Input type={'date'} placeholder="with a placeholder" />
+                                                <Label ><span className="text-danger" >* </span>Pickup Date</Label>
+                                                <ReactDatePicker
+                                                    selected={formValues.pickupDate}
+                                                    onChange={(e) => {
+                                                        setFormValues({ ...formValues, pickupDate: e, dropoffDate: '' });
+
+                                                    }}
+                                                    className="form-control react-date-picker-custom"
+                                                    placeholderText={'mm/dd/yyyy'}
+                                                    minDate={pickupMinDate}
+                                                    maxDate={pickupMaxDate}
+                                                    filterDate={isSunday}
+                                                />
+                                                {(notValid.error && notValid.type === 'pickupDate') && <label className="text-danger" > {notValid.message} </label>}
+
                                             </FormGroup>
 
                                         </Col>
@@ -257,12 +348,18 @@ export default function CreateCustomerOrder() {
 
                                             <FormGroup>
                                                 <Label for="exampleSelect"><span className="text-danger" >* </span>Pickup Time</Label>
-                                                <Input type="select" name="select" id="exampleSelect">
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                    <option>5</option>
+                                                <Input type="select" name="select" value={formValues.pickupTime}
+                                                    onChange={(e) => {
+                                                        setFormValues({ ...formValues, pickupTime: e.target.value, dropoffTime: '' });
+                                                        availableDropOffTime(e.target.selectedIndex);
+                                                    }
+                                                    }>
+                                                    <option value={''} >Please Select Pick Up Time</option>
+                                                    {
+                                                        pickupTime.map((v, i) => {
+                                                            return (<option key={i} value={v.value} >{v.value}</option>);
+                                                        })
+                                                    }
                                                 </Input>
                                             </FormGroup>
 
@@ -272,8 +369,22 @@ export default function CreateCustomerOrder() {
                                         <Col md={6}>
 
                                             <FormGroup>
-                                                <Label for="exampleEmail"><span className="text-danger" >* </span>Dropff Date</Label>
-                                                <Input type={'date'} placeholder="with a placeholder" />
+                                                <Label ><span className="text-danger" >* </span>Dropff Date</Label>
+                                                <ReactDatePicker
+                                                    disabled={!formValues.pickupDate}
+                                                    selected={formValues.dropoffDate}
+                                                    onChange={(e) => {
+                                                        setFormValues({ ...formValues, dropoffDate: e });
+
+                                                    }}
+                                                    className="form-control react-date-picker-custom"
+                                                    placeholderText={'mm/dd/yyyy'}
+                                                    minDate={dropOffMinDate}
+                                                    maxDate={dropOffMaxDate}
+                                                    filterDate={isSunday}
+                                                />
+
+                                                {(notValid.error && notValid.type === 'dropoffDate') && <label className="text-danger" > {notValid.message} </label>}
                                             </FormGroup>
 
                                         </Col>
@@ -281,12 +392,20 @@ export default function CreateCustomerOrder() {
 
                                             <FormGroup>
                                                 <Label for="exampleSelect"><span className="text-danger" >* </span>Dropff Time</Label>
-                                                <Input type="select" name="select" id="exampleSelect">
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                    <option>5</option>
+                                                <Input type="select" name="select" value={formValues.dropoffTime}
+                                                    onChange={(e) => {
+                                                        setFormValues({ ...formValues, dropoffTime: e.target.value });
+
+                                                    }
+                                                    }
+                                                    disabled={!formValues.pickupTime}
+                                                >
+                                                    <option value={''} >Please Select Drop Off Time</option>
+                                                    {
+                                                        dropoffTime.map((v, i) => {
+                                                            return (<option key={i} value={v.value} >{v.value}</option>);
+                                                        })
+                                                    }
                                                 </Input>
                                             </FormGroup>
 
@@ -296,39 +415,30 @@ export default function CreateCustomerOrder() {
                                         <Col md={12} >
                                             <FormGroup tag="fieldset">
                                                 <legend><span className="text-danger" >* </span>Addresses</legend>
-                                                <FormGroup className="pl-0" check>
-                                                    <Label check>
-                                                        <Input type="radio" name="radio1" />{' '}
-                                                        <img alt={'img'} className="icon-pin" src={Pin} /> 74800 | P.E.C.H.S
-          </Label>
-                                                </FormGroup>
-                                                <FormGroup className="pl-0" check>
-                                                    <Label check>
-                                                        <Input type="radio" name="radio1" />{' '}
-                                                        <img alt={'img'} className="icon-pin" src={Pin} /> 74800 | P.E.C.H.S
-          </Label>
-                                                </FormGroup>
-                                                <FormGroup className="pl-0" check>
-                                                    <Label check>
-                                                        <Input type="radio" name="radio1" />{' '}
-                                                        <img alt={'img'} className="icon-pin" src={Pin} /> 74800 | P.E.C.H.S
-          </Label>
-                                                </FormGroup>
-                                                <FormGroup className="pl-0" check>
-                                                    <Label check>
-                                                        <Input type="radio" name="radio1" />{' '}
-                                                        <img alt={'img'} className="icon-pin" src={Pin} /> 74800 | P.E.C.H.S
-          </Label>
-                                                </FormGroup>
-                                                <FormGroup className="pl-0" check>
-                                                    <Label check>
-                                                        <Input type="radio" name="radio1" />{' '}
-                                                        <img alt={'img'} className="icon-pin" src={Pin} /> 74800 | P.E.C.H.S
-          </Label>
-                                                </FormGroup>
+                                                <div style={{ height: '8rem', overflowY: 'auto' }} >
+                                                    {addresses.map((v, i) => {
+                                                        return (
+                                                            <FormGroup key={i} className="pl-0" check>
+                                                                <Label check>
+                                                                    <Input type="radio" name="radio1" checked={v?.id === selectedAddress?.id} onChange={() => setSelectedAddress(v)} />{' '}
+                                                                    <img alt={'img'} className="icon-pin" src={Pin} /> {v?.postalCode} | {v?.street}
+                                                                </Label>
+                                                            </FormGroup>
+                                                        );
+                                                    })
+                                                    }
+
+                                                </div>
                                             </FormGroup>
+
                                         </Col>
                                     </Row>
+                                    <FormGroup row>
+                                        <Label for="driver-instruction" sm={12}>Driver Instruction</Label>
+                                        <Col sm={12}>
+                                            <Input type="textarea" name="text" id="driver-instruction" />
+                                        </Col>
+                                    </FormGroup>
                                 </Col>
                             </Row>
 

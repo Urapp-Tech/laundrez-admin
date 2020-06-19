@@ -8,6 +8,12 @@ export class ServiceActions {
             payload: { page, pageSize, search }
         };
     }
+    static getServicesByCategory(categoryId) {
+        return {
+            type: ServiceTypes.GET_SERVICES_BY_CATEGORY_PROG,
+            payload: { categoryId }
+        };
+    }
     static addService(body, history) {
         return {
             type: ServiceTypes.ADD_SERVICE_PROG,

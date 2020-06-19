@@ -8,6 +8,7 @@ let INITIAL_STATE = {
     errorText: '',
     errorStatus: 0,
     services: [],
+    servicesByCategory: [],
     service: undefined,
     openDelModal: false,
     paging: {}
@@ -21,6 +22,17 @@ export function serviceReducer(state = INITIAL_STATE, action) {
             return { ...state, isProgressList: false, services: action.payload.result, paging: action.payload.paging };
         case ServiceTypes.GET_SERVICES_FAIL:
             return { ...state, isProgressList: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+
+
+        case ServiceTypes.GET_SERVICES_BY_CATEGORY_PROG:
+            return { ...state, isProgress: true };
+
+        case ServiceTypes.GET_SERVICES_BY_CATEGORY_SUCC:
+            return { ...state, isProgress: false, servicesByCategory: action.payload.services };
+
+        case ServiceTypes.GET_SERVICES_BY_CATEGORY_FAIL:
+            return { ...state, isProgress: false, isError: true, errorMsg: action.payload.message, errorStatus: action.payload.status };
+
 
 
         case ServiceTypes.ADD_SERVICE_PROG:

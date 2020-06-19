@@ -32,6 +32,35 @@ export class ServiceEpics {
         }));
     }
 
+    static getServicesByCategory(action$, state$, { ajaxGet, getRefreshToken }) {
+        return action$.pipe(ofType(ServiceTypes.GET_SERVICES_BY_CATEGORY_PROG), switchMap(({ payload }) => {
+            return defer(() => {
+                return ajaxGet(`/Service/all?page[number]=1&page[size]=1000&filters[categoryId]=${payload.categoryId}`);
+            })
+                .pipe(pluck('response'), flatMap(obj => {
+                    let services = obj.result;
+                    return of(
+                        {
+                            type: ServiceTypes.GET_SERVICES_BY_CATEGORY_SUCC,
+                            payload: { services }
+                        },
+
+                    );
+                })
+                    , catchError((err, source) => {
+                        if (err.status === 401) {
+                            return getRefreshToken(action$, state$, source);
+                        }
+                        else {
+                            return of({ type: ServiceTypes.GET_SERVICES_BY_CATEGORY_FAIL, payload: { err, message: err?.response?.message, status: err?.status } });
+                        }
+
+                    }));
+
+        }));
+    }
+
+
     static addService(action$, state$, { ajaxPost, getRefreshToken, history }) {
         return action$.pipe(ofType(ServiceTypes.ADD_SERVICE_PROG), switchMap(({ payload }) => {
             return defer(() => {
