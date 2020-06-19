@@ -37,6 +37,37 @@ export class OrderEpics {
         }));
     }
 
+    static postOrder(action$, state$, { ajaxPost, history, getRefreshToken }) {
+        return action$.pipe(ofType(OrderTypes.POST_ORDER_PROG), switchMap(({ payload }) => {
+            return defer(() => {
+                return ajaxPost('/order', payload.body);
+            }).pipe(pluck('response'), flatMap(obj => {
+                window.scrollTo(0, 0);
+                history.replace('/admin/customers');
+                return of(
+                    {
+                        type: OrderTypes.POST_ORDER_SUCC,
+                        payload: { order: obj.result }
+                    },
+                    // NotificationActions.showSuccessNotification('Order placed successfully'),
+                    // MyBasketActions.clearBasket()
+                );
+            })
+                , catchError((err, source) => {
+                    if (err.status === 401) {
+                        return getRefreshToken(action$, state$, source);
+                    }
+                    else {
+                        window.scrollTo(0, 0);
+                        return of(
+                            { type: OrderTypes.POST_ORDER_FAIL, payload: { err, message: err?.response?.message, status: err?.status } },
+                        );
+                    }
+                }));
+
+        }));
+    }
+
 
     static getLov(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(OrderTypes.GET_LOV_PROG), switchMap(() => {

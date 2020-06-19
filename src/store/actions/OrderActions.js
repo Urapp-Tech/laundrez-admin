@@ -16,6 +16,14 @@ export class OrderActions {
         };
     }
 
+    static postOrder(body) {
+        return {
+            type: OrderTypes.POST_ORDER_PROG,
+            payload: { body }
+
+        };
+    }
+
     static getLov() {
         return {
             type: OrderTypes.GET_LOV_PROG

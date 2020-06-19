@@ -52,6 +52,7 @@ export default function CreateCustomerOrder() {
     const categories = useSelector(store => store?.category?.categories);
     const services = useSelector(store => store?.service?.servicesByCategory);
     const HSTPercentage = useSelector(store => store?.order?.config?.system?.HSTPercentage);
+    const isProgress = useSelector(store => store?.order?.isProgressPost);
 
     useEffect(() => {
         dispatch(OrderActions.getAddresses(id));
@@ -187,6 +188,64 @@ export default function CreateCustomerOrder() {
         }
     }, [items, calculateAmount, calculateGrandTotal, calculateHST]);
 
+    const postOrder = useCallback(() => {
+        if (notValid.error) {
+            setNotValid({ error: false, type: '', message: '' });
+        }
+        if (items.length === 0) {
+            setNotValid({ error: true, type: 'items', message: 'Please add items to list' });
+            return;
+        }
+        if (!formValues.pickupDate) {
+            setNotValid({ error: true, type: 'pickupDate', message: 'Please select pickup date' });
+            return;
+        }
+        if (!formValues.pickupTime) {
+            setNotValid({ error: true, type: 'pickupTime', message: 'Please select pickup time' });
+            return;
+        }
+        if (!formValues.dropoffDate) {
+            setNotValid({ error: true, type: 'dropoffDate', message: 'Please select dropoff date' });
+            return;
+        }
+        if (!formValues.dropoffTime) {
+            setNotValid({ error: true, type: 'dropoffTime', message: 'Please select dropoff time' });
+            return;
+        }
+        if (!formValues.dropoffTime) {
+            setNotValid({ error: true, type: 'dropoffTime', message: 'Please select dropoff time' });
+            return;
+        }
+        if (!selectedAddress) {
+            setNotValid({ error: true, type: 'address', message: 'Please select address' });
+            return;
+        }
+        let body = {
+            userId: Number(id),
+            orderDate: moment(new Date()).format('YYYY-MM-DD') + 'T00:00:00.000Z',
+            pickupDate: moment(formValues.pickupDate).format('YYYY-MM-DD') + 'T00:00:00.000Z',
+            pickupTime: formValues.pickupTime,
+            dropoffDate: moment(formValues.dropoffDate).format('YYYY-MM-DD') + 'T00:00:00.000Z',
+            dropoffTime: formValues.dropoffTime,
+            addressId: selectedAddress?.id,
+            deliveryAddress: selectedAddress?.mainAddress,
+            description: formValues.driverInstruction,
+            taxPercentage: Number(HSTPercentage),
+            orderAmount: Number(totalAmount),
+            discountAmount: Number(0),
+            totalAmount: Number(grandTotal),
+            listDetail: items.map((v) => ({
+                serviceId: v.id,
+                quantity: v.quantity,
+                unitPrice: v.unitPrice,
+                amount: v.unitPrice * v.quantity,
+            })),
+        };
+
+        dispatch(OrderActions.postOrder(body));
+
+    }, [totalAmount, grandTotal, dispatch, formValues, selectedAddress, HSTPercentage, items, id, notValid]);
+
     const today = 24;
     const dropoffStartHours = Number(dropOfThreshold) + today;
     const dropoffStartDays = Math.ceil(dropoffStartHours / 24);
@@ -305,6 +364,9 @@ export default function CreateCustomerOrder() {
                                             </Table>
                                         </Col>
                                     </Row>
+                                    {notValid.error && notValid.type === 'items' &&
+                                        <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                    }
                                     <div className="d-flex align-items-center w-100 ">
                                         <span className="d-flex font-weight-bold justify-content-end mr-5 w-75" >Total</span>
                                         <span className="font-weight-bold ml-5 w-25" >${totalAmount}  </span>
@@ -361,6 +423,7 @@ export default function CreateCustomerOrder() {
                                                         })
                                                     }
                                                 </Input>
+                                                {(notValid.error && notValid.type === 'pickupTime') && <label className="text-danger" > {notValid.message} </label>}
                                             </FormGroup>
 
                                         </Col>
@@ -407,6 +470,7 @@ export default function CreateCustomerOrder() {
                                                         })
                                                     }
                                                 </Input>
+                                                {(notValid.error && notValid.type === 'dropoffTime') && <label className="text-danger" > {notValid.message} </label>}
                                             </FormGroup>
 
                                         </Col>
@@ -415,6 +479,7 @@ export default function CreateCustomerOrder() {
                                         <Col md={12} >
                                             <FormGroup tag="fieldset">
                                                 <legend><span className="text-danger" >* </span>Addresses</legend>
+                                                {(notValid.error && notValid.type === 'address') && <label className="text-danger" > {notValid.message} </label>}
                                                 <div style={{ height: '8rem', overflowY: 'auto' }} >
                                                     {addresses.map((v, i) => {
                                                         return (
@@ -436,7 +501,7 @@ export default function CreateCustomerOrder() {
                                     <FormGroup row>
                                         <Label for="driver-instruction" sm={12}>Driver Instruction</Label>
                                         <Col sm={12}>
-                                            <Input type="textarea" name="text" id="driver-instruction" />
+                                            <Input type="textarea" name="text" id="driver-instruction" value={formValues.driverInstruction} onChange={(e) => setFormValues({ ...formValues, driverInstruction: e.target.value })} />
                                         </Col>
                                     </FormGroup>
                                 </Col>
@@ -450,13 +515,13 @@ export default function CreateCustomerOrder() {
                             </Row>
                             <Row className=" " >
                                 <Col sm="12" className=" " >
-                                    <Button type={'submit'} /* disabled={isProgress} */ className="btn-round btn-primary btn-add-modal" >
+                                    <Button type={'button'} onClick={postOrder} disabled={isProgress} className="btn-round btn-primary btn-add-modal" >
                                         {
-                                            // isProgress
-                                            //     ?
-                                            //     <div className="spinner" ></div>
-                                            //     :
-                                            ' Place Order'
+                                            isProgress
+                                                ?
+                                                <div className="spinner" ></div>
+                                                :
+                                                ' Place Order'
                                         }
                                     </Button>
                                     <Button className="btn-round btn-default btn-add-modal" /* onClick={() => history.goBack()} */  >Cancel</Button>

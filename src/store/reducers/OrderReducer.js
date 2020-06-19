@@ -6,6 +6,7 @@ let INITIAL_STATE = {
     isProgress: false,
     isProgressEdit: false,
     isProgressCSV: false,
+    isProgressPost: false,
     isError: false,
     errorText: '',
     errorStatus: 0,
@@ -42,6 +43,14 @@ export function orderReducer(state = INITIAL_STATE, action) {
             return { ...state, isProgress: false, order: action.payload.result, };
         case OrderTypes.GET_ORDER_FAIL:
             return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
+
+
+        case OrderTypes.POST_ORDER_PROG:
+            return { ...state, isProgressPost: true, };
+        case OrderTypes.POST_ORDER_SUCC:
+            return { ...state, isProgressPost: false, };
+        case OrderTypes.POST_ORDER_FAIL:
+            return { ...state, isProgressPost: false, isError: true, errorMsg: action.payload.message, errorStatus: action.payload.status };
 
 
 
