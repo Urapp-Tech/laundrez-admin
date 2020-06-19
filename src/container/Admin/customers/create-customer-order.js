@@ -51,6 +51,7 @@ export default function CreateCustomerOrder() {
     const dropOfThreshold = useSelector(store => store?.order?.config?.system.DropOfThreshold);
     const categories = useSelector(store => store?.category?.categories);
     const services = useSelector(store => store?.service?.servicesByCategory);
+    const isProgressServices = useSelector(store => store?.service?.isProgress);
     const HSTPercentage = useSelector(store => store?.order?.config?.system?.HSTPercentage);
     const isProgress = useSelector(store => store?.order?.isProgressPost);
 
@@ -180,12 +181,9 @@ export default function CreateCustomerOrder() {
     }, [totalAmount, calculateHST]);
 
     useEffect(() => {
-        if (items.length) {
-
-            calculateAmount();
-            calculateHST();
-            calculateGrandTotal();
-        }
+        calculateAmount();
+        calculateHST();
+        calculateGrandTotal();
     }, [items, calculateAmount, calculateGrandTotal, calculateHST]);
 
     const postOrder = useCallback(() => {
@@ -292,7 +290,7 @@ export default function CreateCustomerOrder() {
                                         <Col sm="5">
                                             <FormGroup>
                                                 <Label for="exampleSelect"><span className="text-danger" >*</span> Services</Label>
-                                                <Input type="select"
+                                                <Input disabled={Number(categoryId) === 0} type="select"
                                                     name="select"
                                                     id="exampleSelect"
                                                     value={selectedService?.id}
@@ -315,7 +313,15 @@ export default function CreateCustomerOrder() {
                                         </Col>
                                         <Col sm="2">
                                             <FormGroup className="mt-2" >
-                                                <Button color="primary" type={'button'} onClick={addItem} className="btn-round btn-add mt-3"><i className="fas fa-plus"></i></Button>
+
+                                                <Button color="primary" type={'button'} disabled={isProgressServices} onClick={addItem} className="btn-round btn-add mt-3">
+                                                    {isProgressServices
+                                                        ?
+                                                        <div className="spinner" ></div>
+                                                        : <i className="fas fa-plus"></i>
+                                                    }
+                                                </Button>
+
                                             </FormGroup>
                                         </Col>
                                     </Row>
