@@ -16,21 +16,26 @@ const StatusChangeConfModal = memo(({ isOpen, toggle, isProgress, newStatus, pre
 
     const updateStatus = useCallback(() => {
         let _selectedDriver = Number(selectedDriver);
-        if (notValid.error) {
-            setNotValid({ error: false, type: '', message: '' });
+        if (newStatus === OrderStatus.Cancelled) {
+            dispatch(OrderActions.cancelOrder(orderId));
         }
-        if (newStatus === OrderStatus.PickUp || newStatus === OrderStatus.DropOff) {
-            if (_selectedDriver === 0) {
-                setNotValid({ error: true, type: 'driverId', message: 'Please select driver' });
-                return;
+        else {
+            if (notValid.error) {
+                setNotValid({ error: false, type: '', message: '' });
             }
+            if (newStatus === OrderStatus.PickUp || newStatus === OrderStatus.DropOff) {
+                if (_selectedDriver === 0) {
+                    setNotValid({ error: true, type: 'driverId', message: 'Please select driver' });
+                    return;
+                }
+            }
+            let body = {
+                orderId,
+                status: newStatus,
+                driverId: _selectedDriver > 0 ? _selectedDriver : undefined
+            };
+            dispatch(OrderActions.updateOrderStatus(body));
         }
-        let body = {
-            orderId,
-            status: newStatus,
-            driverId: _selectedDriver > 0 ? _selectedDriver : undefined
-        };
-        dispatch(OrderActions.updateOrderStatus(body));
     }, [orderId, newStatus, selectedDriver, dispatch, notValid]);
 
     useEffect(() => {

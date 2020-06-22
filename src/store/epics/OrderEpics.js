@@ -70,6 +70,8 @@ export class OrderEpics {
     }
 
 
+
+
     static getLov(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(OrderTypes.GET_LOV_PROG), switchMap(() => {
             return defer(() => {
@@ -219,6 +221,33 @@ export class OrderEpics {
                         let message = err?.response?.Message;
                         toast.error(message ? message : ErrorMsg);
                         return of({ type: OrderTypes.UPDATE_ORDER_STATUS_FAIL, payload: { err, message: message ? message : ErrorMsg, status: err?.status } });
+                    }
+                }));
+
+        }));
+    }
+
+    static cancelOrder(action$, state$, { ajaxPut, getRefreshToken }) {
+        return action$.pipe(ofType(OrderTypes.CANCEL_ORDER_PROG), switchMap(({ payload }) => {
+            return defer(() => {
+                return ajaxPut(`/Order/cancel/${payload.id}`);
+            }).pipe(pluck('response'), flatMap(() => {
+                toast.success('Order cancelled successfully');
+                return of(
+                    {
+                        type: OrderTypes.CANCEL_ORDER_SUCC,
+                    },
+                    OrderActions.toggleStatusModal(),
+                    OrderActions.getOrders(state$?.value?.order?.paging?.pageNumber)
+                );
+            })
+                , catchError((err, source) => {
+                    if (err.status === 401) {
+                        return getRefreshToken(action$, state$, source);
+                    }
+                    else {
+                        toast.error(err?.message || err?.Message);
+                        return of({ type: OrderTypes.CANCEL_ORDER_FAIL, payload: { err, message: err?.response?.message, status: err?.status } });
                     }
                 }));
 

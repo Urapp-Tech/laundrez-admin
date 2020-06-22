@@ -215,7 +215,15 @@ function Orders({ history }) {
         },
         {
             dataField: 'totalAmount',
-            text: 'Amount'
+            text: 'Amount',
+            // eslint-disable-next-line react/display-name
+            formatter: (cell) => {
+                return (
+                    <div className="d-flex flex-column" >
+                        <span>${cell}</span>
+                    </div>
+                );
+            }
         },
         {
             dataField: 'status',
@@ -425,7 +433,7 @@ function Orders({ history }) {
 }
 Orders.propTypes = {
     baseProps: PropTypes.object,
-    history: PropTypes.func
+    history: PropTypes.object
 };
 
 export default Orders;

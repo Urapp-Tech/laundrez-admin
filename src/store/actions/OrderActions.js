@@ -24,6 +24,14 @@ export class OrderActions {
         };
     }
 
+    static cancelOrder(id) {
+        return {
+            type: OrderTypes.CANCEL_ORDER_PROG,
+            payload: { id }
+
+        };
+    }
+
     static getLov() {
         return {
             type: OrderTypes.GET_LOV_PROG

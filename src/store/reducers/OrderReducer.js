@@ -61,7 +61,12 @@ export function orderReducer(state = INITIAL_STATE, action) {
         case OrderTypes.UPDATE_ORDER_STATUS_FAIL:
             return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
-
+        case OrderTypes.CANCEL_ORDER_PROG:
+            return { ...state, isProgress: true };
+        case OrderTypes.CANCEL_ORDER_SUCC:
+            return { ...state, isProgress: false, };
+        case OrderTypes.CANCEL_ORDER_FAIL:
+            return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
         case OrderTypes.EDIT_ORDER_PROG:
             return { ...state, isProgressEdit: true };
