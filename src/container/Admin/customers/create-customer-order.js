@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import {
     Card,
     CardBody,
@@ -23,7 +24,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { OrderActions } from '../../../store/actions/OrderActions';
 import { CategoryActions } from '../../../store/actions/CategoryActions';
 import { ServiceActions } from '../../../store/actions/ServiceActions';
-export default function CreateCustomerOrder() {
+export default function CreateCustomerOrder({ history }) {
 
     const dispatch = useDispatch();
     const { id } = useParams();
@@ -233,7 +234,7 @@ export default function CreateCustomerOrder() {
             discountAmount: Number(0),
             totalAmount: Number(grandTotal),
             listDetail: items.map((v) => ({
-                serviceId: v.id,
+                serviceId: v.serviceId,
                 quantity: v.quantity,
                 unitPrice: v.unitPrice,
                 amount: v.unitPrice * v.quantity,
@@ -530,7 +531,7 @@ export default function CreateCustomerOrder() {
                                                 ' Place Order'
                                         }
                                     </Button>
-                                    <Button className="btn-round btn-default btn-add-modal" /* onClick={() => history.goBack()} */  >Cancel</Button>
+                                    <Button className="btn-round btn-default btn-add-modal" onClick={() => history.goBack()}  >Cancel</Button>
                                 </Col>
                             </Row>
                         </CardBody>
@@ -540,3 +541,6 @@ export default function CreateCustomerOrder() {
         </>
     );
 }
+CreateCustomerOrder.propTypes = {
+    history: PropTypes.object
+};

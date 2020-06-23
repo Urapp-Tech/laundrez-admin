@@ -44,6 +44,7 @@ export class OrderEpics {
             }).pipe(pluck('response'), flatMap(obj => {
                 window.scrollTo(0, 0);
                 history.replace('/admin/customers');
+                toast.success('Order placed successfully');
                 return of(
                     {
                         type: OrderTypes.POST_ORDER_SUCC,
