@@ -26,10 +26,9 @@ export class AuthEpics {
                     let err = new Error('You donot have sufficient rights');
                     throw err;
                 }
-            })
-                , catchError((err) => {
-                    return of({ type: AuthTypes.SIGNIN_FAIL, payload: { message: err?.response ? err?.response.message : err?.message, status: err?.status } });
-                }));
+            }), catchError((err) => {
+                return of({ type: AuthTypes.SIGNIN_FAIL, payload: { message: err?.response ? err?.response.message : err?.message, status: err?.status } });
+            }));
 
         }));
     }
@@ -38,7 +37,7 @@ export class AuthEpics {
     static getAllUsers(action$, state$, { ajaxGet, getRefreshToken }) {
         return action$.pipe(ofType(AuthTypes.GET_ALL_USERS_PROG), switchMap(({ payload }) => {
             return defer(() => {
-                return ajaxGet(`/User/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[Email%2BfirstName%2BlastName%2BphoneNo%2BpostalCode]=${payload.search}`);
+                return ajaxGet(`/User/all?page[number]=${payload?.page}&page[size]=${payload?.pageSize}&filters[Email%2BfirstName%2BlastName%2BphoneNo%2BpostalCode]=${payload.search}&sort=-createdOn`);
             }).pipe(pluck('response'), map(obj => {
                 return {
                     type: AuthTypes.GET_ALL_USERS_SUCC,

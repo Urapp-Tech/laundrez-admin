@@ -75,7 +75,7 @@ const AddLocationModal = () => {
                         <Col sm="12">
                             <FormGroup>
                                 <label><span className="text-danger" >*</span> postal Code <b><i> (3 characters)</i></b> </label>
-                                <Input placeholder="PostalCode" type="text" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} />
+                                <Input placeholder="PostalCode" type="text"  maxLength={3} value={postalCode} onChange={(e) => setPostalCode(String(e.target.value).toUpperCase())} />
                             </FormGroup>
                             {notValid.error && notValid.type === 'postalCode' &&
                                 <label className=" ml-3 text-danger" >{notValid.message}</label>
