@@ -7,10 +7,16 @@ let INITIAL_STATE = {
     isProgressEdit: false,
     isProgressCSV: false,
     isProgressPost: false,
+    isProgressPickupSlot: false,
+    isProgressDropoffSlot: false,
     isError: false,
+    isErrorPickupSlot: false,
+    isErrorDropoffSlot: false,
     errorText: '',
     errorStatus: 0,
     orders: [],
+    isPickupSlotAvailable: false,
+    isDropoffSlotAvailable: false,
     csvData: undefined,
     order: undefined,
     openStatusModal: false,
@@ -50,7 +56,7 @@ export function orderReducer(state = INITIAL_STATE, action) {
         case OrderTypes.POST_ORDER_SUCC:
             return { ...state, isProgressPost: false, };
         case OrderTypes.POST_ORDER_FAIL:
-            return { ...state, isProgressPost: false, isError: true, errorMsg: action.payload.message, errorStatus: action.payload.status };
+            return { ...state, isProgressPost: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
 
 
@@ -78,6 +84,24 @@ export function orderReducer(state = INITIAL_STATE, action) {
 
 
 
+        case OrderTypes.CHECK_SELECTED_PICKUP_SLOT_PROG:
+            return { ...state, isProgressPickupSlot: true, isPickupSlotAvailable: false, isErrorPickupSlot: false };
+        case OrderTypes.CHECK_SELECTED_PICKUP_SLOT_SUCC:
+            return { ...state, isProgressPickupSlot: false, isPickupSlotAvailable: true };
+        case OrderTypes.CHECK_SELECTED_PICKUP_SLOT_FAIL:
+            return { ...state, isProgressPickupSlot: false, isErrorPickupSlot: true, errorText: action.payload.message, errorStatus: action.payload.status };
+
+
+        case OrderTypes.CHECK_SELECTED_DROPOFF_SLOT_PROG:
+            return { ...state, isProgressDropoffSlot: true, isDropoffSlotAvailable: false, isErrorDropoffSlot: false };
+        case OrderTypes.CHECK_SELECTED_DROPOFF_SLOT_SUCC:
+            return { ...state, isProgressDropoffSlot: false, isDropoffSlotAvailable: true };
+        case OrderTypes.CHECK_SELECTED_DROPOFF_SLOT_FAIL:
+            return { ...state, isProgressDropoffSlot: false, isErrorDropoffSlot: true, errorText: action.payload.message, errorStatus: action.payload.status };
+
+
+
+
         case OrderTypes.GET_CSV_DATA_PROG:
             return { ...state, isProgressCSV: true };
         case OrderTypes.GET_CSV_DATA_SUCC:
@@ -94,7 +118,7 @@ export function orderReducer(state = INITIAL_STATE, action) {
         case OrderTypes.GET_LOV_SUCC:
             return { ...state, isProgress: false, config: action.payload.config };
         case OrderTypes.GET_LOV_FAIL:
-            return { ...state, isProgress: false, isError: true, errorMsg: action.payload.message, errorStatus: action.payload.status };
+            return { ...state, isProgress: false, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
         case OrderTypes.GET_ADDRESSES_PROG:
             return { ...state };
@@ -103,7 +127,7 @@ export function orderReducer(state = INITIAL_STATE, action) {
             return { ...state, addresses: action.payload.addresses };
 
         case OrderTypes.GET_ADDRESSES_FAIL:
-            return { ...state, isError: true, errorMsg: action.payload.message, errorStatus: action.payload.status };
+            return { ...state, isError: true, errorText: action.payload.message, errorStatus: action.payload.status };
 
 
         case OrderTypes.TOGGLE_STATUS_CONFIRMATION_MODAL:
@@ -115,6 +139,10 @@ export function orderReducer(state = INITIAL_STATE, action) {
 
         case OrderTypes.TOGGLE_PDF_ORDER_MODAL:
             return { ...state, openPdfModal: !state.openPdfModal, };
+
+
+        case OrderTypes.CLEAR_ERROR:
+            return { ...state, isError: false, isErrorDropoffSlot: false, isErrorPickupSlot: false, errorText: '', errorStatus: 0 };
 
         // case OrderTypes.TOGGLE_DEL_CATEGORY_MODAL:
         //     return { ...state, openDelModal: !state.openDelModal, category: state.categories[action.payload.index] };

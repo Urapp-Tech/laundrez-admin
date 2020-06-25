@@ -55,6 +55,13 @@ export default function CreateCustomerOrder({ history }) {
     const isProgressServices = useSelector(store => store?.service?.isProgress);
     const HSTPercentage = useSelector(store => store?.order?.config?.system?.HSTPercentage);
     const isProgress = useSelector(store => store?.order?.isProgressPost);
+    const isProgressPickupSlot = useSelector(store => store?.order?.isProgressPickupSlot);
+    const isProgressDropoffSlot = useSelector(store => store?.order?.isProgressDropoffSlot);
+    const isDropoffSlotAvailable = useSelector(store => store?.order?.isDropoffSlotAvailable);
+    const isPickupSlotAvailable = useSelector(store => store?.order?.isPickupSlotAvailable);
+    const isErrorPickupSlot = useSelector(store => store?.order?.isErrorPickupSlot);
+    const isErrorDropoffSlot = useSelector(store => store?.order?.isErrorDropoffSlot);
+    const errorMessage = useSelector(store => store?.order?.errorText);
 
     useEffect(() => {
         dispatch(OrderActions.getAddresses(id));
@@ -125,6 +132,36 @@ export default function CreateCustomerOrder({ history }) {
             dispatch(ServiceActions.getServicesByCategory(categoryId));
         }
     }, [categoryId, dispatch]);
+
+    useEffect(() => {
+        if (formValues.pickupTime && formValues.pickupDate) {
+            let body = {
+                date: moment(formValues.pickupDate).format('YYYY-MM-DD'),
+                time: formValues.pickupTime,
+                status: 'PickUp'// PickUp, DropOff
+            };
+            dispatch(OrderActions.checkSelectedPickupSlot(body));
+        }
+
+        return () => {
+            dispatch(OrderActions.clearError());
+        };
+
+    }, [formValues.pickupTime, formValues.pickupDate, dispatch]);
+
+
+    useEffect(() => {
+        if (formValues.dropoffTime && formValues.dropoffDate) {
+            let body = {
+                date: moment(formValues.dropoffDate).format('YYYY-MM-DD'),
+                time: formValues.dropoffTime,
+                status: 'DropOff'// PickUp, DropOff
+            };
+            dispatch(OrderActions.checkSelectedDropoffSlot(body));
+        }
+
+
+    }, [formValues.dropoffTime, formValues.dropoffDate, dispatch]);
 
     const incrementQty = useCallback((index) => {
         let _items = [...items];
@@ -395,7 +432,9 @@ export default function CreateCustomerOrder({ history }) {
                                         <Col md={6}>
 
                                             <FormGroup>
-                                                <Label ><span className="text-danger" >* </span>Pickup Date</Label>
+                                                <Label className="d-flex" ><span className="text-danger" >* </span>Pickup Date
+                                                {isProgressPickupSlot && <div className="spinner " ></div>}
+                                                </Label>
                                                 <ReactDatePicker
                                                     selected={formValues.pickupDate}
                                                     onChange={(e) => {
@@ -434,14 +473,19 @@ export default function CreateCustomerOrder({ history }) {
                                             </FormGroup>
 
                                         </Col>
+                                        <Col md={12} >
+                                            {isErrorPickupSlot && <span className="text-danger" >{errorMessage}</span>}
+                                        </Col>
                                     </Row>
                                     <Row>
                                         <Col md={6}>
 
                                             <FormGroup>
-                                                <Label ><span className="text-danger" >* </span>Dropff Date</Label>
+                                                <Label className="d-flex" ><span className="text-danger" >* </span>Dropff Date
+                                                {isProgressDropoffSlot && <div className="spinner " ></div>}
+                                                </Label>
                                                 <ReactDatePicker
-                                                    disabled={!formValues.pickupDate}
+                                                    disabled={!isPickupSlotAvailable}
                                                     selected={formValues.dropoffDate}
                                                     onChange={(e) => {
                                                         setFormValues({ ...formValues, dropoffDate: e });
@@ -468,7 +512,7 @@ export default function CreateCustomerOrder({ history }) {
 
                                                     }
                                                     }
-                                                    disabled={!formValues.pickupTime}
+                                                    disabled={!isPickupSlotAvailable}
                                                 >
                                                     <option value={''} >Please Select Drop Off Time</option>
                                                     {
@@ -480,6 +524,9 @@ export default function CreateCustomerOrder({ history }) {
                                                 {(notValid.error && notValid.type === 'dropoffTime') && <label className="text-danger" > {notValid.message} </label>}
                                             </FormGroup>
 
+                                        </Col>
+                                        <Col md={12} >
+                                            {isErrorDropoffSlot && <span className="text-danger" >{errorMessage}</span>}
                                         </Col>
                                     </Row>
                                     <Row>
@@ -522,7 +569,7 @@ export default function CreateCustomerOrder({ history }) {
                             </Row>
                             <Row className=" " >
                                 <Col sm="12" className=" " >
-                                    <Button type={'button'} onClick={postOrder} disabled={isProgress} className="btn-round btn-primary btn-add-modal" >
+                                    <Button type={'button'} onClick={postOrder} disabled={isProgress || !isDropoffSlotAvailable || !isPickupSlotAvailable} className="btn-round btn-primary btn-add-modal" >
                                         {
                                             isProgress
                                                 ?

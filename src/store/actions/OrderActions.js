@@ -46,6 +46,27 @@ export class OrderActions {
         };
     }
 
+    static checkSelectedPickupSlot(body) {
+        return {
+            type: OrderTypes.CHECK_SELECTED_PICKUP_SLOT_PROG,
+            payload: { body }
+
+        };
+    }
+
+    static checkSelectedDropoffSlot(body) {
+        return {
+            type: OrderTypes.CHECK_SELECTED_DROPOFF_SLOT_PROG,
+            payload: { body }
+        };
+    }
+
+    static clearError() {
+        return {
+            type: OrderTypes.CLEAR_ERROR
+        };
+    }
+
 
 
     static addOrder(body) {

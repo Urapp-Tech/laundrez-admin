@@ -73,6 +73,8 @@ export const rootEpic = combineEpics(
     OrderEpics.getLov,
     OrderEpics.getAddresses,
     OrderEpics.cancelOrder,
+    OrderEpics.checkSelectedDropoffSlot,
+    OrderEpics.checkSelectedPickupSlot,
 
     LocationEpics.getLocations,
     LocationEpics.addLocation,
