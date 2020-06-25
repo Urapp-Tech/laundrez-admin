@@ -18,7 +18,6 @@ import {
 } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { DriverActions } from '../../../store/actions/DriverActions';
-import Map from '../../../components/Map/Map';
 
 
 function AddDriver({ history }) {
@@ -31,14 +30,13 @@ function AddDriver({ history }) {
         email: '',
         licence: '',
         contactNumber: '',
-        lat: '',
-        lng: '',
+        mainAddress: '',
         file: ''
     });
 
-    const onLocationSelect = useCallback((lat, lng) => {
-        setFormValues({ ...formValues, lat, lng });
-    }, [formValues]);
+    // const onLocationSelect = useCallback((lat, lng) => {
+    //     setFormValues({ ...formValues, lat, lng });
+    // }, [formValues]);
 
     const onImageSelect = useCallback((e) => {
         let img;
@@ -106,8 +104,8 @@ function AddDriver({ history }) {
             setNotValid({ error: true, type: 'licence', message: 'License number must contain 6 characters' });
             return;
         }
-        if (!formValues.lat && !formValues.lng) {
-            setNotValid({ error: true, type: 'location', message: 'Please select driver location from map' });
+        if (!formValues.mainAddress) {
+            setNotValid({ error: true, type: 'mainAddress', message: 'Please provide main address' });
             return;
         }
 
@@ -120,8 +118,7 @@ function AddDriver({ history }) {
         formData.append('email', formValues.email);
         formData.append('licence', formValues.licence);
         formData.append('contactNumber', formValues.contactNumber);
-        formData.append('lat', formValues.lat);
-        formData.append('lng', formValues.lng);
+        formData.append('mainAddress', formValues.mainAddress);
         formData.append('profilePicture', formValues.file);
         dispatch(DriverActions.addDriver(formData, history));
 
@@ -138,14 +135,14 @@ function AddDriver({ history }) {
                         </CardHeader>
                         <CardBody>
                             <Row>
-                                <Col md={6} >
+                                <Col md={12} >
                                     <Form onSubmit={addDriver} >
                                         <Row className="" >
-                                            <Col sm="12">
+                                            <Col sm="6">
                                                 <FormGroup>
                                                     <label>
                                                         <span className="text-danger" >* </span>Name
-                          </label>
+                                                    </label>
                                                     <Input
                                                         autoFocus
                                                         placeholder="Name"
@@ -158,13 +155,11 @@ function AddDriver({ history }) {
                                                     }
                                                 </FormGroup>
                                             </Col>
-                                        </Row>
-                                        <Row className="justify-content-center" >
-                                            <Col sm="12">
+                                            <Col sm="6">
                                                 <FormGroup>
                                                     <label><span className="text-danger" >* </span>
-                                                        Email address
-                          </label>
+                                                        Email Address
+                                                    </label>
                                                     <Input
                                                         placeholder="Email"
                                                         type="email"
@@ -177,7 +172,7 @@ function AddDriver({ history }) {
                                             </Col>
                                         </Row>
                                         <Row className="justify-content-center" >
-                                            <Col sm="12">
+                                            <Col sm="6">
                                                 <FormGroup>
                                                     <label><span className="text-danger" >* </span>Contact Number</label>
                                                     <Input
@@ -191,9 +186,7 @@ function AddDriver({ history }) {
                                                     }
                                                 </FormGroup>
                                             </Col>
-                                        </Row>
-                                        <Row className="justify-content-center" >
-                                            <Col sm="12">
+                                            <Col sm="6">
                                                 <FormGroup>
                                                     <label><span className="text-danger" >* </span>License Number <i>Driver will Use This Number To Login At App</i> </label>
                                                     <Input
@@ -209,33 +202,24 @@ function AddDriver({ history }) {
                                             </Col>
                                         </Row>
                                         <Row className="justify-content-center" >
+                                        </Row>
+                                        <Row  >
                                             <Col sm="6">
                                                 <FormGroup>
-                                                    <label><span className="text-danger" >* </span>Latitude </label>
+                                                    <label><span className="text-danger" >* </span>Main Address </label>
                                                     <Input
-                                                        placeholder="Latitude"
-                                                        type="text"
-                                                        readOnly
-                                                        value={formValues.lat}
+                                                        placeholder="Main Address"
+                                                        type="textarea"
+                                                        maxLength={200}
+                                                        value={formValues.mainAddress}
+                                                        onChange={(e) => setFormValues({ ...formValues, mainAddress: e.target.value })}
                                                     />
 
+                                                    {notValid.error && notValid.type === 'mainAddress' &&
+                                                        <label className=" ml-3 text-danger" >{notValid.message}</label>
+                                                    }
                                                 </FormGroup>
                                             </Col>
-                                            <Col sm="6">
-                                                <FormGroup>
-                                                    <label><span className="text-danger" >* </span>Longitude</label>
-                                                    <Input
-                                                        placeholder="Longitude"
-                                                        type="text"
-                                                        readOnly
-                                                        value={formValues.lng}
-                                                    />
-
-                                                </FormGroup>
-                                            </Col>
-                                            {notValid.error && notValid.type === 'location' &&
-                                                <label className=" ml-3 text-danger" >{notValid.message}</label>
-                                            }
                                         </Row>
                                         <Row>
                                             <Col sm="12">
@@ -273,9 +257,9 @@ function AddDriver({ history }) {
                                     </Form>
 
                                 </Col>
-                                <Col md={6} >
+                                {/* <Col md={6} >
                                     <Map height={'600px'} onLocationSelect={onLocationSelect} />
-                                </Col>
+                                </Col> */}
 
                             </Row>
 
