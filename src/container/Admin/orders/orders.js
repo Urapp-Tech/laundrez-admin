@@ -245,7 +245,7 @@ function Orders({ history }) {
                             }} name="select">
                                 {
                                     array.map((v, i) => {
-                                        return (<option key={i} value={v} >{(v == "PickUp" || v == "DropOff") ? "Ready for " + v : v}</option>);
+                                        return (<option key={i} value={v} >{(v == 'PickUp' || v == 'DropOff') ? 'Ready for ' + v : v}</option>);
                                     })
                                 }
                             </Input>
