@@ -5,6 +5,7 @@ import { OrderStatus } from '../../store/constants/OrderConstants';
 import { DriverActions } from '../../store/actions/DriverActions';
 import { useSelector, useDispatch } from 'react-redux';
 import { OrderActions } from '../../store/actions/OrderActions';
+import { OrderStatusArray } from '../../store/constants/OrderConstants';
 
 const StatusChangeConfModal = memo(({ isOpen, toggle, isProgress, newStatus, prevStatus }) => {
     const [selectedDriver, setSelectedDriver] = useState(0);
@@ -55,7 +56,7 @@ const StatusChangeConfModal = memo(({ isOpen, toggle, isProgress, newStatus, pre
                 ?
                 < ModalBody className="d-flex flex-column" >
                     <span>{'Do you really want to change the order status from '}
-                        < b > {prevStatus}</b> to < b > {newStatus}</b >?</span>
+                        < b > {OrderStatusArray[prevStatus]}</b> to < b > {OrderStatusArray[newStatus]}</b >?</span>
 
                     <FormGroup className="col-md-12" >
                         <Label for="exampleSelect"><span className="text-danger" >*</span>Please select Driver </Label>
@@ -74,7 +75,7 @@ const StatusChangeConfModal = memo(({ isOpen, toggle, isProgress, newStatus, pre
                 </ModalBody >
                 :
                 <ModalBody>{'Do you really want to change the order status from '}
-                    <b>{prevStatus}</b> to <b>{newStatus}</b>?
+                    <b> {OrderStatusArray[prevStatus]}</b> to <b> {OrderStatusArray[newStatus]}</b>?
                 </ModalBody>
             }
             <ModalFooter className="p-0 pr-2"  >

@@ -230,8 +230,14 @@ function Orders({ history }) {
             text: 'Status',
             // eslint-disable-next-line react/display-name
             formatter: (cell, row, rowIndex) => {
-                let statusIndex = OrderStatusArray.indexOf(cell);
-                let array = statusIndex > 0 ? OrderStatusArray.slice(statusIndex) : OrderStatusArray;
+                let statusIndex;
+                let statuses = { ...OrderStatusArray };
+                Object.keys(OrderStatusArray).filter(function(key, i) {
+                    if(key === cell)
+                        statusIndex = i;
+                    if(statusIndex === undefined)
+                        delete statuses[key];
+                });
                 return (
                     <div>
                         <FormGroup>
@@ -244,9 +250,9 @@ function Orders({ history }) {
 
                             }} name="select">
                                 {
-                                    array.map((v, i) => {
-                                        return (<option key={i} value={v} >{(v == 'PickUp' || v == 'DropOff') ? 'Ready for ' + v : v}</option>);
-                                    })
+                                    Object.keys(statuses).map((key, i) => (
+                                        <option key={i} value={key} >{statuses[key]}</option>
+                                    ))
                                 }
                             </Input>
                         </FormGroup>
@@ -323,9 +329,9 @@ function Orders({ history }) {
                                             <Input type="select" value={filterStatus} onChange={(e) => getOrderByStatus(e.target.value)} name="select" id="exampleSelect">
                                                 <option value={''} >All</option>
                                                 {
-                                                    OrderStatusArray.map((v, i) => {
-                                                        return (<option key={i} value={v} >{v}</option>);
-                                                    })
+                                                    Object.keys(OrderStatusArray).map((key, i) => (
+                                                        <option key={i} value={key} >{OrderStatusArray[key]}</option>
+                                                    ))
                                                 }
                                             </Input>
                                         </FormGroup>

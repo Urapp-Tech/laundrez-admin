@@ -7,11 +7,11 @@ export const OrderStatus = {
     Cancelled: 'Cancelled'
 };
 
-export const OrderStatusArray = [
-    'OrderPlaced',
-    'PickUp',
-    'InProgress',
-    'DropOff',
-    'Delivered',
-    'Cancelled'
-];
+export const OrderStatusArray = {
+    'OrderPlaced': 'Order Placed',
+    'PickUp': 'Ready for Pick Up',
+    'InProgress': 'In Progress',
+    'DropOff': 'Ready for Drop Off',
+    'Delivered': 'Delivered',
+    'Cancelled': 'Cancelled'
+};
