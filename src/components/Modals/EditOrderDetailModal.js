@@ -4,7 +4,7 @@ import propTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { OrderActions } from '../../store/actions/OrderActions';
-import { OrderStatus } from '../../store/constants/OrderConstants';
+import { OrderStatus, OrderStatusArray } from '../../store/constants/OrderConstants';
 
 const EditOrderDetailModal = memo(({ isOpen, toggle }) => {
     const dispatch = useDispatch();
@@ -149,7 +149,7 @@ const EditOrderDetailModal = memo(({ isOpen, toggle }) => {
                                     <Col md={12}>
                                         <div className="d-flex flex-column">
                                             <span className="font-weight-bold">Status:</span>
-                                            <span>{order?.status}</span>
+                                            <span>{OrderStatusArray[order?.status]}</span>
                                         </div>
                                     </Col>
                                 </Row>
